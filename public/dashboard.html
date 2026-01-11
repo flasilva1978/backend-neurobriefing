@@ -179,10 +179,11 @@
 
     <div id="chart-factory"></div>
 
-    <script>
+<script>
         let todosTestes = [];
         let testeSelecionado = null;
 
+        // --- ORGANIZAÇÃO ---
         const GRP_VISAO = ["ILUMINAÇÃO", "PSICOLOGIA DAS CORES", "PSICOLOGIA DAS FORMAS"];
         const GRP_TATO_SOM = ["SENSORIAL: TATO", "SENSORIAL: AUDIÇÃO", "MEMÓRIA OLFATIVA"];
         const GRP_BIO = ["SENSORIAL: BIOLÓGICO/TÉRMICO", "SENSORIAL: PALADAR/GOURMET", "CONEXÃO COM A NATUREZA", "CRONOTIPO", "MEMÓRIAS AFETIVAS"];
@@ -208,16 +209,11 @@
                 
                 [...todosTestes].reverse().forEach((t, i) => {
                     const duracao = t.duracao ? `${Math.floor(t.duracao/60)}m ${t.duracao%60}s` : '--';
-                    
-                    // --- PROCESSAMENTO DE CONTATO ---
                     const email = t.contato?.email || '';
                     const telRaw = t.contato?.telefone || '';
-                    const telClean = telRaw.replace(/\D/g, ''); // Remove tudo que não é número
+                    const telClean = telRaw.replace(/\D/g, ''); 
                     const zapLink = telClean ? `https://wa.me/55${telClean}` : '#';
-                    
-                    // --- PROCESSAMENTO DE LOCAL ---
-                    const cid = t.contato?.cidade;
-                    const uf = t.contato?.estado;
+                    const cid = t.contato?.cidade; const uf = t.contato?.estado;
                     const local = (cid && uf) ? `${cid} - ${uf}` : (cid || uf || '-');
 
                     tbody.innerHTML += `
@@ -226,34 +222,58 @@
                         <td><strong>${t.cliente}</strong></td>
                         <td>
                             <div style="display:flex; flex-direction:column;">
-                                <a href="${zapLink}" target="_blank" class="link-contato link-zap" title="Abrir WhatsApp">
-                                    <span>📱</span> ${telRaw || 'Sem número'}
-                                </a>
-                                <a href="mailto:${email}" class="link-contato link-email" title="Enviar Email">
-                                    <span>📧</span> ${email || 'Sem email'}
-                                </a>
+                                <a href="${zapLink}" target="_blank" class="link-contato link-zap"><span>📱</span> ${telRaw || '-'}</a>
+                                <a href="mailto:${email}" class="link-contato link-email"><span>📧</span> ${email || '-'}</a>
                             </div>
                         </td>
                         <td>${local}</td>
                         <td>${duracao}</td>
-                        <td style="text-align:right">
-                            <button class="btn-acao" onclick="abrirModal(${todosTestes.length-1-i})">VER PDF</button>
-                        </td>
+                        <td style="text-align:right"><button class="btn-acao" onclick="abrirModal(${todosTestes.length-1-i})">VER PDF</button></td>
                     </tr>`;
                 });
-            } catch(e){}
+            } catch(e){ console.error(e); }
         }
 
         function abrirModal(i) { testeSelecionado = todosTestes[i]; document.getElementById('modal-cliente-nome').innerText = testeSelecionado.cliente; document.getElementById('modal-preview').style.display='flex'; }
         function fecharModal() { document.getElementById('modal-preview').style.display='none'; }
 
+        // --- FUNÇÃO DE GERAR PDF COM PROTEÇÃO DE ERRO ---
         async function iniciarGeracaoPDF() {
             if(!testeSelecionado) return;
-            const btn = document.querySelector('.btn-pdf'); btn.innerHTML = 'Gerando...'; btn.disabled = true;
-            await preencher(testeSelecionado);
-            const el = document.getElementById('folha-a4'); el.style.display='block';
-            await html2pdf().set({ margin:0, filename:`NeuroBriefing_${testeSelecionado.cliente}.pdf`, image:{type:'jpeg',quality:1}, html2canvas:{scale:2, useCORS:true}, jsPDF:{unit:'px', format:[794,1123]} }).from(el).save();
-            el.style.display='none'; btn.innerHTML = 'Baixar PDF'; btn.disabled = false; fecharModal();
+            const btn = document.querySelector('.btn-pdf'); 
+            const textoOriginal = btn.innerHTML;
+            
+            try {
+                btn.innerHTML = '⏳ Processando...'; 
+                btn.disabled = true;
+
+                await preencher(testeSelecionado);
+                
+                const el = document.getElementById('folha-a4'); 
+                el.style.display='block';
+                
+                // Opções otimizadas para evitar travamento
+                const opt = { 
+                    margin: 0, 
+                    filename: `NeuroBriefing_${testeSelecionado.cliente.replace(/ /g,'_')}.pdf`, 
+                    image: { type: 'jpeg', quality: 0.98 }, 
+                    html2canvas: { scale: 2, useCORS: true, logging: false }, 
+                    jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' } 
+                };
+
+                await html2pdf().set(opt).from(el).save();
+                
+            } catch (error) {
+                console.error("ERRO AO GERAR PDF:", error);
+                alert("Ocorreu um erro ao gerar o PDF. Verifique se a logo.png está carregando corretamente. Detalhes no Console (F12).");
+            } finally {
+                // Sempre executa isso, dando erro ou não
+                const el = document.getElementById('folha-a4');
+                el.style.display='none'; 
+                btn.innerHTML = textoOriginal; 
+                btn.disabled = false; 
+                fecharModal();
+            }
         }
 
         async function preencher(t) {
@@ -278,9 +298,12 @@
             document.getElementById('pdf-estilo-titulo').innerText = topEstilo.toUpperCase();
             document.getElementById('pdf-estilo-titulo').style.color = CORES_ESTILO[topEstilo] || '#000';
             setDesc(topEstilo);
+            
+            // Gerar gráfico principal
             document.getElementById('img-estilo').src = await gerarGrafico(estilo, true);
             document.getElementById('legend-estilo').innerHTML = gerarLegendaHTML(estilo, true);
 
+            // Limpa Grids
             const gVis = document.getElementById('grid-visao'); gVis.innerHTML='';
             const gTato = document.getElementById('grid-tato-som'); gTato.innerHTML='';
             const gBio = document.getElementById('grid-bio'); gBio.innerHTML='';
@@ -324,12 +347,24 @@
                 const keys = Object.keys(dados).filter(k=>dados[k]>0);
                 const vals = keys.map(k=>dados[k]);
                 const cores = isMain ? keys.map(k=>CORES_ESTILO[k]||'#333') : keys.map((_,i)=>PALETA[i%PALETA.length]);
+                
                 new Chart(cvs, {
                     type: 'doughnut',
                     data: { labels: keys, datasets: [{ data: vals, backgroundColor: cores, borderWidth:0 }] },
                     options: { responsive: false, animation: false, cutout: '65%', plugins: { legend: { display: false } } }
                 });
-                setTimeout(() => { resolve(cvs.toDataURL()); cvs.remove(); }, 50);
+
+                // AUMENTO DO TEMPO PARA EVITAR TRAVAMENTO EM IMAGENS
+                setTimeout(() => { 
+                    try {
+                        const imgData = cvs.toDataURL('image/png');
+                        cvs.remove(); 
+                        resolve(imgData);
+                    } catch(err) {
+                        console.error("Erro ao gerar imagem do gráfico", err);
+                        resolve(''); // Retorna vazio se der erro pra não travar tudo
+                    }
+                }, 150); // Aumentado para 150ms
             });
         }
 
