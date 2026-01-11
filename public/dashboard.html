@@ -144,7 +144,7 @@
                 </div>
                 <div id="pdf-tempo" class="pdf-badge badge-ok">Tempo: --</div>
             </div>
-            <img src="logo.png" class="pdf-logo" onerror="this.style.display='none'">
+                <img src="logo.png" class="pdf-logo" crossorigin="anonymous" onerror="this.style.display='none'; this.setAttribute('data-error', 'true');">
         </div>
 
         <div class="pdf-main">
@@ -238,7 +238,7 @@
         function fecharModal() { document.getElementById('modal-preview').style.display='none'; }
 
         // --- FUNÇÃO DE GERAR PDF COM PROTEÇÃO DE ERRO ---
-        async function iniciarGeracaoPDF() {
+async function iniciarGeracaoPDF() {
             if(!testeSelecionado) return;
             const btn = document.querySelector('.btn-pdf'); 
             const textoOriginal = btn.innerHTML;
@@ -251,31 +251,42 @@
                 
                 const el = document.getElementById('folha-a4'); 
                 el.style.display='block';
+
+                // --- CORREÇÃO DE SEGURANÇA (NOVA) ---
+                // Verifica se a logo carregou. Se deu erro, remove do DOM para não travar o PDF
+                const logoImg = el.querySelector('.pdf-logo');
+                if (logoImg.getAttribute('data-error') === 'true' || logoImg.naturalWidth === 0) {
+                    console.warn("Logo não carregou. Gerando PDF sem logo para evitar travamento.");
+                    logoImg.style.display = 'none';
+                    logoImg.src = ''; // Remove a fonte para o html2canvas ignorar
+                }
+                // ------------------------------------
                 
-                // Opções otimizadas para evitar travamento
                 const opt = { 
                     margin: 0, 
                     filename: `NeuroBriefing_${testeSelecionado.cliente.replace(/ /g,'_')}.pdf`, 
                     image: { type: 'jpeg', quality: 0.98 }, 
-                    html2canvas: { scale: 2, useCORS: true, logging: false }, 
+                    html2canvas: { scale: 2, useCORS: true, logging: false, allowTaint: true }, // allowTaint adicionado
                     jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' } 
                 };
 
                 await html2pdf().set(opt).from(el).save();
                 
             } catch (error) {
-                console.error("ERRO AO GERAR PDF:", error);
-                alert("Ocorreu um erro ao gerar o PDF. Verifique se a logo.png está carregando corretamente. Detalhes no Console (F12).");
+                console.error("ERRO CRÍTICO:", error);
+                alert("Erro ao gerar. Verifique se a logo.png está na pasta 'public'.");
             } finally {
-                // Sempre executa isso, dando erro ou não
                 const el = document.getElementById('folha-a4');
                 el.style.display='none'; 
+                // Restaura a logo caso ela tenha sido escondida, para tentar carregar na próxima
+                const logoImg = el.querySelector('.pdf-logo');
+                if(logoImg) { logoImg.src = 'logo.png'; logoImg.style.display = 'block'; }
+                
                 btn.innerHTML = textoOriginal; 
                 btn.disabled = false; 
                 fecharModal();
             }
         }
-
         async function preencher(t) {
             document.getElementById('pdf-nome').innerText = t.cliente;
             document.getElementById('pdf-data').innerText = t.dataLegivel;
