@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel NeuroBriefing Pro</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        /* --- ESTILOS DO SISTEMA --- */
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #eaeff2; margin: 0; color: #333; }
+        .sys-header { background: #111; padding: 15px; text-align: center; color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .sys-container { max-width: 1200px; margin: 30px auto; padding: 20px; } /* Aumentei a largura para caber os dados */
+        
+        .card-tabela { background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 25px; overflow-x: auto; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 900px; }
+        th { background: #f4f4f4; text-align: left; padding: 15px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; font-weight: 700; border-bottom: 2px solid #ddd; }
+        td { padding: 15px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: middle; }
+        tr:hover { background: #fafafa; }
+        
+        /* Links de Contato */
+        .link-contato { text-decoration: none; display: flex; align-items: center; gap: 5px; font-size: 12px; margin-bottom: 4px; transition: 0.2s; }
+        .link-zap { color: #25D366; font-weight: 600; }
+        .link-zap:hover { color: #128C7E; text-decoration: underline; }
+        .link-email { color: #555; }
+        .link-email:hover { color: #000; text-decoration: underline; }
+
+        .btn-acao { background: #2c3e50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 11px; transition:0.2s; white-space: nowrap; }
+        .btn-acao:hover { background: #1a252f; }
+        
+        /* Modal Preview */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; }
+        .modal-box { background: white; padding: 30px; border-radius: 6px; width: 400px; text-align: center; }
+        .modal-btns { display: flex; gap: 10px; justify-content: center; margin-top: 25px; }
+        .btn-pdf { background: #e74c3c; color: white; padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-close { background: #ddd; color: #333; padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        /* --- LAYOUT A4 FIXO --- */
+        #folha-a4 {
+            width: 794px; height: 1123px; /* A4 96dpi */
+            background: white; margin: 0 auto; padding: 35px 40px;
+            box-sizing: border-box; display: none; position: relative;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        /* Header PDF */
+        .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
+        .pdf-info h1 { font-size: 22px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; color: #000; }
+        .pdf-meta { font-size: 10px; color: #444; line-height: 1.4; margin-top: 5px; }
+        .pdf-badge { display: inline-block; font-size: 9px; font-weight: bold; padding: 3px 6px; border-radius: 3px; margin-top: 5px; }
+        .badge-ok { background: #e8f5e9; color: #27ae60; border: 1px solid #c8e6c9; }
+        .badge-warn { background: #ffebee; color: #c0392b; border: 1px solid #ffcdd2; }
+        .pdf-logo { height: 45px; object-fit: contain; }
+
+        /* Estilo Principal */
+        .pdf-main { display: flex; gap: 20px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; height: 145px; }
+        .pdf-main-txt { width: 45%; }
+        .pdf-label { font-size: 9px; font-weight: bold; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+        .pdf-title { font-size: 28px; font-weight: 900; color: #000; margin: 5px 0; line-height: 1; }
+        .pdf-desc { font-size: 10px; color: #555; text-align: justify; line-height: 1.35; }
+        .pdf-main-vis { width: 55%; display: flex; align-items: center; gap: 15px; }
+        .pdf-main-chart { width: 130px; height: 130px; flex-shrink: 0; }
+        .pdf-main-legend { font-size: 10px; line-height: 1.5; flex: 1; }
+
+        /* Seções e Subtítulos */
+        .pdf-section { margin-bottom: 10px; }
+        .pdf-sec-header { 
+            background: #f4f4f4; padding: 4px 10px; margin-bottom: 8px; border-left: 4px solid #333; 
+            font-size: 10px; font-weight: 800; text-transform: uppercase; color: #000; 
+        }
+        .pdf-sub-title {
+            font-size: 9px; font-weight: 700; color: #555; text-transform: uppercase; 
+            margin: 8px 0 4px 0; border-bottom: 1px dashed #ddd; padding-bottom: 2px;
+        }
+        
+        .grid-row { display: flex; flex-wrap: wrap; gap: 12px; row-gap: 12px; }
+        
+        /* Cards */
+        .chart-card { width: 18.5%; text-align: center; } 
+        .chart-title { 
+            font-size: 8px; font-weight: 700; color: #0056b3; text-transform: uppercase; 
+            margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+            border-bottom: 1px solid #eee; padding-bottom: 2px;
+        }
+        .chart-img-box { height: 55px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+        .chart-img { max-height: 100%; max-width: 100%; }
+
+        /* Legenda */
+        .legend-list { list-style: none; padding: 0; margin: 0; text-align: left; }
+        .legend-item { display: flex; align-items: flex-start; gap: 4px; font-size: 7px; color: #444; line-height: 1.1; margin-bottom: 2px; white-space: normal; }
+        .legend-color { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; margin-top: 1px; }
+
+        .pdf-footer { position: absolute; bottom: 25px; left: 40px; right: 40px; text-align: center; font-size: 8px; color: #bbb; border-top: 1px solid #eee; padding-top: 8px; }
+        #chart-factory { position: fixed; top: -9999px; }
+    </style>
+</head>
+<body>
+
+    <div class="sys-header"><h2>PAINEL DE CONTROLE | GESTÃO DE CLIENTES</h2></div>
+    <div class="sys-container">
+        <div class="card-tabela">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3 style="margin:0;">Diagnósticos Recentes</h3>
+                <span style="font-size:12px; color:#666;">ℹ️ Clique nos ícones para contatar o cliente</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="10%">Data</th>
+                        <th width="20%">Cliente</th>
+                        <th width="25%">Contato Direto</th>
+                        <th width="20%">Localização</th>
+                        <th width="10%">Tempo</th>
+                        <th width="15%" style="text-align:right">Relatório</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-clientes"></tbody>
+            </table>
+            <div id="loading" style="text-align:center; padding:20px; color:#999;">Carregando...</div>
+        </div>
+    </div>
+
+    <div id="modal-preview" class="modal-overlay">
+        <div class="modal-box">
+            <h2 id="modal-cliente-nome">Cliente</h2>
+            <p>Gerar relatório PDF profissional?</p>
+            <div class="modal-btns">
+                <button class="btn-close" onclick="fecharModal()">Cancelar</button>
+                <button class="btn-pdf" onclick="iniciarGeracaoPDF()">Gerar PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="folha-a4">
+        <div class="pdf-header">
+            <div class="pdf-info">
+                <h1 id="pdf-nome">NOME CLIENTE</h1>
+                <div class="pdf-meta">
+                    Data: <span id="pdf-data">-</span> | Local: <span id="pdf-local">-</span><br>
+                    Email: <span id="pdf-email">-</span> | Tel: <span id="pdf-tel">-</span>
+                </div>
+                <div id="pdf-tempo" class="pdf-badge badge-ok">Tempo: --</div>
+            </div>
+            <img src="logo.png" class="pdf-logo" onerror="this.style.display='none'">
+        </div>
+
+        <div class="pdf-main">
+            <div class="pdf-main-txt">
+                <div class="pdf-label">PREDOMINÂNCIA ESTÉTICA</div>
+                <div id="pdf-estilo-titulo" class="pdf-title">MODERNO</div>
+                <div id="pdf-estilo-desc" class="pdf-desc">...</div>
+            </div>
+            <div class="pdf-main-vis">
+                <div class="pdf-main-chart"><img id="img-estilo" style="width:100%;height:100%;"></div>
+                <div class="pdf-main-legend" id="legend-estilo"></div>
+            </div>
+        </div>
+
+        <div class="pdf-section">
+            <div class="pdf-sec-header">Mapa Sensorial & NeuroArquitetura</div>
+            <div class="pdf-sub-title">Visão (Luz, Cores & Formas)</div>
+            <div class="grid-row" id="grid-visao"></div>
+            <div class="pdf-sub-title" style="margin-top: 10px;">Tato, Audição & Olfato</div>
+            <div class="grid-row" id="grid-tato-som"></div>
+            <div class="pdf-sub-title" style="margin-top: 10px;">Biológico & Bem-Estar</div>
+            <div class="grid-row" id="grid-bio"></div>
+        </div>
+
+        <div class="pdf-section">
+            <div class="pdf-sec-header">Lifestyle & Estratégia</div>
+            <div class="grid-row" id="grid-lifestyle"></div>
+        </div>
+
+        <div class="pdf-footer">NeuroBriefing Intelligence • Relatório Confidencial de Uso Profissional</div>
+    </div>
+
+    <div id="chart-factory"></div>
+
+    <script>
+        let todosTestes = [];
+        let testeSelecionado = null;
+
+        const GRP_VISAO = ["ILUMINAÇÃO", "PSICOLOGIA DAS CORES", "PSICOLOGIA DAS FORMAS"];
+        const GRP_TATO_SOM = ["SENSORIAL: TATO", "SENSORIAL: AUDIÇÃO", "MEMÓRIA OLFATIVA"];
+        const GRP_BIO = ["SENSORIAL: BIOLÓGICO/TÉRMICO", "SENSORIAL: PALADAR/GOURMET", "CONEXÃO COM A NATUREZA", "CRONOTIPO", "MEMÓRIAS AFETIVAS"];
+        const GRP_LIFESTYLE = ["FASE DE VIDA & FAMÍLIA", "PERSONALIDADE", "HOBBIES & LAZER", "PRIVACIDADE & FLUXO", "EXPECTATIVA DE INVESTIMENTO"];
+
+        const TRADUTOR_TITULOS = {
+            "SENSORIAL: AUDIÇÃO": "ACÚSTICA", "SENSORIAL: TATO": "TEXTURAS", "SENSORIAL: PALADAR/GOURMET": "GOURMET",
+            "SENSORIAL: BIOLÓGICO/TÉRMICO": "CONF. TÉRMICO", "PSICOLOGIA DAS FORMAS": "FORMAS", "PSICOLOGIA DAS CORES": "CORES",
+            "CONEXÃO COM A NATUREZA": "BIOFILIA", "EXPECTATIVA DE INVESTIMENTO": "INVESTIMENTO", "FASE DE VIDA & FAMÍLIA": "FASE DE VIDA",
+            "MEMÓRIA OLFATIVA": "AROMAS", "MEMÓRIAS AFETIVAS": "MEMÓRIAS"
+        };
+
+        const CORES_ESTILO = { 'Moderno':'#2c3e50', 'Minimalista':'#2c3e50', 'Clássico':'#c0392b', 'Tradicional':'#c0392b', 'Industrial':'#7f8c8d', 'Urbano':'#7f8c8d', 'Rústico':'#d35400', 'Madeira':'#d35400', 'Natural':'#27ae60', 'Biofilia':'#27ae60' };
+        const PALETA = ['#3498db', '#e74c3c', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e'];
+
+        async function carregarDados() {
+            try {
+                const res = await fetch('/api/relatorios');
+                todosTestes = await res.json();
+                const tbody = document.getElementById('lista-clientes');
+                document.getElementById('loading').style.display='none';
+                tbody.innerHTML = '';
+                
+                [...todosTestes].reverse().forEach((t, i) => {
+                    const duracao = t.duracao ? `${Math.floor(t.duracao/60)}m ${t.duracao%60}s` : '--';
+                    
+                    // --- PROCESSAMENTO DE CONTATO ---
+                    const email = t.contato?.email || '';
+                    const telRaw = t.contato?.telefone || '';
+                    const telClean = telRaw.replace(/\D/g, ''); // Remove tudo que não é número
+                    const zapLink = telClean ? `https://wa.me/55${telClean}` : '#';
+                    
+                    // --- PROCESSAMENTO DE LOCAL ---
+                    const cid = t.contato?.cidade;
+                    const uf = t.contato?.estado;
+                    const local = (cid && uf) ? `${cid} - ${uf}` : (cid || uf || '-');
+
+                    tbody.innerHTML += `
+                    <tr>
+                        <td>${t.dataLegivel}</td>
+                        <td><strong>${t.cliente}</strong></td>
+                        <td>
+                            <div style="display:flex; flex-direction:column;">
+                                <a href="${zapLink}" target="_blank" class="link-contato link-zap" title="Abrir WhatsApp">
+                                    <span>📱</span> ${telRaw || 'Sem número'}
+                                </a>
+                                <a href="mailto:${email}" class="link-contato link-email" title="Enviar Email">
+                                    <span>📧</span> ${email || 'Sem email'}
+                                </a>
+                            </div>
+                        </td>
+                        <td>${local}</td>
+                        <td>${duracao}</td>
+                        <td style="text-align:right">
+                            <button class="btn-acao" onclick="abrirModal(${todosTestes.length-1-i})">VER PDF</button>
+                        </td>
+                    </tr>`;
+                });
+            } catch(e){}
+        }
+
+        function abrirModal(i) { testeSelecionado = todosTestes[i]; document.getElementById('modal-cliente-nome').innerText = testeSelecionado.cliente; document.getElementById('modal-preview').style.display='flex'; }
+        function fecharModal() { document.getElementById('modal-preview').style.display='none'; }
+
+        async function iniciarGeracaoPDF() {
+            if(!testeSelecionado) return;
+            const btn = document.querySelector('.btn-pdf'); btn.innerHTML = 'Gerando...'; btn.disabled = true;
+            await preencher(testeSelecionado);
+            const el = document.getElementById('folha-a4'); el.style.display='block';
+            await html2pdf().set({ margin:0, filename:`NeuroBriefing_${testeSelecionado.cliente}.pdf`, image:{type:'jpeg',quality:1}, html2canvas:{scale:2, useCORS:true}, jsPDF:{unit:'px', format:[794,1123]} }).from(el).save();
+            el.style.display='none'; btn.innerHTML = 'Baixar PDF'; btn.disabled = false; fecharModal();
+        }
+
+        async function preencher(t) {
+            document.getElementById('pdf-nome').innerText = t.cliente;
+            document.getElementById('pdf-data').innerText = t.dataLegivel;
+            document.getElementById('pdf-email').innerText = t.contato?.email || '-';
+            document.getElementById('pdf-tel').innerText = t.contato?.telefone || '-';
+            
+            const cid = t.contato?.cidade; const uf = t.contato?.estado;
+            const local = (cid && uf) ? `${cid} - ${uf}` : (cid || uf || '-');
+            document.getElementById('pdf-local').innerText = local;
+
+            const min = Math.floor((t.duracao||0)/60); const sec = (t.duracao||0)%60;
+            const badge = document.getElementById('pdf-tempo');
+            if(t.duracao < 90) { badge.className = 'pdf-badge badge-warn'; badge.innerText = `⚠️ Tempo: ${min}m ${sec}s (Rápido)`; }
+            else { badge.className = 'pdf-badge badge-ok'; badge.innerText = `⏱️ Tempo: ${min}m ${sec}s (Adequado)`; }
+
+            const estilo = processar(t.respostas, true);
+            const cats = processar(t.respostas, false);
+
+            const topEstilo = Object.keys(estilo).reduce((a,b)=>estilo[a]>estilo[b]?a:b);
+            document.getElementById('pdf-estilo-titulo').innerText = topEstilo.toUpperCase();
+            document.getElementById('pdf-estilo-titulo').style.color = CORES_ESTILO[topEstilo] || '#000';
+            setDesc(topEstilo);
+            document.getElementById('img-estilo').src = await gerarGrafico(estilo, true);
+            document.getElementById('legend-estilo').innerHTML = gerarLegendaHTML(estilo, true);
+
+            const gVis = document.getElementById('grid-visao'); gVis.innerHTML='';
+            const gTato = document.getElementById('grid-tato-som'); gTato.innerHTML='';
+            const gBio = document.getElementById('grid-bio'); gBio.innerHTML='';
+            const gLife = document.getElementById('grid-lifestyle'); gLife.innerHTML='';
+
+            await preencherGrupo(GRP_VISAO, cats, gVis);
+            await preencherGrupo(GRP_TATO_SOM, cats, gTato);
+            await preencherGrupo(GRP_BIO, cats, gBio);
+            await preencherGrupo(GRP_LIFESTYLE, cats, gLife);
+        }
+
+        async function preencherGrupo(keys, dados, container) {
+            for(const key of keys) {
+                const realKey = Object.keys(dados).find(k => k.includes(key) || key.includes(k));
+                if(realKey && dados[realKey]) {
+                    const img = await gerarGrafico(dados[realKey], false);
+                    const leg = gerarLegendaHTML(dados[realKey], false);
+                    const title = TRADUTOR_TITULOS[realKey] || realKey;
+                    container.innerHTML += `<div class="chart-card"><div class="chart-title" title="${title}">${title}</div><div class="chart-img-box"><img src="${img}" class="chart-img"></div>${leg}</div>`;
+                }
+            }
+        }
+
+        function gerarLegendaHTML(dados, isMain) {
+            const keys = Object.keys(dados).filter(k=>dados[k]>0);
+            const total = keys.reduce((s,k)=>s+dados[k],0);
+            let html = `<ul class="legend-list" style="${isMain?'font-size:11px':'font-size:7px'}">`;
+            keys.forEach((k, i) => {
+                const perc = Math.round((dados[k]/total)*100);
+                const cor = isMain ? (CORES_ESTILO[k]||'#333') : PALETA[i%PALETA.length];
+                html += `<li class="legend-item"><span class="legend-color" style="background:${cor}"></span><span>${k} <strong>(${perc}%)</strong></span></li>`;
+            });
+            return html + '</ul>';
+        }
+
+        function gerarGrafico(dados, isMain) {
+            return new Promise(resolve => {
+                const cvs = document.createElement('canvas');
+                cvs.width = isMain?300:150; cvs.height = isMain?300:150;
+                document.getElementById('chart-factory').appendChild(cvs);
+                const keys = Object.keys(dados).filter(k=>dados[k]>0);
+                const vals = keys.map(k=>dados[k]);
+                const cores = isMain ? keys.map(k=>CORES_ESTILO[k]||'#333') : keys.map((_,i)=>PALETA[i%PALETA.length]);
+                new Chart(cvs, {
+                    type: 'doughnut',
+                    data: { labels: keys, datasets: [{ data: vals, backgroundColor: cores, borderWidth:0 }] },
+                    options: { responsive: false, animation: false, cutout: '65%', plugins: { legend: { display: false } } }
+                });
+                setTimeout(() => { resolve(cvs.toDataURL()); cvs.remove(); }, 50);
+            });
+        }
+
+        function processar(resp, onlyEstilo) {
+            const res = {};
+            for(const [k,v] of Object.entries(resp)) {
+                const [cat, opt] = k.split('::');
+                const isEst = cat.includes('ESTILO');
+                if(onlyEstilo && isEst) {
+                    if(opt.includes('Moderno')||opt.includes('Minimalista')) res['Moderno']=(res['Moderno']||0)+v;
+                    if(opt.includes('Clássico')||opt.includes('Tradicional')) res['Clássico']=(res['Clássico']||0)+v;
+                    if(opt.includes('Industrial')||opt.includes('Urbano')) res['Industrial']=(res['Industrial']||0)+v;
+                    if(opt.includes('Rústico')||opt.includes('Madeira')) res['Rústico']=(res['Rústico']||0)+v;
+                    if(opt.includes('Natural')||opt.includes('Biofilia')) res['Natural']=(res['Natural']||0)+v;
+                } else if (!onlyEstilo && !isEst) {
+                    let c = cat; if(!res[c]) res[c]={}; res[c][opt] = (res[c][opt]||0)+v;
+                }
+            }
+            return res;
+        }
+
+        function setDesc(est) {
+            const map = {
+                'Moderno': 'Funcionalidade, linhas retas e clareza visual. Ambientes limpos e integrados.',
+                'Clássico': 'Simetria e nobreza. Valoriza a história, ornamentos e sofisticação.',
+                'Industrial': 'Urbano, metais e concreto aparente. Estética jovem e estrutural.',
+                'Rústico': 'Madeira bruta e texturas naturais. Foca no acolhimento e calor.',
+                'Natural': 'Biofilia, luz natural e ventilação. Ambientes que respiram vida.'
+            };
+            document.getElementById('pdf-estilo-desc').innerText = map[est] || 'Perfil Personalizado.';
+        }
+
+        carregarDados(); setInterval(carregarDados, 10000);
+    </script>
+</body>
+</html>
