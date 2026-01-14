@@ -1,76 +1,73 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose'); // Módulo do Banco de Dados
 const path = require('path');
-const fs = require('fs'); // MÓDULO NOVO: File System (Para ler e escrever arquivos)
 
 const app = express();
-const PORTA = 3000;
-
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.json());
 
 // Configura a pasta 'public' para servir o Dashboard e a Logo
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- CONFIGURAÇÃO DO "BANCO DE DADOS" (ARQUIVO) ---
-const ARQUIVO_DB = path.join(__dirname, 'banco-dados.json');
+// --- 1. SUA CONEXÃO COM O MONGODB (JÁ CONFIGURADA) ---
+const MONGO_URI = "mongodb+srv://admin:Igds1978@cluster0.xcjgegm.mongodb.net/?appName=Cluster0";
 
-// Função auxiliar para LER o arquivo
-const lerBancoDeDados = () => {
-  try {
-    // Se o arquivo não existe ainda, retorna lista vazia
-    if (!fs.existsSync(ARQUIVO_DB)) {
-      return [];
-    }
-    // Lê o arquivo e transforma o texto em JSON
-    const dadosBrutos = fs.readFileSync(ARQUIVO_DB, 'utf-8');
-    return JSON.parse(dadosBrutos);
-  } catch (erro) {
-    console.error("Erro ao ler banco:", erro);
-    return [];
-  }
-};
+// Conecta ao Banco de Dados na Nuvem
+mongoose.connect(MONGO_URI)
+    .then(() => console.log("✅ Conectado ao MongoDB com sucesso!"))
+    .catch(err => console.error("❌ Erro ao conectar no Mongo:", err));
 
-// Função auxiliar para SALVAR no arquivo
-const salvarNoBancoDeDados = (dados) => {
-  // Transforma o JSON em texto bonito (com indentação de 2 espaços)
-  const dadosTexto = JSON.stringify(dados, null, 2);
-  fs.writeFileSync(ARQUIVO_DB, dadosTexto);
-};
-
-// --- ROTAS DA API ---
-
-// 1. Receber e Salvar o Teste (AGORA PERSISTENTE)
-app.post('/api/salvar-teste', (req, res) => {
-  const novoTeste = req.body;
-  
-  // Adiciona dados extras
-  novoTeste.id = Date.now(); 
-  novoTeste.dataLegivel = new Date().toLocaleString();
-  
-  console.log(`📥 Novo teste recebido de: ${novoTeste.cliente}`);
-
-  // 1. Lê o que já existe
-  const listaAtual = lerBancoDeDados();
-  
-  // 2. Adiciona o novo
-  listaAtual.push(novoTeste);
-  
-  // 3. Salva tudo de volta no arquivo
-  salvarNoBancoDeDados(listaAtual);
-
-  res.status(200).json({ mensagem: 'Teste salvo e gravado em disco!' });
+// --- 2. DEFINIÇÃO DOS DADOS (SCHEMA) ---
+// Define como os relatórios são salvos no banco
+const RelatorioSchema = new mongoose.Schema({
+    cliente: String,
+    contato: Object, 
+    respostas: Object,
+    data: { type: Date, default: Date.now },
+    duracao: Number, 
+    dataLegivel: String
 });
 
-// 2. Listar testes (LÊ DO ARQUIVO)
-app.get('/api/relatorios', (req, res) => {
-  const dados = lerBancoDeDados();
-  res.json(dados);
+const Relatorio = mongoose.model('Relatorio', RelatorioSchema);
+
+// --- 3. ROTAS DA API ---
+
+// Rota de Salvar (Envia para o MongoDB)
+app.post('/api/salvar-teste', async (req, res) => {
+    try {
+        const dados = req.body;
+        
+        const novoRelatorio = new Relatorio({
+            ...dados,
+            data: new Date(),
+            dataLegivel: new Date().toLocaleString('pt-BR')
+        });
+
+        await novoRelatorio.save(); // Salva de verdade na nuvem
+        
+        console.log(`💾 Salvo no MongoDB: ${dados.cliente}`);
+        res.json({ success: true, message: 'Salvo no MongoDB!' });
+
+    } catch (error) {
+        console.error("Erro ao salvar:", error);
+        res.status(500).json({ error: 'Erro ao salvar no banco.' });
+    }
+});
+
+// Rota de Listar (Busca do MongoDB)
+app.get('/api/relatorios', async (req, res) => {
+    try {
+        const todos = await Relatorio.find().sort({ data: -1 }); // Traz do mais novo pro mais antigo
+        res.json(todos);
+    } catch (error) {
+        console.error("Erro ao buscar:", error);
+        res.status(500).json({ error: 'Erro ao buscar dados.' });
+    }
 });
 
 // --- INICIAR SERVIDOR ---
-app.listen(PORTA, () => {
-  console.log(`🧠 Servidor rodando na porta ${PORTA}`);
-  console.log(`💾 Os dados serão salvos em: ${ARQUIVO_DB}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
