@@ -3,123 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel NeuroBriefing</title>
+    <title>Painel NeuroBriefing | Gestão</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ESTILOS DO SISTEMA (DASHBOARD PC) --- */
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f8; margin: 0; padding: 0; color: #333; }
-        .sys-header { background: #111; color: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .sys-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        /* --- ESTILOS DO SISTEMA (TELA PC) --- */
+        body { font-family: 'Segoe UI', sans-serif; background: #eaeff2; margin: 0; color: #333; }
+        .sys-header { background: #1e272e; padding: 15px; text-align: center; color: #fff; letter-spacing: 1px; }
+        .sys-container { max-width: 1100px; margin: 30px auto; padding: 20px; }
+        .card-lista { background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 25px; }
         
-        .card-lista { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 20px; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 12px; background: #f8f9fa; border-bottom: 2px solid #eee; color: #555; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th { background: #f1f2f6; text-align: left; padding: 12px; border-bottom: 2px solid #dcdde1; color: #57606f; font-weight: 700; }
         td { padding: 12px; border-bottom: 1px solid #eee; }
         
-        .btn-pdf { 
-            background: #e74c3c; color: white; border: none; padding: 8px 15px; 
-            border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; 
-        }
-        .btn-pdf:hover { background: #c0392b; }
+        .btn-pdf { background: #ff4757; color: white; border: none; padding: 7px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.2s; }
+        .btn-pdf:hover { background: #ff6b81; transform: translateY(-1px); }
 
-        /* --- ESTILOS DO PDF (FOLHA A4 RÍGIDA) --- */
+        /* --- DESIGN DO PDF (FOLHA A4 ONE PAGE) --- */
         #folha-a4 {
-            width: 210mm;
-            height: 296mm; /* Altura exata A4 para One Page */
-            background: white;
-            margin: 0 auto; /* Centraliza na tela de preview */
-            padding: 12mm 15mm; /* Margens internas seguras */
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-            display: none; /* Oculto até gerar */
+            width: 210mm; height: 296mm; /* A4 Exato */
+            background: white; margin: 0 auto; 
+            padding: 12mm 15mm; 
+            box-sizing: border-box; 
+            display: none; /* Oculto na tela */
             position: relative;
-            color: #2c3e50;
-            overflow: hidden; /* Corta o que passar da página */
+            font-family: 'Montserrat', sans-serif;
+            color: #2f3542;
+            overflow: hidden;
         }
 
         /* HEADER */
         .pdf-header { 
-            display: flex; justify-content: space-between; align-items: flex-start; 
-            border-bottom: 2px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; height: 50px;
+            display: flex; justify-content: space-between; align-items: flex-end; 
+            border-bottom: 3px solid #2f3542; padding-bottom: 10px; margin-bottom: 20px; 
         }
-        .pdf-brand h1 { margin: 0; font-size: 20pt; font-weight: 800; letter-spacing: -0.5px; line-height: 1; }
-        .pdf-brand span { font-size: 8pt; text-transform: uppercase; letter-spacing: 2px; color: #7f8c8d; }
-        .pdf-client { text-align: right; font-size: 8pt; line-height: 1.4; color: #444; }
+        .brand h1 { margin: 0; font-size: 22pt; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+        .brand span { font-size: 8pt; text-transform: uppercase; letter-spacing: 3px; color: #747d8c; }
+        .meta { text-align: right; font-size: 7.5pt; line-height: 1.4; color: #57606f; }
+        .meta strong { color: #000; font-size: 9pt; }
 
-        /* SEÇÕES */
-        .sec-title { 
-            font-size: 9pt; font-weight: 800; text-transform: uppercase; color: #2c3e50; 
-            border-bottom: 1px solid #ddd; margin-bottom: 12px; padding-bottom: 2px; 
+        /* COLUNAS */
+        .pdf-body { display: flex; gap: 20px; height: 225mm; } /* Altura fixa para não estourar */
+        .col-left { width: 38%; display: flex; flex-direction: column; gap: 20px; }
+        .col-right { width: 62%; display: flex; flex-direction: column; gap: 20px; }
+
+        /* CARDS */
+        .card { border: 1px solid #f1f2f6; border-radius: 6px; padding: 12px; background: #fff; }
+        .card-title { 
+            font-size: 8pt; font-weight: 800; text-transform: uppercase; color: #2f3542; 
+            border-bottom: 2px solid #f1f2f6; margin-bottom: 10px; padding-bottom: 4px;
         }
 
-        /* 1. PERFIL (BARRAS) */
-        .row-perfil { display: flex; gap: 15px; margin-bottom: 25px; height: 100px; }
-        .card-perfil { 
-            flex: 1; background: #fafafa; border-radius: 6px; padding: 10px; 
-            text-align: center; border: 1px solid #eee; display: flex; flex-direction: column; justify-content: flex-end;
+        /* 1. GRÁFICOS DE ROSCA (CSS PURO - ALTA DEFINIÇÃO) */
+        .donuts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; row-gap: 20px; }
+        .donut-item { text-align: center; }
+        .donut-label { font-size: 7pt; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #747d8c; }
+        
+        .donut-chart {
+            width: 60px; height: 60px; margin: 0 auto; border-radius: 50%;
+            position: relative; display: flex; justify-content: center; align-items: center;
+            background: #eee; /* Fundo cinza caso falhe */
         }
-        .perfil-label { font-size: 7pt; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        .bar-track { width: 12px; height: 50px; background: #e0e0e0; margin: 0 auto; border-radius: 6px; position: relative; overflow: hidden; }
-        .bar-fill { position: absolute; bottom: 0; width: 100%; border-radius: 6px; transition: height 0.3s; }
-        .perfil-val { font-size: 12pt; font-weight: 800; margin-top: 5px; }
-
-        /* Cores */
-        .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
-        .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
-        .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
-        .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
+        /* O miolo branco cria o efeito de rosca */
+        .donut-hole { width: 44px; height: 44px; background: white; border-radius: 50%; position: absolute; }
+        .donut-val { position: relative; z-index: 2; font-size: 10pt; font-weight: 800; color: #2f3542; }
+        .donut-pts { font-size: 6pt; font-weight: 400; display: block; margin-top: -2px; color: #a4b0be; }
 
         /* 2. ESTILO (HERO) */
-        .row-estilo { 
-            background: #2c3e50; color: white; border-radius: 6px; padding: 15px 20px; 
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
-        }
-        .estilo-info h2 { margin: 0; font-size: 22pt; font-weight: 800; text-transform: uppercase; }
-        .estilo-info span { font-size: 8pt; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
-        .estilo-desc { font-size: 8pt; font-style: italic; opacity: 0.9; max-width: 60%; text-align: right; }
+        .style-hero { background: #2f3542; color: white; text-align: center; padding: 20px 10px; border-radius: 6px; }
+        .style-sub { font-size: 7pt; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .style-main { font-size: 18pt; font-weight: 800; margin: 5px 0; text-transform: uppercase; }
+        .style-desc { font-size: 7.5pt; font-style: italic; opacity: 0.9; line-height: 1.3; }
 
-        /* 3. MAPA SENSORIAL (GRID 3 COLUNAS) */
-        .grid-sensorial { 
-            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; 
-        }
-        .col-sensorial h4 { 
-            margin: 0 0 10px 0; font-size: 8pt; text-transform: uppercase; color: #7f8c8d; border-bottom: 1px dashed #ccc; padding-bottom: 4px;
-        }
+        /* 3. LISTAS SENSORIAIS (COMPACTAS) */
+        .sensory-group { margin-bottom: 15px; }
+        .sensory-title { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-bottom: 6px; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
+        .sensory-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        
         .tag-box { 
-            background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; 
-            padding: 6px 8px; margin-bottom: 6px; 
+            background: #f8f9fa; border-left: 3px solid #ced6e0; border-radius: 3px; 
+            padding: 5px 8px; 
         }
-        .tag-cat { display: block; font-size: 6pt; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
-        .tag-val { display: block; font-size: 8pt; font-weight: 600; color: #333; line-height: 1.2; }
+        .tag-cat { display: block; font-size: 5.5pt; text-transform: uppercase; color: #a4b0be; font-weight: 700; }
+        .tag-opt { display: block; font-size: 7.5pt; font-weight: 600; color: #2f3542; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* CORES TEMÁTICAS */
+        .bd-fogo { border-color: #ff4757; } .c-fogo { color: #ff4757; }
+        .bd-ar { border-color: #1e90ff; } .c-ar { color: #1e90ff; }
+        .bd-agua { border-color: #3742fa; } .c-agua { color: #3742fa; }
+        .bd-terra { border-color: #2ed573; } .c-terra { color: #2ed573; }
 
         /* RODAPÉ */
         .pdf-footer { 
             position: absolute; bottom: 12mm; left: 15mm; right: 15mm; 
-            border-top: 1px solid #eee; padding-top: 8px; 
-            text-align: center; font-size: 7pt; color: #bbb; 
+            border-top: 1px solid #dfe4ea; padding-top: 8px; 
+            text-align: center; font-size: 6.5pt; color: #a4b0be; 
         }
     </style>
 </head>
 <body>
 
     <div class="sys-header">
-        <strong>NEUROBRIEFING | Admin</strong>
+        <strong>NEUROBRIEFING | Painel Administrativo</strong>
     </div>
 
     <div class="sys-container">
         <div class="card-lista">
             <h3 style="margin-top:0;">Relatórios Recebidos</h3>
+            <p style="font-size:12px; color:#666; margin-bottom:20px;">Use o botão PDF para gerar o relatório One Page do cliente.</p>
             <table>
                 <thead>
                     <tr>
                         <th width="15%">Data</th>
                         <th width="30%">Cliente</th>
-                        <th width="25%">Local</th>
-                        <th width="15%">Tempo</th>
+                        <th width="20%">Local</th>
+                        <th width="20%">Contato</th>
                         <th width="15%" style="text-align: right;">Ação</th>
                     </tr>
                 </thead>
@@ -130,111 +131,130 @@
         </div>
     </div>
 
-    <div id="container-pdf">
-        <div id="folha-a4">
+    <div id="folha-a4">
+        
+        <div class="pdf-header">
+            <div class="brand">
+                <h1>NEUROBRIEFING</h1>
+                <span>Diagnóstico Integral</span>
+            </div>
+            <div class="meta">
+                CLIENTE: <strong id="p-nome">-</strong><br>
+                DATA: <span id="p-data">-</span> | LOCAL: <span id="p-local">-</span><br>
+                EMAIL: <span id="p-email">-</span>
+            </div>
+        </div>
+
+        <div class="pdf-body">
             
-            <div class="pdf-header">
-                <div class="pdf-brand">
-                    <h1>NEUROBRIEFING</h1>
-                    <span>Diagnóstico Integral</span>
-                </div>
-                <div class="pdf-client">
-                    CLIENTE: <strong id="p-nome" style="color:#000; font-size:9pt;">-</strong><br>
-                    DATA: <span id="p-data">-</span><br>
-                    LOCAL: <span id="p-local">-</span><br>
-                    CONTATO: <span id="p-contato">-</span>
-                </div>
-            </div>
-
-            <div class="sec-title">1. Perfil Comportamental (Natureza)</div>
-            <div class="row-perfil">
-                <div class="card-perfil">
-                    <span class="perfil-label c-fogo">Fogo</span>
-                    <div class="bar-track"><div id="bar-fogo" class="bar-fill bg-fogo"></div></div>
-                    <span id="val-fogo" class="perfil-val c-fogo">0</span>
-                </div>
-                <div class="card-perfil">
-                    <span class="perfil-label c-ar">Ar</span>
-                    <div class="bar-track"><div id="bar-ar" class="bar-fill bg-ar"></div></div>
-                    <span id="val-ar" class="perfil-val c-ar">0</span>
-                </div>
-                <div class="card-perfil">
-                    <span class="perfil-label c-agua">Água</span>
-                    <div class="bar-track"><div id="bar-agua" class="bar-fill bg-agua"></div></div>
-                    <span id="val-agua" class="perfil-val c-agua">0</span>
-                </div>
-                <div class="card-perfil">
-                    <span class="perfil-label c-terra">Terra</span>
-                    <div class="bar-track"><div id="bar-terra" class="bar-fill bg-terra"></div></div>
-                    <span id="val-terra" class="perfil-val c-terra">0</span>
-                </div>
-            </div>
-
-            <div class="sec-title">2. Identidade Visual Predominante</div>
-            <div class="row-estilo">
-                <div class="estilo-info">
-                    <span>Estilo Identificado</span>
-                    <h2 id="p-estilo">MODERNO</h2>
-                </div>
-                <div id="p-estilo-desc" class="estilo-desc">
-                    Caracterizado por linhas retas, funcionalidade e pureza visual.
-                </div>
-            </div>
-
-            <div class="sec-title">3. Mapeamento Sensorial & Preferências</div>
-            <div class="grid-sensorial">
+            <div class="col-left">
                 
-                <div class="col-sensorial">
-                    <h4>Visão & Espaço</h4>
-                    <div id="lista-visao"></div>
+                <div class="card">
+                    <div class="pdf-card-title">1. Perfil Comportamental</div>
+                    <div class="donuts-grid">
+                        
+                        <div class="donut-item">
+                            <div class="donut-label c-fogo">Fogo (Ação)</div>
+                            <div class="donut-chart" id="chart-fogo">
+                                <div class="donut-hole"></div>
+                                <div class="donut-val"><span id="txt-fogo">0</span><span class="donut-pts">%</span></div>
+                            </div>
+                        </div>
+
+                        <div class="donut-item">
+                            <div class="donut-label c-ar">Ar (Ideias)</div>
+                            <div class="donut-chart" id="chart-ar">
+                                <div class="donut-hole"></div>
+                                <div class="donut-val"><span id="txt-ar">0</span><span class="donut-pts">%</span></div>
+                            </div>
+                        </div>
+
+                        <div class="donut-item">
+                            <div class="donut-label c-agua">Água (Emoção)</div>
+                            <div class="donut-chart" id="chart-agua">
+                                <div class="donut-hole"></div>
+                                <div class="donut-val"><span id="txt-agua">0</span><span class="donut-pts">%</span></div>
+                            </div>
+                        </div>
+
+                        <div class="donut-item">
+                            <div class="donut-label c-terra">Terra (Ordem)</div>
+                            <div class="donut-chart" id="chart-terra">
+                                <div class="donut-hole"></div>
+                                <div class="donut-val"><span id="txt-terra">0</span><span class="donut-pts">%</span></div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
-                <div class="col-sensorial">
-                    <h4>Tato, Som & Olfato</h4>
-                    <div id="lista-sentidos"></div>
+                <div class="card">
+                    <div class="pdf-card-title">2. Identidade Estética</div>
+                    <div class="style-hero">
+                        <div class="style-sub">Estilo Predominante</div>
+                        <div id="p-estilo" class="style-main">MODERNO</div>
+                        <div id="p-estilo-desc" class="style-desc">...</div>
+                    </div>
                 </div>
 
-                <div class="col-sensorial">
-                    <h4>Lifestyle & Bio</h4>
-                    <div id="lista-life"></div>
+                <div style="font-size: 7pt; color: #666; text-align: justify; padding: 0 5px;">
+                    <strong>Nota Técnica:</strong> Este perfil foi gerado através da análise cruzada de arquétipos naturais e preferências visuais subconscientes. Utilize como base para o moodboard.
                 </div>
 
             </div>
 
-            <div class="pdf-footer">
-                Relatório gerado via NeuroBriefing Intelligence. Documento para uso profissional.
+            <div class="col-right">
+                <div class="card" style="height: 100%;">
+                    <div class="pdf-card-title">3. Mapeamento Sensorial & Preferências</div>
+                    
+                    <div class="sensory-group">
+                        <div class="sensory-title">👁️ Visão & Espaço</div>
+                        <div class="sensory-grid" id="lista-visao"></div>
+                    </div>
+
+                    <div class="sensory-group">
+                        <div class="sensory-title">✋ Tato, Som & Olfato</div>
+                        <div class="sensory-grid" id="lista-sentidos"></div>
+                    </div>
+
+                    <div class="sensory-group">
+                        <div class="sensory-title">🌱 Lifestyle & Biologia</div>
+                        <div class="sensory-grid" id="lista-life"></div>
+                    </div>
+
+                </div>
             </div>
+
+        </div>
+
+        <div class="pdf-footer">
+            Relatório gerado automaticamente pela plataforma NeuroBriefing Intelligence. Documento confidencial. © 2026
         </div>
     </div>
 
     <script>
         let todosDados = [];
 
-        // 1. Carrega dados da API
         async function init() {
             try {
+                // Carrega dados da sua API
                 const req = await fetch('/api/relatorios');
                 todosDados = await req.json();
                 renderTabela();
-            } catch(e) {
-                console.error(e);
-            }
+            } catch(e) { console.error(e); }
         }
 
         function renderTabela() {
             const tbody = document.getElementById('tabela-corpo');
             tbody.innerHTML = '';
-            
             [...todosDados].reverse().forEach((d, i) => {
-                const tempo = d.duracao ? Math.floor(d.duracao/60)+'m' : '-';
                 const iReal = todosDados.length - 1 - i;
-                
                 tbody.innerHTML += `
                     <tr>
                         <td>${new Date(d.data).toLocaleDateString()}</td>
                         <td><strong>${d.cliente}</strong></td>
                         <td>${d.contato?.cidade || '-'}</td>
-                        <td>${tempo}</td>
+                        <td>${d.contato?.email || '-'}</td>
                         <td style="text-align: right;">
                             <button class="btn-pdf" onclick="gerarPDF(${iReal}, this)">📄 PDF</button>
                         </td>
@@ -243,120 +263,126 @@
             });
         }
 
-        // 2. O CÉREBRO DA GERAÇÃO
+        // --- CÉREBRO DA GERAÇÃO DO PDF ---
         async function gerarPDF(index, btn) {
             const dados = todosDados[index];
             if(!dados) return;
 
-            // Feedback visual
             const txtOriginal = btn.innerText;
-            btn.innerText = "⏳ ...";
-            btn.disabled = true;
+            btn.innerText = "⏳ ..."; btn.disabled = true;
 
-            // --- A. MATEMÁTICA E LÓGICA ---
+            // 1. MATEMÁTICA CORRETA (Soma Numérica)
             let pts = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
             let estilo = "Em Análise";
             
-            // Grupos para as colunas
-            let grpVisao = [];
-            let grpSentidos = [];
-            let grpLife = [];
+            // Arrays para as listas
+            let grpVisao = [], grpSentidos = [], grpLife = [];
 
             const resp = dados.respostas || {};
 
             Object.keys(resp).forEach(key => {
-                let val = resp[key];
-                
-                // CORREÇÃO: Força ser número para somar, não juntar texto
-                let numVal = Number(val) || 0; 
+                // CORREÇÃO CRÍTICA: parseInt garante que "5" + "15" seja 20, não 515
+                let val = parseInt(resp[key], 10) || 0;
 
                 // Soma Perfil
-                if(key.includes('fogo')) pts.FOGO += numVal;
-                if(key.includes('ar')) pts.AR += numVal;
-                if(key.includes('agua')) pts.AGUA += numVal;
-                if(key.includes('terra')) pts.TERRA += numVal;
+                if(key.includes('fogo')) pts.FOGO += val;
+                if(key.includes('ar')) pts.AR += val;
+                if(key.includes('agua')) pts.AGUA += val;
+                if(key.includes('terra')) pts.TERRA += val;
 
                 // Estilo
-                if(key.includes('arq_1') && numVal > 0) estilo = key.split('::')[1];
+                if(key.includes('arq_1') && val > 0) estilo = key.split('::')[1];
 
-                // Organiza Tags
-                if(key.includes('::') && numVal > 0 && !key.includes('arq_1')) {
+                // Organiza Tags (Listas)
+                if(key.includes('::') && val > 0 && !key.includes('arq_1')) {
                     const [catRaw, opt] = key.split('::');
-                    // Remove prefixos feios
-                    const cat = catRaw.replace('SENSORIAL: ', '').replace('PSICOLOGIA DAS ', '');
-                    
+                    // Limpa nomes longos
+                    let cat = catRaw.replace('SENSORIAL: ', '').replace('PSICOLOGIA DAS ', '').replace('CONEXÃO COM A ', '');
+                    if(cat === 'AUDIÇÃO') cat = 'ACÚSTICA';
+                    if(cat === 'BIOLÓGICO/TÉRMICO') cat = 'CONF. TÉRMICO';
+
                     const item = { cat, opt };
 
-                    // Distribui nas colunas
-                    if(['ILUMINAÇÃO','CORES','FORMAS','BIOFILIA'].some(x=>cat.includes(x))) {
-                        grpVisao.push(item);
-                    } else if(['TATO','AUDIÇÃO','MEMÓRIA OLFATIVA','AROMAS'].some(x=>cat.includes(x))) {
-                        grpSentidos.push(item);
-                    } else {
-                        grpLife.push(item);
-                    }
+                    // Distribui nas categorias visuais
+                    if(['ILUMINAÇÃO','CORES','FORMAS','BIOFILIA', 'NATUREZA'].some(x=>cat.includes(x))) grpVisao.push(item);
+                    else if(['TATO','ACÚSTICA','MEMÓRIA OLFATIVA','AROMAS', 'PALADAR', 'GOURMET'].some(x=>cat.includes(x))) grpSentidos.push(item);
+                    else grpLife.push(item);
                 }
             });
 
-            // --- B. PREENCHE O HTML ---
-            // Header
+            // 2. PREENCHER DADOS NO HTML
             document.getElementById('p-nome').innerText = dados.cliente;
             document.getElementById('p-data').innerText = new Date(dados.data).toLocaleString();
             document.getElementById('p-local').innerText = `${dados.contato?.cidade || ''} - ${dados.contato?.estado || ''}`;
-            document.getElementById('p-contato').innerText = dados.contato?.email || '-';
+            document.getElementById('p-email').innerText = dados.contato?.email || '-';
 
-            // Barras (Base 25)
-            const max = 25;
-            document.getElementById('val-fogo').innerText = pts.FOGO;
-            document.getElementById('bar-fogo').style.height = (pts.FOGO/max*100)+'%';
+            // --- GRÁFICOS DE ROSCA (CSS Conic Gradient) ---
+            const max = 25; // Pontuação máxima
             
-            document.getElementById('val-ar').innerText = pts.AR;
-            document.getElementById('bar-ar').style.height = (pts.AR/max*100)+'%';
-            
-            document.getElementById('val-agua').innerText = pts.AGUA;
-            document.getElementById('bar-agua').style.height = (pts.AGUA/max*100)+'%';
-            
-            document.getElementById('val-terra').innerText = pts.TERRA;
-            document.getElementById('bar-terra').style.height = (pts.TERRA/max*100)+'%';
+            // Função para desenhar a rosca via CSS
+            const setDonut = (elemId, txtId, val, color) => {
+                const pct = Math.round((val / max) * 100);
+                const chart = document.getElementById(elemId);
+                // O "Segredo" do gráfico bonito:
+                chart.style.background = `conic-gradient(${color} ${pct}%, #ecf0f1 0deg)`;
+                document.getElementById(txtId).innerText = pct;
+            };
 
-            // Estilo
+            setDonut('chart-fogo', 'txt-fogo', pts.FOGO, '#ff4757');
+            setDonut('chart-ar', 'txt-ar', pts.AR, '#1e90ff');
+            setDonut('chart-agua', 'txt-agua', pts.AGUA, '#3742fa');
+            setDonut('chart-terra', 'txt-terra', pts.TERRA, '#2ed573');
+
+            // ESTILO
             document.getElementById('p-estilo').innerText = estilo.toUpperCase();
-            
-            // Listas
-            const renderLista = (arr, elId) => {
+            setDesc(estilo);
+
+            // LISTAS
+            const renderLista = (arr, elId, colorCls) => {
                 const el = document.getElementById(elId);
                 el.innerHTML = '';
                 arr.forEach(i => {
                     el.innerHTML += `
-                    <div class="tag-box">
+                    <div class="tag-box ${colorCls}">
                         <span class="tag-cat">${i.cat}</span>
-                        <span class="tag-val">${i.opt}</span>
+                        <span class="tag-opt">${i.opt}</span>
                     </div>`;
                 });
             };
 
-            renderLista(grpVisao, 'lista-visao');
-            renderLista(grpSentidos, 'lista-sentidos');
-            renderLista(grpLife, 'lista-life');
+            renderLista(grpVisao, 'lista-visao', 'bd-fogo');
+            renderLista(grpSentidos, 'lista-sentidos', 'bd-agua');
+            renderLista(grpLife, 'lista-life', 'bd-terra');
 
-            // --- C. GERA O PDF ---
+            // 3. GERAR PDF
             const element = document.getElementById('folha-a4');
-            element.style.display = 'block'; // Mostra para renderizar
+            element.style.display = 'block'; // Mostra
 
             const opt = {
-                margin: 0, // Margem Zero para começar no topo
+                margin: 0,
                 filename: `NeuroBriefing_${dados.cliente}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true }, // Alta resolução
+                html2canvas: { scale: 2, useCORS: true }, // Alta Resolução
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             await html2pdf().set(opt).from(element).save();
 
-            // Limpeza
+            // Reseta
             element.style.display = 'none';
             btn.innerText = txtOriginal;
             btn.disabled = false;
+        }
+
+        function setDesc(est) {
+            const map = {
+                'Moderno': 'Funcionalidade, linhas retas e clareza visual. Ambientes limpos.',
+                'Clássico': 'Simetria e nobreza. Valoriza a história, ornamentos e sofisticação.',
+                'Industrial': 'Urbano, metais e concreto aparente. Estética jovem e estrutural.',
+                'Rústico': 'Madeira bruta e texturas naturais. Foca no acolhimento e calor.',
+                'Natural': 'Biofilia, luz natural e ventilação. Ambientes que respiram vida.'
+            };
+            document.getElementById('p-estilo-desc').innerText = map[est] || 'Perfil Único.';
         }
 
         init();
