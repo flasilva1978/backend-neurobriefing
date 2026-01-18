@@ -19,70 +19,86 @@
         th { text-align: left; background: #2c3e50; color: white; padding: 10px; }
         td { padding: 10px; border-bottom: 1px solid #eee; }
 
-        /* --- PDF A4 (AJUSTE FINO PARA 1 PÁGINA) --- */
+        /* --- PDF ONE PAGE (A4 RÍGIDO) --- */
         #folha-a4 {
             width: 210mm; 
-            height: 297mm; /* Altura A4 padrão */
-            background: white; margin: 20px auto; 
-            /* COMPACTAÇÃO: Reduzi padding vertical para 5mm */
-            padding: 5mm 10mm; 
-            box-sizing: border-box; display: none; position: relative;
-            font-family: 'Montserrat', sans-serif; color: #2c3e50;
+            height: 297mm; 
+            background: white; 
+            margin: 20px auto; 
+            padding: 12mm 10mm; /* Margens equilibradas */
+            box-sizing: border-box; 
+            display: none; 
+            position: relative;
+            font-family: 'Montserrat', sans-serif; 
+            color: #2c3e50;
             overflow: hidden; 
         }
 
         /* HEADER */
-        .header { 
-            display: flex; justify-content: space-between; align-items: flex-end; 
-            border-bottom: 2px solid #2c3e50; padding-bottom: 4px; margin-bottom: 8px; /* Reduzido */
-        }
+        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #2c3e50; padding-bottom: 5px; margin-bottom: 8px; }
         .logo h1 { margin: 0; font-size: 20pt; font-weight: 900; letter-spacing: -1px; line-height: 1; }
-        .logo span { font-size: 6.5pt; letter-spacing: 3px; text-transform: uppercase; color: #7f8c8d; }
+        .logo span { font-size: 7pt; letter-spacing: 3px; text-transform: uppercase; color: #7f8c8d; }
         .meta { text-align: right; font-size: 6.5pt; line-height: 1.3; color: #555; }
 
         /* TÍTULOS */
         .sec-title { 
             background: #2c3e50; color: white; padding: 2px 8px; 
             font-size: 7.5pt; font-weight: 700; text-transform: uppercase; 
-            margin-bottom: 6px; display: flex; justify-content: space-between; /* Reduzido */
+            margin-bottom: 6px; display: flex; justify-content: space-between;
         }
 
         /* 1. PERFIL */
-        .row-perfil { display: flex; gap: 8px; margin-bottom: 8px; } /* Reduzido */
+        .row-perfil { display: flex; gap: 8px; margin-bottom: 8px; }
         .card-perfil { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 4px; text-align: center; position: relative; background: #fff; }
         .predominante { border: 2px solid #f1c40f; background: #fffcf5; }
-        .badge { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); background: #f1c40f; color: #000; font-size: 4.5pt; font-weight: 800; padding: 1px 6px; border-radius: 3px; text-transform: uppercase; display: none; }
+        .badge { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); background: #f1c40f; color: #000; font-size: 4.5pt; font-weight: 800; padding: 1px 5px; border-radius: 3px; text-transform: uppercase; display: none; }
         .predominante .badge { display: block; }
         .cp-val { font-size: 13pt; font-weight: 900; margin-bottom: 2px; line-height: 1; }
         .bar-container { width: 100%; height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
         .bar-fill { height: 100%; }
 
-        /* 2. ESTILO */
+        /* 2. ESTILO (Lateral) */
         .style-row { 
             display: flex; align-items: center; justify-content: space-between; 
             background: #f8f9fa; border-left: 5px solid #2c3e50; 
-            padding: 6px 12px; margin-bottom: 8px; /* Reduzido */
+            padding: 6px 12px; margin-bottom: 10px; height: 65px;
         }
+        .st-info { width: 50%; }
         .st-name { font-size: 16pt; font-weight: 900; text-transform: uppercase; line-height: 1; color: #2c3e50; }
         
-        /* 3 & 4. GRIDS */
+        .st-visual { width: 45%; display: flex; align-items: center; gap: 5px; justify-content: flex-end; }
+        .st-chart { width: 55px; height: 55px; }
+        .st-legend { font-size: 5pt; width: 80px; }
+
+        /* 3 & 4. GRIDS (LAYOUT LADO A LADO) */
         .grid-charts { 
-            display: grid; grid-template-columns: repeat(4, 1fr); 
-            gap: 6px; row-gap: 6px; margin-bottom: 6px; /* Gaps reduzidos */
+            display: grid; grid-template-columns: repeat(3, 1fr); /* 3 colunas mais largas para caber legenda lateral */
+            gap: 6px; row-gap: 6px; margin-bottom: 8px;
         }
+        /* Lifestyle: 3 colunas também */
         .grid-charts.life { margin-bottom: 0; }
 
-        .chart-card { text-align: center; border: 1px solid #f0f0f0; border-radius: 4px; padding: 2px; }
-        .cc-title { font-size: 5.5pt; font-weight: 700; color: #7f8c8d; text-transform: uppercase; margin-bottom: 1px; white-space: nowrap; overflow: hidden; }
+        /* CARD DO GRÁFICO */
+        .chart-card { 
+            border: 1px solid #f0f0f0; border-radius: 4px; padding: 3px; 
+            display: flex; align-items: center; /* Lado a Lado */
+            height: 48px; /* Altura fixa controlada */
+            background: #fff;
+        }
         
-        /* COMPACTAÇÃO DO CANVAS */
-        .canvas-box { position: relative; height: 50px; width: 100%; display: flex; justify-content: center; } 
+        /* Esquerda: Donut */
+        .card-left { width: 35%; display: flex; justify-content: center; align-items: center; }
+        .canvas-box { width: 38px; height: 38px; position: relative; }
+
+        /* Direita: Info + Legenda */
+        .card-right { width: 65%; padding-left: 5px; display: flex; flex-direction: column; justify-content: center; }
+        .cc-title { font-size: 5pt; font-weight: 800; color: #7f8c8d; text-transform: uppercase; margin-bottom: 2px; white-space: nowrap; overflow: hidden; }
         
-        /* LEGENDA */
-        .cc-legend { margin-top: 1px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        /* LEGENDA HTML LATERAL */
+        .cc-legend { display: flex; flex-direction: column; }
         .leg-row { display: flex; align-items: center; line-height: 1; margin-bottom: 1px; }
         .leg-box { width: 4px; height: 4px; margin-right: 2px; flex-shrink: 0; border-radius: 50%; }
-        .leg-txt { font-size: 4.5pt; color: #333; font-weight: 600; white-space: nowrap; }
+        .leg-txt { font-size: 4.5pt; color: #333; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; }
 
         /* CORES */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -131,13 +147,14 @@
 
         <div class="sec-title">2. Identidade Visual</div>
         <div class="style-row">
-            <div style="width:65%;">
+            <div class="st-info">
                 <div style="font-size:5.5pt; font-weight:700; color:#999; text-transform:uppercase;">Tendência Identificada</div>
                 <div class="st-name" id="p-estilo">EM ANÁLISE</div>
                 <div style="font-size:6.5pt; font-style:italic; color:#555;" id="p-estilo-desc">...</div>
             </div>
-            <div style="width:30%; height:60px; display:flex; justify-content:center;">
-                <canvas id="chart-estilo"></canvas>
+            <div class="st-visual">
+                <div class="st-chart"><canvas id="chart-estilo"></canvas></div>
+                <div class="st-legend" id="legend-estilo"></div>
             </div>
         </div>
 
@@ -243,14 +260,14 @@
             document.getElementById('p-estilo').innerText = maiorEstilo.toUpperCase();
             document.getElementById('p-estilo-desc').innerText = getDescEstilo(maiorEstilo);
             
-            // Renderiza Estilo
-            renderChart('chart-estilo', estiloData, true, 'legend-estilo');
+            // Estilo: Gera Gráfico e Legenda Manual Lateral
+            renderChartWithLegend('chart-estilo', 'legend-estilo', estiloData);
 
             // Grids
             renderGrid(visualGroups, 'grid-sensorial');
             renderGrid(lifeGroups, 'grid-lifestyle');
 
-            // 3. EXPORTAR (Alta Resolução)
+            // 3. EXPORTAR
             const el = document.getElementById('folha-a4');
             el.style.display = 'block';
             setTimeout(async () => {
@@ -267,6 +284,36 @@
             }, 800);
         }
 
+        // Gera Gráfico + Legenda HTML
+        function renderChartWithLegend(chartId, legendId, dataObj) {
+            const ctx = document.getElementById(chartId);
+            const legBox = document.getElementById(legendId);
+            if(!ctx || !legBox) return;
+
+            const labels = Object.keys(dataObj);
+            const vals = Object.values(dataObj);
+            const total = vals.reduce((a,b)=>a+b,0);
+
+            // HTML Legenda
+            let html = '';
+            labels.forEach((l, i) => {
+                const color = PALETA[i % PALETA.length];
+                const pct = Math.round((vals[i]/total)*100);
+                html += `<div style="display:flex;align-items:center;margin-bottom:2px;line-height:1;"><div style="width:5px;height:5px;background:${color};margin-right:3px;border-radius:50%;"></div><span style="font-weight:600;color:#333;">${l} (${pct}%)</span></div>`;
+            });
+            legBox.innerHTML = html;
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels: labels, datasets: [{ data: vals, backgroundColor: PALETA, borderWidth: 0 }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false, animation: false, cutout: '65%',
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+        }
+
+        // Renderiza Grid (Lado a Lado)
         function renderGrid(groups, containerId) {
             const grid = document.getElementById(containerId);
             grid.innerHTML = '';
@@ -275,7 +322,7 @@
                 const items = groups[cat];
                 const total = items.reduce((a,b)=>a+b.val, 0);
                 
-                // LEGENDA HTML MANUAL
+                // HTML Legenda
                 let leg = '';
                 let dataMap = {};
                 items.forEach((it, i) => {
@@ -287,29 +334,21 @@
 
                 const div = document.createElement('div');
                 div.className = 'chart-card';
-                div.innerHTML = `<div class="cc-title">${cat}</div><div class="canvas-box"><canvas id="${safeId}"></canvas></div><div class="cc-legend">${leg}</div>`;
+                div.innerHTML = `
+                    <div class="card-left"><div class="canvas-box"><canvas id="${safeId}"></canvas></div></div>
+                    <div class="card-right"><div class="cc-title">${cat}</div><div class="cc-legend">${leg}</div></div>
+                `;
                 grid.appendChild(div);
-                renderChart(safeId, dataMap, false, null);
-            });
-        }
-
-        function renderChart(id, dataObj, isMain, legendId) {
-            const ctx = document.getElementById(id);
-            if(!ctx) return;
-            const labels = Object.keys(dataObj);
-            const vals = Object.values(dataObj);
-            
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{ data: vals, backgroundColor: PALETA, borderWidth: 0 }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false, animation: false,
-                    cutout: isMain?'65%':'65%',
-                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
-                }
+                
+                // ChartJS (sem legenda interna)
+                new Chart(document.getElementById(safeId), {
+                    type: 'doughnut',
+                    data: { labels: Object.keys(dataMap), datasets: [{ data: Object.values(dataMap), backgroundColor: PALETA, borderWidth: 0 }] },
+                    options: {
+                        responsive: true, maintainAspectRatio: false, animation: false, cutout: '65%',
+                        plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                    }
+                });
             });
         }
 
