@@ -3,445 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel NeuroBriefing Pro</title>
+    <title>Painel NeuroBriefing | Gestão</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ESTILOS DO SISTEMA (DASHBOARD) --- */
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #eaeff2; margin: 0; color: #333; }
-        .sys-header { background: #111; padding: 15px; text-align: center; color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .sys-container { max-width: 1200px; margin: 30px auto; padding: 20px; }
+        /* --- ESTILOS DO SISTEMA (TELA DO PC) --- */
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; color: #333; }
+        .sys-header { background: #1a1a1a; padding: 15px; text-align: center; color: #fff; letter-spacing: 1px; }
+        .sys-container { max-width: 1100px; margin: 30px auto; padding: 20px; }
         
-        .card-tabela { background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 25px; overflow-x: auto; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 25px; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 900px; }
-        th { background: #f4f4f4; text-align: left; padding: 15px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; font-weight: 700; border-bottom: 2px solid #ddd; }
-        td { padding: 15px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: middle; }
+        /* Tabela de Clientes */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th { background: #f8f9fa; text-align: left; padding: 12px; border-bottom: 2px solid #ddd; color: #555; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
         tr:hover { background: #fafafa; }
         
-        .btn-acao { background: #2c3e50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 11px; transition:0.2s; white-space: nowrap; }
-        .btn-acao:hover { background: #1a252f; }
-        
-        /* Modal Preview */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; }
-        .modal-box { background: white; padding: 30px; border-radius: 6px; width: 400px; text-align: center; }
-        .modal-btns { display: flex; gap: 10px; justify-content: center; margin-top: 25px; }
-        .btn-pdf { background: #e74c3c; color: white; padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-close { background: #ddd; color: #333; padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-pdf { 
+            background: #e74c3c; color: white; border: none; padding: 6px 12px; 
+            border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px;
+        }
+        .btn-pdf:hover { background: #c0392b; }
 
-        /* --- LAYOUT A4 FIXO (PDF) --- */
+        /* --- ESTILOS DO RELATÓRIO PDF (FOLHA A4 FIXA) --- */
+        /* Isso garante que o que você vê é o que sai no PDF */
         #folha-a4 {
-            width: 794px; height: 1123px; /* A4 96dpi */
-            background: white; margin: 0 auto; padding: 30px 40px;
-            box-sizing: border-box; display: none; position: relative;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            width: 210mm; 
+            min-height: 297mm; /* Altura A4 */
+            background: white; 
+            margin: 50px auto; 
+            padding: 10mm;
+            box-sizing: border-box; 
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            display: none; /* Escondido até clicar em gerar */
+            color: #2c3e50;
         }
 
-        /* Header PDF */
-        .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
-        .pdf-info h1 { font-size: 20px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; color: #000; }
-        .pdf-meta { font-size: 9px; color: #444; line-height: 1.3; margin-top: 4px; }
-        .pdf-badge { display: inline-block; font-size: 8px; font-weight: bold; padding: 2px 5px; border-radius: 3px; margin-top: 4px; }
-        .badge-ok { background: #e8f5e9; color: #27ae60; border: 1px solid #c8e6c9; }
-        .badge-warn { background: #ffebee; color: #c0392b; border: 1px solid #ffcdd2; }
-        .pdf-logo { height: 40px; object-fit: contain; }
-
-        /* Seções Gerais */
-        .pdf-section { margin-bottom: 12px; }
-        .pdf-sec-header { 
-            background: #f4f4f4; padding: 3px 8px; margin-bottom: 6px; border-left: 4px solid #333; 
-            font-size: 9px; font-weight: 800; text-transform: uppercase; color: #000; 
+        /* Cabeçalho do PDF */
+        .pdf-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 3px solid #2c3e50; padding-bottom: 15px; margin-bottom: 20px; 
         }
-        .pdf-sub-title {
-            font-size: 8px; font-weight: 700; color: #555; text-transform: uppercase; 
-            margin: 6px 0 3px 0; border-bottom: 1px dashed #ddd; padding-bottom: 1px;
+        .pdf-title h1 { margin: 0; font-size: 24pt; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; }
+        .pdf-title span { font-size: 9pt; text-transform: uppercase; letter-spacing: 2px; color: #7f8c8d; }
+        .pdf-meta { text-align: right; font-size: 8pt; line-height: 1.4; color: #555; }
+
+        /* Layout em Colunas */
+        .pdf-row { display: flex; gap: 20px; margin-bottom: 20px; }
+        .pdf-col-40 { width: 38%; }
+        .pdf-col-60 { width: 62%; }
+        .pdf-col-100 { width: 100%; }
+
+        /* Cartões de Conteúdo */
+        .pdf-card { margin-bottom: 15px; }
+        .pdf-card-title { 
+            font-size: 9pt; font-weight: 800; text-transform: uppercase; 
+            border-bottom: 1px solid #ddd; margin-bottom: 8px; padding-bottom: 2px; color: #2c3e50; 
         }
 
-        /* --- PARTE 1: NATUREZA (GRÁFICO DE BARRAS) --- */
-        .natureza-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px; }
-        .nat-card { flex: 1; background: #fafafa; border: 1px solid #eee; border-radius: 4px; padding: 8px; text-align: center; }
-        .nat-title { font-size: 8px; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        .nat-bar-bg { width: 10px; height: 60px; background: #ddd; margin: 0 auto; border-radius: 5px; position: relative; overflow: hidden; }
-        .nat-bar-fill { position: absolute; bottom: 0; width: 100%; border-radius: 0 0 5px 5px; }
-        .nat-score { font-size: 14px; font-weight: 900; margin-top: 5px; display: block; }
-        
-        /* Cores Elementos */
-        .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
-        .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
-        .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
-        .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
+        /* PARTE 1: Gráfico de Personalidade (Barras Limpas) */
+        .bar-container { display: flex; align-items: center; margin-bottom: 6px; }
+        .bar-label { width: 50px; font-size: 8pt; font-weight: 700; text-transform: uppercase; }
+        .bar-track { flex: 1; height: 12px; background: #eee; border-radius: 6px; margin: 0 8px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 6px; }
+        .bar-value { width: 30px; text-align: right; font-size: 8pt; font-weight: 700; }
 
-        /* Estilo Principal */
-        .pdf-main { display: flex; gap: 15px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; height: 110px; }
-        .pdf-main-txt { width: 45%; }
-        .pdf-label { font-size: 8px; font-weight: bold; color: #999; text-transform: uppercase; letter-spacing: 1px; }
-        .pdf-title { font-size: 24px; font-weight: 900; color: #000; margin: 3px 0; line-height: 1; }
-        .pdf-desc { font-size: 9px; color: #555; text-align: justify; line-height: 1.3; }
-        .pdf-main-vis { width: 55%; display: flex; align-items: center; gap: 10px; }
-        .pdf-main-chart { width: 100px; height: 100px; flex-shrink: 0; }
-        .pdf-main-legend { font-size: 9px; line-height: 1.4; flex: 1; }
+        /* Cores dos Elementos */
+        .bg-fogo { background: #e74c3c; } .c-fogo { color: #e74c3c; }
+        .bg-ar { background: #3498db; } .c-ar { color: #3498db; }
+        .bg-agua { background: #2980b9; } .c-agua { color: #2980b9; }
+        .bg-terra { background: #27ae60; } .c-terra { color: #27ae60; }
 
-        /* Grids (Parte 2) */
-        .grid-row { display: flex; flex-wrap: wrap; gap: 8px; row-gap: 8px; }
-        .chart-card { width: 18%; text-align: center; } 
-        .chart-title { 
-            font-size: 7px; font-weight: 700; color: #0056b3; text-transform: uppercase; 
-            margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-            border-bottom: 1px solid #eee; padding-bottom: 1px;
+        /* Estilo Dominante */
+        .estilo-box { 
+            background: #2c3e50; color: white; padding: 15px; border-radius: 6px; text-align: center; 
         }
-        .chart-img-box { height: 45px; display: flex; align-items: center; justify-content: center; margin-bottom: 3px; }
-        .chart-img { max-height: 100%; max-width: 100%; }
+        .estilo-nome { font-size: 20pt; font-weight: 800; margin: 5px 0; text-transform: uppercase; }
+        .estilo-desc { font-size: 8pt; opacity: 0.9; font-style: italic; }
 
-        /* Legenda */
-        .legend-list { list-style: none; padding: 0; margin: 0; text-align: left; }
-        .legend-item { display: flex; align-items: flex-start; gap: 3px; font-size: 6px; color: #444; line-height: 1.1; margin-bottom: 1px; white-space: normal; }
-        .legend-color { width: 5px; height: 5px; border-radius: 50%; display: inline-block; flex-shrink: 0; margin-top: 1px; }
+        /* PARTE 2: Grid de Tags (Visual) */
+        .tags-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag-item { 
+            background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 4px; 
+            padding: 5px 8px; width: 48%; box-sizing: border-box; 
+        }
+        .tag-cat { display: block; font-size: 6pt; text-transform: uppercase; color: #999; font-weight: 700; margin-bottom: 2px; }
+        .tag-val { display: block; font-size: 8pt; font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .pdf-footer { position: absolute; bottom: 20px; left: 40px; right: 40px; text-align: center; font-size: 7px; color: #bbb; border-top: 1px solid #eee; padding-top: 5px; }
-        #chart-factory { position: fixed; top: -9999px; }
+        /* Rodapé */
+        .pdf-footer { 
+            position: absolute; bottom: 10mm; left: 10mm; right: 10mm; 
+            border-top: 1px solid #eee; padding-top: 10px; 
+            text-align: center; font-size: 7pt; color: #999; 
+        }
     </style>
 </head>
 <body>
 
-    <div class="sys-header"><h2>PAINEL DE CONTROLE | GESTÃO DE CLIENTES</h2></div>
+    <div class="sys-header"><h2>DASHBOARD ADMINISTRATIVO</h2></div>
+    
     <div class="sys-container">
-        <div class="card-tabela">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h3 style="margin:0;">Diagnósticos Recentes</h3>
-            </div>
+        <div class="card">
+            <h3>Relatórios Recebidos</h3>
+            <p style="font-size: 12px; color: #666;">Clique em "PDF" para gerar o documento One Page do cliente.</p>
+            
             <table>
                 <thead>
                     <tr>
-                        <th width="10%">Data</th>
-                        <th width="20%">Cliente</th>
-                        <th width="25%">Contato</th>
-                        <th width="20%">Localização</th>
-                        <th width="10%">Tempo</th>
-                        <th width="15%" style="text-align:right">Relatório</th>
+                        <th width="15%">Data</th>
+                        <th width="30%">Cliente</th>
+                        <th width="25%">Local</th>
+                        <th width="15%">Tempo</th>
+                        <th width="15%" style="text-align: right;">Ação</th>
                     </tr>
                 </thead>
-                <tbody id="lista-clientes"></tbody>
+                <tbody id="lista-tabela">
+                    <tr><td colspan="5" style="text-align:center; padding:20px;">Carregando dados...</td></tr>
+                </tbody>
             </table>
-            <div id="loading" style="text-align:center; padding:20px; color:#999;">Carregando...</div>
-        </div>
-    </div>
-
-    <div id="modal-preview" class="modal-overlay">
-        <div class="modal-box">
-            <h2 id="modal-cliente-nome">Cliente</h2>
-            <p>Gerar relatório PDF profissional?</p>
-            <div class="modal-btns">
-                <button class="btn-close" onclick="fecharModal()">Cancelar</button>
-                <button class="btn-pdf" onclick="iniciarGeracaoPDF()">Gerar PDF</button>
-            </div>
         </div>
     </div>
 
     <div id="folha-a4">
         <div class="pdf-header">
-            <div class="pdf-info">
-                <h1 id="pdf-nome">NOME CLIENTE</h1>
-                <div class="pdf-meta">
-                    Data: <span id="pdf-data">-</span> | Local: <span id="pdf-local">-</span><br>
-                    Email: <span id="pdf-email">-</span> | Tel: <span id="pdf-tel">-</span>
-                </div>
-                <div id="pdf-tempo" class="pdf-badge badge-ok">Tempo: --</div>
+            <div class="pdf-title">
+                <h1>NEUROBRIEFING</h1>
+                <span>Relatório de Diagnóstico Integral</span>
             </div>
-            <img class="pdf-logo" id="logo-img" alt="Logo">
-        </div>
-
-        <div class="pdf-section">
-            <div class="pdf-sec-header">1. Diagnóstico de Natureza (Personalidade)</div>
-            <div class="natureza-container">
-                <div class="nat-card">
-                    <span class="nat-title c-fogo">FOGO (Ação)</span>
-                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-fogo" id="bar-fogo" style="height:0%"></div></div>
-                    <span class="nat-score c-fogo" id="score-fogo">0</span>
-                </div>
-                <div class="nat-card">
-                    <span class="nat-title c-ar">AR (Ideias)</span>
-                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-ar" id="bar-ar" style="height:0%"></div></div>
-                    <span class="nat-score c-ar" id="score-ar">0</span>
-                </div>
-                <div class="nat-card">
-                    <span class="nat-title c-agua">ÁGUA (Emoção)</span>
-                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-agua" id="bar-agua" style="height:0%"></div></div>
-                    <span class="nat-score c-agua" id="score-agua">0</span>
-                </div>
-                <div class="nat-card">
-                    <span class="nat-title c-terra">TERRA (Ordem)</span>
-                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-terra" id="bar-terra" style="height:0%"></div></div>
-                    <span class="nat-score c-terra" id="score-terra">0</span>
-                </div>
+            <div class="pdf-meta">
+                CLIENTE: <strong id="p-nome" style="font-size:10pt; color:#000;">-</strong><br>
+                DATA: <span id="p-data">-</span><br>
+                LOCAL: <span id="p-local">-</span><br>
+                CONTATO: <span id="p-contato">-</span>
             </div>
         </div>
 
-        <div class="pdf-main">
-            <div class="pdf-main-txt">
-                <div class="pdf-label">2. PREDOMINÂNCIA ESTÉTICA</div>
-                <div id="pdf-estilo-titulo" class="pdf-title">MODERNO</div>
-                <div id="pdf-estilo-desc" class="pdf-desc">...</div>
+        <div class="pdf-row">
+            <div class="pdf-col-40">
+                
+                <div class="pdf-card">
+                    <div class="pdf-card-title">1. Perfil Comportamental</div>
+                    
+                    <div class="bar-container">
+                        <span class="bar-label c-fogo">FOGO</span>
+                        <div class="bar-track"><div id="bar-fogo" class="bar-fill bg-fogo" style="width:0%"></div></div>
+                        <span id="val-fogo" class="bar-value">0</span>
+                    </div>
+                    
+                    <div class="bar-container">
+                        <span class="bar-label c-ar">AR</span>
+                        <div class="bar-track"><div id="bar-ar" class="bar-fill bg-ar" style="width:0%"></div></div>
+                        <span id="val-ar" class="bar-value">0</span>
+                    </div>
+                    
+                    <div class="bar-container">
+                        <span class="bar-label c-agua">ÁGUA</span>
+                        <div class="bar-track"><div id="bar-agua" class="bar-fill bg-agua" style="width:0%"></div></div>
+                        <span id="val-agua" class="bar-value">0</span>
+                    </div>
+                    
+                    <div class="bar-container">
+                        <span class="bar-label c-terra">TERRA</span>
+                        <div class="bar-track"><div id="bar-terra" class="bar-fill bg-terra" style="width:0%"></div></div>
+                        <span id="val-terra" class="bar-value">0</span>
+                    </div>
+                </div>
+
+                <div class="pdf-card">
+                    <div class="pdf-card-title">2. Identidade Estética</div>
+                    <div class="estilo-box">
+                        <div style="font-size: 7pt; text-transform: uppercase;">Tendência Principal</div>
+                        <div id="p-estilo" class="estilo-nome">MODERNO</div>
+                        <div id="p-estilo-desc" class="estilo-desc">Linhas retas e funcionalidade.</div>
+                    </div>
+                </div>
+
+                <div class="pdf-card">
+                    <div class="pdf-card-title">Notas Técnicas</div>
+                    <p style="font-size: 8pt; text-align: justify; color: #666;">
+                        Este diagnóstico cruza dados de temperamento (Parte 1) com preferências sensoriais (Parte 2) para definir a neuroarquitetura ideal do projeto.
+                    </p>
+                </div>
+
             </div>
-            <div class="pdf-main-vis">
-                <div class="pdf-main-chart"><img id="img-estilo" style="width:100%;height:100%;"></div>
-                <div class="pdf-main-legend" id="legend-estilo"></div>
+
+            <div class="pdf-col-60">
+                <div class="pdf-card">
+                    <div class="pdf-card-title">3. Mapeamento Sensorial & Preferências</div>
+                    
+                    <div id="grid-sensorial" class="tags-grid">
+                        </div>
+                </div>
             </div>
         </div>
 
-        <div class="pdf-section">
-            <div class="pdf-sec-header">3. Mapa Sensorial & NeuroArquitetura</div>
-            
-            <div class="pdf-sub-title">Visão (Luz, Cores & Formas)</div>
-            <div class="grid-row" id="grid-visao"></div>
-            
-            <div class="pdf-sub-title" style="margin-top: 10px;">Tato, Audição & Olfato</div>
-            <div class="grid-row" id="grid-tato-som"></div>
-            
-            <div class="pdf-sub-title" style="margin-top: 10px;">Biológico, Bem-Estar & Lifestyle</div>
-            <div class="grid-row" id="grid-bio-life"></div>
+        <div class="pdf-footer">
+            Relatório gerado automaticamente pela plataforma NeuroBriefing Intelligence. Documento confidencial.
         </div>
-
-        <div class="pdf-footer">NeuroBriefing Intelligence • Relatório Confidencial de Uso Profissional</div>
     </div>
 
-    <div id="chart-factory"></div>
-
     <script>
-        let todosTestes = [];
-        let testeSelecionado = null;
+        let dadosAPI = [];
 
-        // Configurações de Grupos para organizar o PDF
-        const GRP_VISAO = ["ILUMINAÇÃO", "PSICOLOGIA DAS CORES", "PSICOLOGIA DAS FORMAS"];
-        const GRP_TATO_SOM = ["SENSORIAL: TATO", "SENSORIAL: AUDIÇÃO", "MEMÓRIA OLFATIVA"];
-        // Combinei Bio e Lifestyle para economizar espaço
-        const GRP_BIO_LIFE = ["SENSORIAL: BIOLÓGICO/TÉRMICO", "SENSORIAL: PALADAR/GOURMET", "CONEXÃO COM A NATUREZA", "CRONOTIPO", "MEMÓRIAS AFETIVAS", "FASE DE VIDA & FAMÍLIA", "HOBBIES & LAZER", "PRIVACIDADE & FLUXO"];
-
-        const TRADUTOR_TITULOS = {
-            "SENSORIAL: AUDIÇÃO": "ACÚSTICA", "SENSORIAL: TATO": "TEXTURAS", "SENSORIAL: PALADAR/GOURMET": "GOURMET",
-            "SENSORIAL: BIOLÓGICO/TÉRMICO": "CONF. TÉRMICO", "PSICOLOGIA DAS FORMAS": "FORMAS", "PSICOLOGIA DAS CORES": "CORES",
-            "CONEXÃO COM A NATUREZA": "BIOFILIA", "EXPECTATIVA DE INVESTIMENTO": "INVESTIMENTO", "FASE DE VIDA & FAMÍLIA": "FASE DE VIDA",
-            "MEMÓRIA OLFATIVA": "AROMAS", "MEMÓRIAS AFETIVAS": "MEMÓRIAS", "HOBBIES & LAZER": "HOBBIES", "PRIVACIDADE & FLUXO": "PRIVACIDADE"
-        };
-
-        const CORES_ESTILO = { 'Moderno':'#2c3e50', 'Minimalista':'#2c3e50', 'Clássico':'#c0392b', 'Tradicional':'#c0392b', 'Industrial':'#7f8c8d', 'Urbano':'#7f8c8d', 'Rústico':'#d35400', 'Madeira':'#d35400', 'Natural':'#27ae60', 'Biofilia':'#27ae60' };
-        const PALETA = ['#3498db', '#e74c3c', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e'];
-
-        async function carregarDados() {
+        // 1. CARREGAR DADOS DO BANCO
+        async function carregar() {
             try {
-                const res = await fetch('/api/relatorios');
-                todosTestes = await res.json();
-                const tbody = document.getElementById('lista-clientes');
-                document.getElementById('loading').style.display='none';
-                tbody.innerHTML = '';
-                
-                [...todosTestes].reverse().forEach((t, i) => {
-                    const duracao = t.duracao ? `${Math.floor(t.duracao/60)}m ${t.duracao%60}s` : '--';
-                    const email = t.contato?.email || '-';
-                    const local = (t.contato?.cidade && t.contato?.estado) ? `${t.contato.cidade} - ${t.contato.estado}` : '-';
+                const req = await fetch('/api/relatorios'); // Pega do seu backend
+                dadosAPI = await req.json();
+                renderizarTabela();
+            } catch(e) {
+                document.getElementById('lista-tabela').innerHTML = '<tr><td colspan="5">Erro ao carregar. Atualize a página.</td></tr>';
+            }
+        }
 
-                    tbody.innerHTML += `
+        function renderizarTabela() {
+            const tbody = document.getElementById('lista-tabela');
+            tbody.innerHTML = '';
+            
+            // Mostra do mais recente para o mais antigo
+            [...dadosAPI].reverse().forEach((item, index) => {
+                const tempo = item.duracao ? Math.floor(item.duracao/60)+'m' : '-';
+                const iReal = dadosAPI.length - 1 - index; // Indice original
+                
+                tbody.innerHTML += `
                     <tr>
-                        <td>${t.dataLegivel}</td>
-                        <td><strong>${t.cliente}</strong></td>
-                        <td>${t.contato?.telefone || '-'}</td>
-                        <td>${local}</td>
-                        <td>${duracao}</td>
-                        <td style="text-align:right"><button class="btn-acao" onclick="abrirModal(${todosTestes.length-1-i})">VER PDF</button></td>
-                    </tr>`;
-                });
-            } catch(e){}
-        }
-
-        function abrirModal(i) { testeSelecionado = todosTestes[i]; document.getElementById('modal-cliente-nome').innerText = testeSelecionado.cliente; document.getElementById('modal-preview').style.display='flex'; }
-        function fecharModal() { document.getElementById('modal-preview').style.display='none'; }
-
-        async function iniciarGeracaoPDF() {
-            if(!testeSelecionado) return;
-            const btn = document.querySelector('.btn-pdf'); 
-            const textoOriginal = btn.innerHTML;
-            
-            try {
-                btn.innerHTML = '⏳ Preparando...'; btn.disabled = true;
-
-                // 1. Preenche os dados (Lógica Principal)
-                await preencher(testeSelecionado);
-                
-                // 2. Carrega Logo (Base64 para evitar erro)
-                const imgLogo = document.getElementById('logo-img');
-                try {
-                    const resp = await fetch('logo.png');
-                    if(resp.ok) {
-                        const blob = await resp.blob();
-                        const reader = new FileReader();
-                        await new Promise(r => { reader.onloadend = () => { imgLogo.src = reader.result; r(); }; reader.readAsDataURL(blob); });
-                        imgLogo.style.display = 'block';
-                    }
-                } catch(err) { imgLogo.style.display = 'none'; }
-
-                // 3. Gera PDF
-                const el = document.getElementById('folha-a4'); 
-                el.style.display='block';
-                
-                const opt = { 
-                    margin: 0, 
-                    filename: `NeuroBriefing_${testeSelecionado.cliente.replace(/ /g,'_')}.pdf`, 
-                    image: { type: 'jpeg', quality: 0.98 }, 
-                    html2canvas: { scale: 2, useCORS: true, logging: false }, 
-                    jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' } 
-                };
-
-                await html2pdf().set(opt).from(el).save();
-                
-            } catch (error) {
-                console.error(error);
-                alert("Erro ao gerar PDF.");
-            } finally {
-                const el = document.getElementById('folha-a4');
-                el.style.display='none'; 
-                btn.innerHTML = textoOriginal; 
-                btn.disabled = false; 
-                fecharModal();
-            }
-        }
-
-        async function preencher(t) {
-            // -- PREENCHE CABEÇALHO --
-            document.getElementById('pdf-nome').innerText = t.cliente;
-            document.getElementById('pdf-data').innerText = t.dataLegivel;
-            document.getElementById('pdf-email').innerText = t.contato?.email || '-';
-            document.getElementById('pdf-tel').innerText = t.contato?.telefone || '-';
-            const local = (t.contato?.cidade) ? `${t.contato.cidade} - ${t.contato.estado}` : '-';
-            document.getElementById('pdf-local').innerText = local;
-
-            // -- 1. CALCULA E PREENCHE PARTE 1 (NATUREZA) --
-            let pontuacao = { FOGO: 0, AR: 0, AGUA: 0, TERRA: 0 };
-            
-            // Loop para somar pontos (usa chaves tipo 'fogo_1', 'terra_2' do banco)
-            Object.keys(t.respostas).forEach(key => {
-                const val = t.respostas[key];
-                if(key.includes('fogo')) pontuacao.FOGO += val;
-                if(key.includes('ar')) pontuacao.AR += val;
-                if(key.includes('agua')) pontuacao.AGUA += val;
-                if(key.includes('terra')) pontuacao.TERRA += val;
-            });
-
-            // Atualiza Gráfico de Barras HTML
-            const maxPts = 25; // 5 perguntas x 5 pts
-            document.getElementById('bar-fogo').style.height = `${(pontuacao.FOGO/maxPts)*100}%`;
-            document.getElementById('score-fogo').innerText = pontuacao.FOGO;
-            
-            document.getElementById('bar-ar').style.height = `${(pontuacao.AR/maxPts)*100}%`;
-            document.getElementById('score-ar').innerText = pontuacao.AR;
-            
-            document.getElementById('bar-agua').style.height = `${(pontuacao.AGUA/maxPts)*100}%`;
-            document.getElementById('score-agua').innerText = pontuacao.AGUA;
-            
-            document.getElementById('bar-terra').style.height = `${(pontuacao.TERRA/maxPts)*100}%`;
-            document.getElementById('score-terra').innerText = pontuacao.TERRA;
-
-            // -- 2. PREENCHE PARTE 2 (ESTILOS E VISUAL) --
-            const estilo = processar(t.respostas, true);
-            const cats = processar(t.respostas, false);
-
-            // Define estilo dominante
-            let topEstilo = 'Moderno';
-            let maxVal = 0;
-            for(const [k,v] of Object.entries(estilo)) { if(v>maxVal){ maxVal=v; topEstilo=k; } }
-
-            document.getElementById('pdf-estilo-titulo').innerText = topEstilo.toUpperCase();
-            document.getElementById('pdf-estilo-titulo').style.color = CORES_ESTILO[topEstilo] || '#000';
-            setDesc(topEstilo);
-            
-            // Gera Donut do Estilo
-            document.getElementById('img-estilo').src = await gerarGrafico(estilo, true);
-            document.getElementById('legend-estilo').innerHTML = gerarLegendaHTML(estilo, true);
-
-            // Gera Grades Menores
-            const gVis = document.getElementById('grid-visao'); gVis.innerHTML='';
-            const gTato = document.getElementById('grid-tato-som'); gTato.innerHTML='';
-            const gBio = document.getElementById('grid-bio-life'); gBio.innerHTML='';
-
-            await preencherGrupo(GRP_VISAO, cats, gVis);
-            await preencherGrupo(GRP_TATO_SOM, cats, gTato);
-            await preencherGrupo(GRP_BIO_LIFE, cats, gBio);
-        }
-
-        async function preencherGrupo(keys, dados, container) {
-            for(const key of keys) {
-                const realKey = Object.keys(dados).find(k => k.includes(key) || key.includes(k));
-                if(realKey && dados[realKey]) {
-                    const img = await gerarGrafico(dados[realKey], false);
-                    const leg = gerarLegendaHTML(dados[realKey], false);
-                    const title = TRADUTOR_TITULOS[realKey] || realKey;
-                    container.innerHTML += `<div class="chart-card"><div class="chart-title" title="${title}">${title}</div><div class="chart-img-box"><img src="${img}" class="chart-img"></div>${leg}</div>`;
-                }
-            }
-        }
-
-        function gerarLegendaHTML(dados, isMain) {
-            const keys = Object.keys(dados).filter(k=>dados[k]>0);
-            const total = keys.reduce((s,k)=>s+dados[k],0);
-            let html = `<ul class="legend-list" style="${isMain?'font-size:11px':'font-size:7px'}">`;
-            keys.forEach((k, i) => {
-                const perc = Math.round((dados[k]/total)*100);
-                const cor = isMain ? (CORES_ESTILO[k]||'#333') : PALETA[i%PALETA.length];
-                html += `<li class="legend-item"><span class="legend-color" style="background:${cor}"></span><span>${k} <strong>(${perc}%)</strong></span></li>`;
-            });
-            return html + '</ul>';
-        }
-
-        function gerarGrafico(dados, isMain) {
-            return new Promise(resolve => {
-                const cvs = document.createElement('canvas');
-                cvs.width = isMain?300:150; cvs.height = isMain?300:150;
-                document.getElementById('chart-factory').appendChild(cvs);
-                const keys = Object.keys(dados).filter(k=>dados[k]>0);
-                const vals = keys.map(k=>dados[k]);
-                const cores = isMain ? keys.map(k=>CORES_ESTILO[k]||'#333') : keys.map((_,i)=>PALETA[i%PALETA.length]);
-                new Chart(cvs, {
-                    type: 'doughnut',
-                    data: { labels: keys, datasets: [{ data: vals, backgroundColor: cores, borderWidth:0 }] },
-                    options: { responsive: false, animation: false, cutout: '65%', plugins: { legend: { display: false } } }
-                });
-                setTimeout(() => { resolve(cvs.toDataURL()); cvs.remove(); }, 150);
+                        <td>${new Date(item.data).toLocaleDateString()}</td>
+                        <td><strong>${item.cliente}</strong></td>
+                        <td>${item.contato?.cidade || '-'} / ${item.contato?.estado || '-'}</td>
+                        <td>${tempo}</td>
+                        <td style="text-align: right;">
+                            <button class="btn-pdf" onclick="gerarPDF(${iReal})">📄 PDF</button>
+                        </td>
+                    </tr>
+                `;
             });
         }
 
-        function processar(resp, onlyEstilo) {
-            const res = {};
-            // Filtra chaves que contêm "::" (são da Parte 2)
-            for(const [k,v] of Object.entries(resp)) {
-                if(k.includes('::')) {
+        // 2. FUNÇÃO MÁGICA DE GERAR O PDF
+        async function gerarPDF(index) {
+            const dados = dadosAPI[index];
+            if(!dados) return;
+
+            // --- A. CALCULAR PONTUAÇÃO (PARTE 1) ---
+            let pts = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
+            let estilo = "Em Análise";
+            let tags = [];
+
+            // Varre todas as respostas do banco
+            const resp = dados.respostas || {};
+            
+            Object.keys(resp).forEach(k => {
+                const val = resp[k];
+                // Soma Perfil
+                if(k.includes('fogo')) pts.FOGO += val;
+                if(k.includes('ar')) pts.AR += val;
+                if(k.includes('agua')) pts.AGUA += val;
+                if(k.includes('terra')) pts.TERRA += val;
+
+                // Captura Estilo
+                if(k.includes('arq_1') && val > 0) estilo = k.split('::')[1];
+
+                // Captura Tags Visuais (Ignora as de perfil)
+                if(k.includes('::') && val > 0 && !k.includes('arq_1')) {
                     const [cat, opt] = k.split('::');
-                    const isEst = cat.includes('ESTILO');
-                    if(onlyEstilo && isEst) {
-                        if(opt.includes('Moderno')||opt.includes('Minimalista')) res['Moderno']=(res['Moderno']||0)+v;
-                        if(opt.includes('Clássico')||opt.includes('Tradicional')) res['Clássico']=(res['Clássico']||0)+v;
-                        if(opt.includes('Industrial')||opt.includes('Urbano')) res['Industrial']=(res['Industrial']||0)+v;
-                        if(opt.includes('Rústico')||opt.includes('Madeira')) res['Rústico']=(res['Rústico']||0)+v;
-                        if(opt.includes('Natural')||opt.includes('Biofilia')) res['Natural']=(res['Natural']||0)+v;
-                    } else if (!onlyEstilo && !isEst) {
-                        let c = cat; if(!res[c]) res[c]={}; res[c][opt] = (res[c][opt]||0)+v;
-                    }
+                    tags.push({ cat: cat.replace('SENSORIAL: ', ''), opt });
                 }
-            }
-            return res;
-        }
+            });
 
-        function setDesc(est) {
-            const map = {
-                'Moderno': 'Funcionalidade, linhas retas e clareza visual. Ambientes limpos e integrados.',
-                'Clássico': 'Simetria e nobreza. Valoriza a história, ornamentos e sofisticação.',
-                'Industrial': 'Urbano, metais e concreto aparente. Estética jovem e estrutural.',
-                'Rústico': 'Madeira bruta e texturas naturais. Foca no acolhimento e calor.',
-                'Natural': 'Biofilia, luz natural e ventilação. Ambientes que respiram vida.'
+            // --- B. PREENCHER O HTML (DOM) ---
+            document.getElementById('p-nome').innerText = dados.cliente;
+            document.getElementById('p-data').innerText = new Date(dados.data).toLocaleString();
+            document.getElementById('p-local').innerText = `${dados.contato?.cidade || ''} - ${dados.contato?.estado || ''}`;
+            document.getElementById('p-contato').innerText = dados.contato?.email || '';
+
+            // Barras de Progresso
+            const max = 25; // 5 perguntas x 5 pontos
+            document.getElementById('val-fogo').innerText = pts.FOGO;
+            document.getElementById('bar-fogo').style.width = (pts.FOGO/max*100)+'%';
+            
+            document.getElementById('val-ar').innerText = pts.AR;
+            document.getElementById('bar-ar').style.width = (pts.AR/max*100)+'%';
+            
+            document.getElementById('val-agua').innerText = pts.AGUA;
+            document.getElementById('bar-agua').style.width = (pts.AGUA/max*100)+'%';
+            
+            document.getElementById('val-terra').innerText = pts.TERRA;
+            document.getElementById('bar-terra').style.width = (pts.TERRA/max*100)+'%';
+
+            // Estilo
+            document.getElementById('p-estilo').innerText = estilo.toUpperCase();
+            
+            // Grid de Tags
+            const grid = document.getElementById('grid-sensorial');
+            grid.innerHTML = '';
+            tags.forEach(t => {
+                grid.innerHTML += `
+                    <div class="tag-item">
+                        <span class="tag-cat">${t.cat}</span>
+                        <span class="tag-val">${t.opt}</span>
+                    </div>
+                `;
+            });
+
+            // --- C. GERAR ARQUIVO ---
+            const element = document.getElementById('folha-a4');
+            element.style.display = 'block'; // Mostra temporariamente
+
+            const opt = {
+                margin: 0,
+                filename: `NeuroBriefing_${dados.cliente}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true }, // Alta resolução (scale 2)
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-            document.getElementById('pdf-estilo-desc').innerText = map[est] || 'Perfil Personalizado.';
+
+            // Gera e depois esconde
+            await html2pdf().set(opt).from(element).save();
+            element.style.display = 'none';
         }
 
-        carregarDados(); setInterval(carregarDados, 10000);
+        // Inicia
+        carregar();
     </script>
+
 </body>
 </html>
