@@ -25,7 +25,7 @@
             height: 297mm; 
             background: white; 
             margin: 20px auto; 
-            padding: 12mm 10mm; /* Margens equilibradas */
+            padding: 10mm 10mm; /* Margens equilibradas */
             box-sizing: border-box; 
             display: none; 
             position: relative;
@@ -35,7 +35,7 @@
         }
 
         /* HEADER */
-        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #2c3e50; padding-bottom: 5px; margin-bottom: 8px; }
+        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #2c3e50; padding-bottom: 4px; margin-bottom: 8px; }
         .logo h1 { margin: 0; font-size: 20pt; font-weight: 900; letter-spacing: -1px; line-height: 1; }
         .logo span { font-size: 7pt; letter-spacing: 3px; text-transform: uppercase; color: #7f8c8d; }
         .meta { text-align: right; font-size: 6.5pt; line-height: 1.3; color: #555; }
@@ -61,44 +61,44 @@
         .style-row { 
             display: flex; align-items: center; justify-content: space-between; 
             background: #f8f9fa; border-left: 5px solid #2c3e50; 
-            padding: 6px 12px; margin-bottom: 10px; height: 65px;
+            padding: 5px 12px; margin-bottom: 8px; height: 55px; /* Altura reduzida */
         }
         .st-info { width: 50%; }
         .st-name { font-size: 16pt; font-weight: 900; text-transform: uppercase; line-height: 1; color: #2c3e50; }
         
         .st-visual { width: 45%; display: flex; align-items: center; gap: 5px; justify-content: flex-end; }
-        .st-chart { width: 55px; height: 55px; }
+        .st-chart { width: 50px; height: 50px; }
         .st-legend { font-size: 5pt; width: 80px; }
 
-        /* 3 & 4. GRIDS (LAYOUT LADO A LADO) */
+        /* 3 & 4. GRIDS (3 COLUNAS - LARGURA SEGURA) */
         .grid-charts { 
-            display: grid; grid-template-columns: repeat(3, 1fr); /* 3 colunas mais largas para caber legenda lateral */
+            display: grid; grid-template-columns: repeat(3, 1fr); /* 3 Colunas = Mais espaço para legenda */
             gap: 6px; row-gap: 6px; margin-bottom: 8px;
         }
-        /* Lifestyle: 3 colunas também */
         .grid-charts.life { margin-bottom: 0; }
 
         /* CARD DO GRÁFICO */
         .chart-card { 
             border: 1px solid #f0f0f0; border-radius: 4px; padding: 3px; 
-            display: flex; align-items: center; /* Lado a Lado */
-            height: 48px; /* Altura fixa controlada */
+            display: flex; align-items: center;
+            height: 42px; /* Altura compacta */
             background: #fff;
+            overflow: hidden;
         }
         
         /* Esquerda: Donut */
-        .card-left { width: 35%; display: flex; justify-content: center; align-items: center; }
-        .canvas-box { width: 38px; height: 38px; position: relative; }
+        .card-left { width: 30%; display: flex; justify-content: center; align-items: center; }
+        .canvas-box { width: 34px; height: 34px; position: relative; } /* Gráfico menor */
 
         /* Direita: Info + Legenda */
-        .card-right { width: 65%; padding-left: 5px; display: flex; flex-direction: column; justify-content: center; }
-        .cc-title { font-size: 5pt; font-weight: 800; color: #7f8c8d; text-transform: uppercase; margin-bottom: 2px; white-space: nowrap; overflow: hidden; }
+        .card-right { width: 70%; padding-left: 4px; display: flex; flex-direction: column; justify-content: center; }
+        .cc-title { font-size: 5pt; font-weight: 800; color: #7f8c8d; text-transform: uppercase; margin-bottom: 1px; white-space: nowrap; overflow: hidden; }
         
         /* LEGENDA HTML LATERAL */
-        .cc-legend { display: flex; flex-direction: column; }
+        .cc-legend { display: flex; flex-direction: column; justify-content: center; }
         .leg-row { display: flex; align-items: center; line-height: 1; margin-bottom: 1px; }
         .leg-box { width: 4px; height: 4px; margin-right: 2px; flex-shrink: 0; border-radius: 50%; }
-        .leg-txt { font-size: 4.5pt; color: #333; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; }
+        .leg-txt { font-size: 4.5pt; color: #333; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
 
         /* CORES */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -260,10 +260,10 @@
             document.getElementById('p-estilo').innerText = maiorEstilo.toUpperCase();
             document.getElementById('p-estilo-desc').innerText = getDescEstilo(maiorEstilo);
             
-            // Estilo: Gera Gráfico e Legenda Manual Lateral
+            // Renderiza Estilo com Legenda Lateral
             renderChartWithLegend('chart-estilo', 'legend-estilo', estiloData);
 
-            // Grids
+            // Grids (3 Colunas)
             renderGrid(visualGroups, 'grid-sensorial');
             renderGrid(lifeGroups, 'grid-lifestyle');
 
@@ -313,7 +313,7 @@
             });
         }
 
-        // Renderiza Grid (Lado a Lado)
+        // Renderiza Grid (3 Colunas com Legenda Lateral)
         function renderGrid(groups, containerId) {
             const grid = document.getElementById(containerId);
             grid.innerHTML = '';
@@ -322,7 +322,7 @@
                 const items = groups[cat];
                 const total = items.reduce((a,b)=>a+b.val, 0);
                 
-                // HTML Legenda
+                // HTML Legenda Lateral
                 let leg = '';
                 let dataMap = {};
                 items.forEach((it, i) => {
@@ -340,7 +340,6 @@
                 `;
                 grid.appendChild(div);
                 
-                // ChartJS (sem legenda interna)
                 new Chart(document.getElementById(safeId), {
                     type: 'doughnut',
                     data: { labels: Object.keys(dataMap), datasets: [{ data: Object.values(dataMap), backgroundColor: PALETA, borderWidth: 0 }] },
