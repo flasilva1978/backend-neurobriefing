@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
-        /* --- ESTILOS DO SISTEMA --- */
+        /* --- ESTILOS DO SISTEMA (DASHBOARD) --- */
         body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #eaeff2; margin: 0; color: #333; }
         .sys-header { background: #111; padding: 15px; text-align: center; color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .sys-container { max-width: 1200px; margin: 30px auto; padding: 20px; }
@@ -21,13 +21,6 @@
         td { padding: 15px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: middle; }
         tr:hover { background: #fafafa; }
         
-        /* Links de Contato */
-        .link-contato { text-decoration: none; display: flex; align-items: center; gap: 5px; font-size: 12px; margin-bottom: 4px; transition: 0.2s; }
-        .link-zap { color: #25D366; font-weight: 600; }
-        .link-zap:hover { color: #128C7E; text-decoration: underline; }
-        .link-email { color: #555; }
-        .link-email:hover { color: #000; text-decoration: underline; }
-
         .btn-acao { background: #2c3e50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 11px; transition:0.2s; white-space: nowrap; }
         .btn-acao:hover { background: #1a252f; }
         
@@ -38,62 +31,75 @@
         .btn-pdf { background: #e74c3c; color: white; padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-close { background: #ddd; color: #333; padding: 12px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        /* --- LAYOUT A4 FIXO --- */
+        /* --- LAYOUT A4 FIXO (PDF) --- */
         #folha-a4 {
             width: 794px; height: 1123px; /* A4 96dpi */
-            background: white; margin: 0 auto; padding: 35px 40px;
+            background: white; margin: 0 auto; padding: 30px 40px;
             box-sizing: border-box; display: none; position: relative;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
         /* Header PDF */
-        .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
-        .pdf-info h1 { font-size: 22px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; color: #000; }
-        .pdf-meta { font-size: 10px; color: #444; line-height: 1.4; margin-top: 5px; }
-        .pdf-badge { display: inline-block; font-size: 9px; font-weight: bold; padding: 3px 6px; border-radius: 3px; margin-top: 5px; }
+        .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+        .pdf-info h1 { font-size: 20px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; color: #000; }
+        .pdf-meta { font-size: 9px; color: #444; line-height: 1.3; margin-top: 4px; }
+        .pdf-badge { display: inline-block; font-size: 8px; font-weight: bold; padding: 2px 5px; border-radius: 3px; margin-top: 4px; }
         .badge-ok { background: #e8f5e9; color: #27ae60; border: 1px solid #c8e6c9; }
         .badge-warn { background: #ffebee; color: #c0392b; border: 1px solid #ffcdd2; }
-        .pdf-logo { height: 45px; object-fit: contain; }
+        .pdf-logo { height: 40px; object-fit: contain; }
 
-        /* Estilo Principal */
-        .pdf-main { display: flex; gap: 20px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; height: 145px; }
-        .pdf-main-txt { width: 45%; }
-        .pdf-label { font-size: 9px; font-weight: bold; color: #999; text-transform: uppercase; letter-spacing: 1px; }
-        .pdf-title { font-size: 28px; font-weight: 900; color: #000; margin: 5px 0; line-height: 1; }
-        .pdf-desc { font-size: 10px; color: #555; text-align: justify; line-height: 1.35; }
-        .pdf-main-vis { width: 55%; display: flex; align-items: center; gap: 15px; }
-        .pdf-main-chart { width: 130px; height: 130px; flex-shrink: 0; }
-        .pdf-main-legend { font-size: 10px; line-height: 1.5; flex: 1; }
-
-        /* Seções e Subtítulos */
-        .pdf-section { margin-bottom: 10px; }
+        /* Seções Gerais */
+        .pdf-section { margin-bottom: 12px; }
         .pdf-sec-header { 
-            background: #f4f4f4; padding: 4px 10px; margin-bottom: 8px; border-left: 4px solid #333; 
-            font-size: 10px; font-weight: 800; text-transform: uppercase; color: #000; 
+            background: #f4f4f4; padding: 3px 8px; margin-bottom: 6px; border-left: 4px solid #333; 
+            font-size: 9px; font-weight: 800; text-transform: uppercase; color: #000; 
         }
         .pdf-sub-title {
-            font-size: 9px; font-weight: 700; color: #555; text-transform: uppercase; 
-            margin: 8px 0 4px 0; border-bottom: 1px dashed #ddd; padding-bottom: 2px;
+            font-size: 8px; font-weight: 700; color: #555; text-transform: uppercase; 
+            margin: 6px 0 3px 0; border-bottom: 1px dashed #ddd; padding-bottom: 1px;
         }
+
+        /* --- PARTE 1: NATUREZA (GRÁFICO DE BARRAS) --- */
+        .natureza-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px; }
+        .nat-card { flex: 1; background: #fafafa; border: 1px solid #eee; border-radius: 4px; padding: 8px; text-align: center; }
+        .nat-title { font-size: 8px; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .nat-bar-bg { width: 10px; height: 60px; background: #ddd; margin: 0 auto; border-radius: 5px; position: relative; overflow: hidden; }
+        .nat-bar-fill { position: absolute; bottom: 0; width: 100%; border-radius: 0 0 5px 5px; }
+        .nat-score { font-size: 14px; font-weight: 900; margin-top: 5px; display: block; }
         
-        .grid-row { display: flex; flex-wrap: wrap; gap: 12px; row-gap: 12px; }
-        
-        /* Cards */
-        .chart-card { width: 18.5%; text-align: center; } 
+        /* Cores Elementos */
+        .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
+        .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
+        .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
+        .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
+
+        /* Estilo Principal */
+        .pdf-main { display: flex; gap: 15px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; height: 110px; }
+        .pdf-main-txt { width: 45%; }
+        .pdf-label { font-size: 8px; font-weight: bold; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+        .pdf-title { font-size: 24px; font-weight: 900; color: #000; margin: 3px 0; line-height: 1; }
+        .pdf-desc { font-size: 9px; color: #555; text-align: justify; line-height: 1.3; }
+        .pdf-main-vis { width: 55%; display: flex; align-items: center; gap: 10px; }
+        .pdf-main-chart { width: 100px; height: 100px; flex-shrink: 0; }
+        .pdf-main-legend { font-size: 9px; line-height: 1.4; flex: 1; }
+
+        /* Grids (Parte 2) */
+        .grid-row { display: flex; flex-wrap: wrap; gap: 8px; row-gap: 8px; }
+        .chart-card { width: 18%; text-align: center; } 
         .chart-title { 
-            font-size: 8px; font-weight: 700; color: #0056b3; text-transform: uppercase; 
-            margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-            border-bottom: 1px solid #eee; padding-bottom: 2px;
+            font-size: 7px; font-weight: 700; color: #0056b3; text-transform: uppercase; 
+            margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+            border-bottom: 1px solid #eee; padding-bottom: 1px;
         }
-        .chart-img-box { height: 55px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+        .chart-img-box { height: 45px; display: flex; align-items: center; justify-content: center; margin-bottom: 3px; }
         .chart-img { max-height: 100%; max-width: 100%; }
 
         /* Legenda */
         .legend-list { list-style: none; padding: 0; margin: 0; text-align: left; }
-        .legend-item { display: flex; align-items: flex-start; gap: 4px; font-size: 7px; color: #444; line-height: 1.1; margin-bottom: 2px; white-space: normal; }
-        .legend-color { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; margin-top: 1px; }
+        .legend-item { display: flex; align-items: flex-start; gap: 3px; font-size: 6px; color: #444; line-height: 1.1; margin-bottom: 1px; white-space: normal; }
+        .legend-color { width: 5px; height: 5px; border-radius: 50%; display: inline-block; flex-shrink: 0; margin-top: 1px; }
 
-        .pdf-footer { position: absolute; bottom: 25px; left: 40px; right: 40px; text-align: center; font-size: 8px; color: #bbb; border-top: 1px solid #eee; padding-top: 8px; }
+        .pdf-footer { position: absolute; bottom: 20px; left: 40px; right: 40px; text-align: center; font-size: 7px; color: #bbb; border-top: 1px solid #eee; padding-top: 5px; }
         #chart-factory { position: fixed; top: -9999px; }
     </style>
 </head>
@@ -104,14 +110,13 @@
         <div class="card-tabela">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <h3 style="margin:0;">Diagnósticos Recentes</h3>
-                <span style="font-size:12px; color:#666;">ℹ️ Clique nos ícones para contatar o cliente</span>
             </div>
             <table>
                 <thead>
                     <tr>
                         <th width="10%">Data</th>
                         <th width="20%">Cliente</th>
-                        <th width="25%">Contato Direto</th>
+                        <th width="25%">Contato</th>
                         <th width="20%">Localização</th>
                         <th width="10%">Tempo</th>
                         <th width="15%" style="text-align:right">Relatório</th>
@@ -147,9 +152,35 @@
             <img class="pdf-logo" id="logo-img" alt="Logo">
         </div>
 
+        <div class="pdf-section">
+            <div class="pdf-sec-header">1. Diagnóstico de Natureza (Personalidade)</div>
+            <div class="natureza-container">
+                <div class="nat-card">
+                    <span class="nat-title c-fogo">FOGO (Ação)</span>
+                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-fogo" id="bar-fogo" style="height:0%"></div></div>
+                    <span class="nat-score c-fogo" id="score-fogo">0</span>
+                </div>
+                <div class="nat-card">
+                    <span class="nat-title c-ar">AR (Ideias)</span>
+                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-ar" id="bar-ar" style="height:0%"></div></div>
+                    <span class="nat-score c-ar" id="score-ar">0</span>
+                </div>
+                <div class="nat-card">
+                    <span class="nat-title c-agua">ÁGUA (Emoção)</span>
+                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-agua" id="bar-agua" style="height:0%"></div></div>
+                    <span class="nat-score c-agua" id="score-agua">0</span>
+                </div>
+                <div class="nat-card">
+                    <span class="nat-title c-terra">TERRA (Ordem)</span>
+                    <div class="nat-bar-bg"><div class="nat-bar-fill bg-terra" id="bar-terra" style="height:0%"></div></div>
+                    <span class="nat-score c-terra" id="score-terra">0</span>
+                </div>
+            </div>
+        </div>
+
         <div class="pdf-main">
             <div class="pdf-main-txt">
-                <div class="pdf-label">PREDOMINÂNCIA ESTÉTICA</div>
+                <div class="pdf-label">2. PREDOMINÂNCIA ESTÉTICA</div>
                 <div id="pdf-estilo-titulo" class="pdf-title">MODERNO</div>
                 <div id="pdf-estilo-desc" class="pdf-desc">...</div>
             </div>
@@ -160,18 +191,16 @@
         </div>
 
         <div class="pdf-section">
-            <div class="pdf-sec-header">Mapa Sensorial & NeuroArquitetura</div>
+            <div class="pdf-sec-header">3. Mapa Sensorial & NeuroArquitetura</div>
+            
             <div class="pdf-sub-title">Visão (Luz, Cores & Formas)</div>
             <div class="grid-row" id="grid-visao"></div>
+            
             <div class="pdf-sub-title" style="margin-top: 10px;">Tato, Audição & Olfato</div>
             <div class="grid-row" id="grid-tato-som"></div>
-            <div class="pdf-sub-title" style="margin-top: 10px;">Biológico & Bem-Estar</div>
-            <div class="grid-row" id="grid-bio"></div>
-        </div>
-
-        <div class="pdf-section">
-            <div class="pdf-sec-header">Lifestyle & Estratégia</div>
-            <div class="grid-row" id="grid-lifestyle"></div>
+            
+            <div class="pdf-sub-title" style="margin-top: 10px;">Biológico, Bem-Estar & Lifestyle</div>
+            <div class="grid-row" id="grid-bio-life"></div>
         </div>
 
         <div class="pdf-footer">NeuroBriefing Intelligence • Relatório Confidencial de Uso Profissional</div>
@@ -183,16 +212,17 @@
         let todosTestes = [];
         let testeSelecionado = null;
 
+        // Configurações de Grupos para organizar o PDF
         const GRP_VISAO = ["ILUMINAÇÃO", "PSICOLOGIA DAS CORES", "PSICOLOGIA DAS FORMAS"];
         const GRP_TATO_SOM = ["SENSORIAL: TATO", "SENSORIAL: AUDIÇÃO", "MEMÓRIA OLFATIVA"];
-        const GRP_BIO = ["SENSORIAL: BIOLÓGICO/TÉRMICO", "SENSORIAL: PALADAR/GOURMET", "CONEXÃO COM A NATUREZA", "CRONOTIPO", "MEMÓRIAS AFETIVAS"];
-        const GRP_LIFESTYLE = ["FASE DE VIDA & FAMÍLIA", "PERSONALIDADE", "HOBBIES & LAZER", "PRIVACIDADE & FLUXO", "EXPECTATIVA DE INVESTIMENTO"];
+        // Combinei Bio e Lifestyle para economizar espaço
+        const GRP_BIO_LIFE = ["SENSORIAL: BIOLÓGICO/TÉRMICO", "SENSORIAL: PALADAR/GOURMET", "CONEXÃO COM A NATUREZA", "CRONOTIPO", "MEMÓRIAS AFETIVAS", "FASE DE VIDA & FAMÍLIA", "HOBBIES & LAZER", "PRIVACIDADE & FLUXO"];
 
         const TRADUTOR_TITULOS = {
             "SENSORIAL: AUDIÇÃO": "ACÚSTICA", "SENSORIAL: TATO": "TEXTURAS", "SENSORIAL: PALADAR/GOURMET": "GOURMET",
             "SENSORIAL: BIOLÓGICO/TÉRMICO": "CONF. TÉRMICO", "PSICOLOGIA DAS FORMAS": "FORMAS", "PSICOLOGIA DAS CORES": "CORES",
             "CONEXÃO COM A NATUREZA": "BIOFILIA", "EXPECTATIVA DE INVESTIMENTO": "INVESTIMENTO", "FASE DE VIDA & FAMÍLIA": "FASE DE VIDA",
-            "MEMÓRIA OLFATIVA": "AROMAS", "MEMÓRIAS AFETIVAS": "MEMÓRIAS"
+            "MEMÓRIA OLFATIVA": "AROMAS", "MEMÓRIAS AFETIVAS": "MEMÓRIAS", "HOBBIES & LAZER": "HOBBIES", "PRIVACIDADE & FLUXO": "PRIVACIDADE"
         };
 
         const CORES_ESTILO = { 'Moderno':'#2c3e50', 'Minimalista':'#2c3e50', 'Clássico':'#c0392b', 'Tradicional':'#c0392b', 'Industrial':'#7f8c8d', 'Urbano':'#7f8c8d', 'Rústico':'#d35400', 'Madeira':'#d35400', 'Natural':'#27ae60', 'Biofilia':'#27ae60' };
@@ -208,23 +238,14 @@
                 
                 [...todosTestes].reverse().forEach((t, i) => {
                     const duracao = t.duracao ? `${Math.floor(t.duracao/60)}m ${t.duracao%60}s` : '--';
-                    const email = t.contato?.email || '';
-                    const telRaw = t.contato?.telefone || '';
-                    const telClean = telRaw.replace(/\D/g, ''); 
-                    const zapLink = telClean ? `https://wa.me/55${telClean}` : '#';
-                    const cid = t.contato?.cidade; const uf = t.contato?.estado;
-                    const local = (cid && uf) ? `${cid} - ${uf}` : (cid || uf || '-');
+                    const email = t.contato?.email || '-';
+                    const local = (t.contato?.cidade && t.contato?.estado) ? `${t.contato.cidade} - ${t.contato.estado}` : '-';
 
                     tbody.innerHTML += `
                     <tr>
                         <td>${t.dataLegivel}</td>
                         <td><strong>${t.cliente}</strong></td>
-                        <td>
-                            <div style="display:flex; flex-direction:column;">
-                                <a href="${zapLink}" target="_blank" class="link-contato link-zap"><span>📱</span> ${telRaw || '-'}</a>
-                                <a href="mailto:${email}" class="link-contato link-email"><span>📧</span> ${email || '-'}</a>
-                            </div>
-                        </td>
+                        <td>${t.contato?.telefone || '-'}</td>
                         <td>${local}</td>
                         <td>${duracao}</td>
                         <td style="text-align:right"><button class="btn-acao" onclick="abrirModal(${todosTestes.length-1-i})">VER PDF</button></td>
@@ -244,29 +265,22 @@
             try {
                 btn.innerHTML = '⏳ Preparando...'; btn.disabled = true;
 
-                // 1. Preenche os dados
+                // 1. Preenche os dados (Lógica Principal)
                 await preencher(testeSelecionado);
                 
-                // 2. Tenta converter a logo para Base64 (O Pulo do Gato)
-                // Isso evita erro de CORS ou 404 travando o PDF
+                // 2. Carrega Logo (Base64 para evitar erro)
                 const imgLogo = document.getElementById('logo-img');
                 try {
                     const resp = await fetch('logo.png');
                     if(resp.ok) {
                         const blob = await resp.blob();
                         const reader = new FileReader();
-                        await new Promise((resolve) => {
-                            reader.onloadend = () => { imgLogo.src = reader.result; resolve(); }
-                            reader.readAsDataURL(blob);
-                        });
+                        await new Promise(r => { reader.onloadend = () => { imgLogo.src = reader.result; r(); }; reader.readAsDataURL(blob); });
                         imgLogo.style.display = 'block';
-                    } else { throw new Error('Logo não encontrada'); }
-                } catch(err) {
-                    console.warn("Logo não carregou. Gerando sem logo.");
-                    imgLogo.style.display = 'none';
-                }
+                    }
+                } catch(err) { imgLogo.style.display = 'none'; }
 
-                // 3. Gera o PDF
+                // 3. Gera PDF
                 const el = document.getElementById('folha-a4'); 
                 el.style.display='block';
                 
@@ -293,39 +307,65 @@
         }
 
         async function preencher(t) {
+            // -- PREENCHE CABEÇALHO --
             document.getElementById('pdf-nome').innerText = t.cliente;
             document.getElementById('pdf-data').innerText = t.dataLegivel;
             document.getElementById('pdf-email').innerText = t.contato?.email || '-';
             document.getElementById('pdf-tel').innerText = t.contato?.telefone || '-';
-            
-            const cid = t.contato?.cidade; const uf = t.contato?.estado;
-            const local = (cid && uf) ? `${cid} - ${uf}` : (cid || uf || '-');
+            const local = (t.contato?.cidade) ? `${t.contato.cidade} - ${t.contato.estado}` : '-';
             document.getElementById('pdf-local').innerText = local;
 
-            const min = Math.floor((t.duracao||0)/60); const sec = (t.duracao||0)%60;
-            const badge = document.getElementById('pdf-tempo');
-            if(t.duracao < 90) { badge.className = 'pdf-badge badge-warn'; badge.innerText = `⚠️ Tempo: ${min}m ${sec}s (Rápido)`; }
-            else { badge.className = 'pdf-badge badge-ok'; badge.innerText = `⏱️ Tempo: ${min}m ${sec}s (Adequado)`; }
+            // -- 1. CALCULA E PREENCHE PARTE 1 (NATUREZA) --
+            let pontuacao = { FOGO: 0, AR: 0, AGUA: 0, TERRA: 0 };
+            
+            // Loop para somar pontos (usa chaves tipo 'fogo_1', 'terra_2' do banco)
+            Object.keys(t.respostas).forEach(key => {
+                const val = t.respostas[key];
+                if(key.includes('fogo')) pontuacao.FOGO += val;
+                if(key.includes('ar')) pontuacao.AR += val;
+                if(key.includes('agua')) pontuacao.AGUA += val;
+                if(key.includes('terra')) pontuacao.TERRA += val;
+            });
 
+            // Atualiza Gráfico de Barras HTML
+            const maxPts = 25; // 5 perguntas x 5 pts
+            document.getElementById('bar-fogo').style.height = `${(pontuacao.FOGO/maxPts)*100}%`;
+            document.getElementById('score-fogo').innerText = pontuacao.FOGO;
+            
+            document.getElementById('bar-ar').style.height = `${(pontuacao.AR/maxPts)*100}%`;
+            document.getElementById('score-ar').innerText = pontuacao.AR;
+            
+            document.getElementById('bar-agua').style.height = `${(pontuacao.AGUA/maxPts)*100}%`;
+            document.getElementById('score-agua').innerText = pontuacao.AGUA;
+            
+            document.getElementById('bar-terra').style.height = `${(pontuacao.TERRA/maxPts)*100}%`;
+            document.getElementById('score-terra').innerText = pontuacao.TERRA;
+
+            // -- 2. PREENCHE PARTE 2 (ESTILOS E VISUAL) --
             const estilo = processar(t.respostas, true);
             const cats = processar(t.respostas, false);
 
-            const topEstilo = Object.keys(estilo).reduce((a,b)=>estilo[a]>estilo[b]?a:b);
+            // Define estilo dominante
+            let topEstilo = 'Moderno';
+            let maxVal = 0;
+            for(const [k,v] of Object.entries(estilo)) { if(v>maxVal){ maxVal=v; topEstilo=k; } }
+
             document.getElementById('pdf-estilo-titulo').innerText = topEstilo.toUpperCase();
             document.getElementById('pdf-estilo-titulo').style.color = CORES_ESTILO[topEstilo] || '#000';
             setDesc(topEstilo);
+            
+            // Gera Donut do Estilo
             document.getElementById('img-estilo').src = await gerarGrafico(estilo, true);
             document.getElementById('legend-estilo').innerHTML = gerarLegendaHTML(estilo, true);
 
+            // Gera Grades Menores
             const gVis = document.getElementById('grid-visao'); gVis.innerHTML='';
             const gTato = document.getElementById('grid-tato-som'); gTato.innerHTML='';
-            const gBio = document.getElementById('grid-bio'); gBio.innerHTML='';
-            const gLife = document.getElementById('grid-lifestyle'); gLife.innerHTML='';
+            const gBio = document.getElementById('grid-bio-life'); gBio.innerHTML='';
 
             await preencherGrupo(GRP_VISAO, cats, gVis);
             await preencherGrupo(GRP_TATO_SOM, cats, gTato);
-            await preencherGrupo(GRP_BIO, cats, gBio);
-            await preencherGrupo(GRP_LIFESTYLE, cats, gLife);
+            await preencherGrupo(GRP_BIO_LIFE, cats, gBio);
         }
 
         async function preencherGrupo(keys, dados, container) {
@@ -371,17 +411,20 @@
 
         function processar(resp, onlyEstilo) {
             const res = {};
+            // Filtra chaves que contêm "::" (são da Parte 2)
             for(const [k,v] of Object.entries(resp)) {
-                const [cat, opt] = k.split('::');
-                const isEst = cat.includes('ESTILO');
-                if(onlyEstilo && isEst) {
-                    if(opt.includes('Moderno')||opt.includes('Minimalista')) res['Moderno']=(res['Moderno']||0)+v;
-                    if(opt.includes('Clássico')||opt.includes('Tradicional')) res['Clássico']=(res['Clássico']||0)+v;
-                    if(opt.includes('Industrial')||opt.includes('Urbano')) res['Industrial']=(res['Industrial']||0)+v;
-                    if(opt.includes('Rústico')||opt.includes('Madeira')) res['Rústico']=(res['Rústico']||0)+v;
-                    if(opt.includes('Natural')||opt.includes('Biofilia')) res['Natural']=(res['Natural']||0)+v;
-                } else if (!onlyEstilo && !isEst) {
-                    let c = cat; if(!res[c]) res[c]={}; res[c][opt] = (res[c][opt]||0)+v;
+                if(k.includes('::')) {
+                    const [cat, opt] = k.split('::');
+                    const isEst = cat.includes('ESTILO');
+                    if(onlyEstilo && isEst) {
+                        if(opt.includes('Moderno')||opt.includes('Minimalista')) res['Moderno']=(res['Moderno']||0)+v;
+                        if(opt.includes('Clássico')||opt.includes('Tradicional')) res['Clássico']=(res['Clássico']||0)+v;
+                        if(opt.includes('Industrial')||opt.includes('Urbano')) res['Industrial']=(res['Industrial']||0)+v;
+                        if(opt.includes('Rústico')||opt.includes('Madeira')) res['Rústico']=(res['Rústico']||0)+v;
+                        if(opt.includes('Natural')||opt.includes('Biofilia')) res['Natural']=(res['Natural']||0)+v;
+                    } else if (!onlyEstilo && !isEst) {
+                        let c = cat; if(!res[c]) res[c]={}; res[c][opt] = (res[c][opt]||0)+v;
+                    }
                 }
             }
             return res;
