@@ -6,6 +6,7 @@
     <title>Painel NeuroBriefing</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
@@ -20,59 +21,75 @@
 
         /* --- PDF A4 (LAYOUT RÍGIDO) --- */
         #folha-a4 {
-            width: 210mm; height: 296mm; 
-            background: white; margin: 20px auto; 
-            padding: 8mm 10mm; /* Margem Otimizada */
-            box-sizing: border-box; display: none; position: relative;
-            font-family: 'Montserrat', sans-serif; color: #2c3e50;
-            overflow: hidden; 
+            width: 210mm; 
+            height: 296mm; /* Altura A4 padrão */
+            background: white; 
+            margin: 20px auto; 
+            /* CORREÇÃO 1: Aumentei o topo para 15mm para não cortar */
+            padding: 15mm 10mm 10mm 10mm; 
+            box-sizing: border-box; 
+            display: none; 
+            position: relative;
+            font-family: 'Montserrat', sans-serif; 
+            color: #2c3e50;
+            overflow: hidden; /* Garante 1 página */
         }
 
         /* HEADER */
         .header { display: flex; justify-content: space-between; border-bottom: 2px solid #2c3e50; padding-bottom: 5px; margin-bottom: 10px; }
-        .logo h1 { margin: 0; font-size: 22pt; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+        .logo h1 { margin: 0; font-size: 20pt; font-weight: 900; letter-spacing: -1px; line-height: 1; }
         .logo span { font-size: 7pt; letter-spacing: 3px; text-transform: uppercase; color: #7f8c8d; }
-        .meta { text-align: right; font-size: 7pt; line-height: 1.3; color: #555; }
+        .meta { text-align: right; font-size: 6.5pt; line-height: 1.3; color: #555; }
 
-        /* TÍTULOS */
+        /* SEÇÕES */
         .sec-title { 
-            background: #2c3e50; color: white; padding: 3px 8px; 
+            background: #2c3e50; color: white; padding: 2px 8px; 
             font-size: 8pt; font-weight: 700; text-transform: uppercase; 
-            margin-bottom: 8px; display: flex; justify-content: space-between;
+            margin-bottom: 6px; display: flex; justify-content: space-between;
         }
 
         /* 1. PERFIL */
-        .row-perfil { display: flex; gap: 8px; margin-bottom: 10px; }
-        .card-perfil { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px; text-align: center; position: relative; background: #fff; }
+        .row-perfil { display: flex; gap: 8px; margin-bottom: 8px; }
+        .card-perfil { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 4px; text-align: center; position: relative; background: #fff; }
         .predominante { border: 2px solid #f1c40f; background: #fffcf5; }
-        .badge { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); background: #f1c40f; color: #000; font-size: 5pt; font-weight: 800; padding: 1px 6px; border-radius: 3px; text-transform: uppercase; display: none; }
+        .badge { position: absolute; top: -5px; left: 50%; transform: translateX(-50%); background: #f1c40f; color: #000; font-size: 4.5pt; font-weight: 800; padding: 1px 5px; border-radius: 3px; text-transform: uppercase; display: none; }
         .predominante .badge { display: block; }
-        .cp-val { font-size: 14pt; font-weight: 900; margin-bottom: 2px; line-height: 1; }
-        .bar-container { width: 100%; height: 5px; background: #eee; border-radius: 2px; overflow: hidden; }
+        .cp-val { font-size: 12pt; font-weight: 900; margin-bottom: 2px; line-height: 1; }
+        .bar-container { width: 100%; height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
         .bar-fill { height: 100%; }
 
-        /* 2. ESTILO */
-        .style-row { display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; border-left: 5px solid #2c3e50; padding: 8px 15px; margin-bottom: 12px; }
-        .st-name { font-size: 18pt; font-weight: 900; text-transform: uppercase; line-height: 1; color: #2c3e50; }
-        
-        /* 3 & 4. GRIDS (COM LEGENDA CLARA) */
-        .grid-charts { 
-            display: grid; grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-            gap: 8px; row-gap: 10px; margin-bottom: 10px;
+        /* 2. ESTILO (Com Legenda Lateral) */
+        .style-row { 
+            display: flex; align-items: center; justify-content: space-between; 
+            background: #f8f9fa; border-left: 5px solid #2c3e50; 
+            padding: 8px 10px; margin-bottom: 10px; height: 75px;
         }
-        /* Ajuste para caber Lifestyle na mesma pagina */
-        .grid-charts.life { margin-bottom: 0; }
+        .st-info { width: 50%; }
+        .st-name { font-size: 16pt; font-weight: 900; text-transform: uppercase; line-height: 1; color: #2c3e50; }
+        
+        /* Container Gráfico + Legenda */
+        .st-visual { width: 45%; display: flex; align-items: center; gap: 10px; }
+        .st-chart { width: 60px; height: 60px; }
+        .st-legend { font-size: 5.5pt; }
 
-        .chart-card { text-align: center; border: 1px solid #f0f0f0; border-radius: 4px; padding: 4px; }
-        .cc-title { font-size: 6pt; font-weight: 700; color: #7f8c8d; text-transform: uppercase; margin-bottom: 2px; white-space: nowrap; overflow: hidden; }
+        /* 3 & 4. GRIDS (Compactados) */
+        .grid-charts { 
+            display: grid; grid-template-columns: repeat(4, 1fr); 
+            gap: 6px; row-gap: 8px; margin-bottom: 8px;
+        }
+        /* Lifestyle: 5 colunas para caber na altura */
+        .grid-charts.life { grid-template-columns: repeat(5, 1fr); margin-bottom: 0; }
+
+        .chart-card { text-align: center; border: 1px solid #f4f4f4; border-radius: 4px; padding: 3px; }
+        .cc-title { font-size: 5.5pt; font-weight: 700; color: #7f8c8d; text-transform: uppercase; margin-bottom: 2px; white-space: nowrap; overflow: hidden; }
         
-        .canvas-box { position: relative; height: 55px; width: 100%; display: flex; justify-content: center; }
+        .canvas-box { position: relative; height: 45px; width: 100%; display: flex; justify-content: center; }
         
-        /* NOVA LEGENDA HTML (INFALÍVEL) */
-        .cc-legend { margin-top: 2px; text-align: left; padding-left: 4px; display: flex; flex-direction: column; justify-content: center; min-height: 25px; }
-        .leg-row { display: flex; align-items: center; line-height: 1.1; margin-bottom: 1px; }
-        .leg-box { width: 5px; height: 5px; margin-right: 3px; flex-shrink: 0; }
-        .leg-txt { font-size: 5pt; color: #333; font-weight: 600; white-space: nowrap; }
+        /* LEGENDA HTML EMBAIXO DO DONUT */
+        .cc-legend { margin-top: 2px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .leg-row { display: flex; align-items: center; line-height: 1; margin-bottom: 1px; }
+        .leg-box { width: 4px; height: 4px; margin-right: 2px; flex-shrink: 0; border-radius: 50%; }
+        .leg-txt { font-size: 4.5pt; color: #333; font-weight: 600; white-space: nowrap; }
 
         /* CORES */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -80,7 +97,11 @@
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
 
-        .footer { position: absolute; bottom: 6mm; left: 10mm; right: 10mm; border-top: 1px solid #ccc; padding-top: 4px; text-align: center; font-size: 6pt; color: #999; }
+        .footer { 
+            position: absolute; bottom: 6mm; left: 10mm; right: 10mm; 
+            border-top: 1px solid #ccc; padding-top: 3px; 
+            text-align: center; font-size: 5.5pt; color: #999; 
+        }
     </style>
 </head>
 <body>
@@ -107,23 +128,24 @@
             </div>
         </div>
 
-        <div class="sec-title">1. Perfil Comportamental (Natureza) <span style="font-size:6pt; font-weight:400;">Escala 0-25 pts</span></div>
+        <div class="sec-title">1. Perfil Comportamental (Arquétipo) <span style="font-size:6pt; font-weight:400;">Escala 0-25 pts</span></div>
         <div class="row-perfil">
-            <div class="card-perfil" id="cp-fogo"><span class="badge">Predominante</span><span style="font-size:7pt; font-weight:800; color:#e74c3c;">FOGO</span><span class="cp-val c-fogo" id="v-fogo">0</span><div class="bar-container"><div class="bar-fill bg-fogo" id="b-fogo"></div></div></div>
-            <div class="card-perfil" id="cp-ar"><span class="badge">Predominante</span><span style="font-size:7pt; font-weight:800; color:#3498db;">AR</span><span class="cp-val c-ar" id="v-ar">0</span><div class="bar-container"><div class="bar-fill bg-ar" id="b-ar"></div></div></div>
-            <div class="card-perfil" id="cp-agua"><span class="badge">Predominante</span><span style="font-size:7pt; font-weight:800; color:#2980b9;">ÁGUA</span><span class="cp-val c-agua" id="v-agua">0</span><div class="bar-container"><div class="bar-fill bg-agua" id="b-agua"></div></div></div>
-            <div class="card-perfil" id="cp-terra"><span class="badge">Predominante</span><span style="font-size:7pt; font-weight:800; color:#27ae60;">TERRA</span><span class="cp-val c-terra" id="v-terra">0</span><div class="bar-container"><div class="bar-fill bg-terra" id="b-terra"></div></div></div>
+            <div class="card-perfil" id="cp-fogo"><span class="badge">Predominante</span><span style="font-size:6pt; font-weight:800; color:#e74c3c;">FOGO</span><span class="cp-val c-fogo" id="v-fogo">0</span><div class="bar-container"><div class="bar-fill bg-fogo" id="b-fogo"></div></div></div>
+            <div class="card-perfil" id="cp-ar"><span class="badge">Predominante</span><span style="font-size:6pt; font-weight:800; color:#3498db;">AR</span><span class="cp-val c-ar" id="v-ar">0</span><div class="bar-container"><div class="bar-fill bg-ar" id="b-ar"></div></div></div>
+            <div class="card-perfil" id="cp-agua"><span class="badge">Predominante</span><span style="font-size:6pt; font-weight:800; color:#2980b9;">ÁGUA</span><span class="cp-val c-agua" id="v-agua">0</span><div class="bar-container"><div class="bar-fill bg-agua" id="b-agua"></div></div></div>
+            <div class="card-perfil" id="cp-terra"><span class="badge">Predominante</span><span style="font-size:6pt; font-weight:800; color:#27ae60;">TERRA</span><span class="cp-val c-terra" id="v-terra">0</span><div class="bar-container"><div class="bar-fill bg-terra" id="b-terra"></div></div></div>
         </div>
 
         <div class="sec-title">2. Identidade Visual</div>
         <div class="style-row">
-            <div style="width:65%;">
+            <div class="st-info">
                 <div style="font-size:6pt; font-weight:700; color:#999; text-transform:uppercase;">Tendência Identificada</div>
                 <div class="st-name" id="p-estilo">EM ANÁLISE</div>
-                <div style="font-size:7pt; font-style:italic; color:#555;" id="p-estilo-desc">...</div>
+                <div style="font-size:6.5pt; font-style:italic; color:#555;" id="p-estilo-desc">...</div>
             </div>
-            <div style="width:30%; height:70px; display:flex; justify-content:center;">
-                <canvas id="chart-estilo"></canvas>
+            <div class="st-visual">
+                <div class="st-chart"><canvas id="chart-estilo"></canvas></div>
+                <div class="st-legend" id="legend-estilo"></div>
             </div>
         </div>
 
@@ -133,7 +155,9 @@
         <div class="sec-title">4. Lifestyle & Estratégia</div>
         <div class="grid-charts life" id="grid-lifestyle"></div>
 
-        <div class="footer">Relatório gerado automaticamente • Documento Confidencial</div>
+        <div class="footer">
+            Relatório gerado automaticamente pela plataforma NeuroBriefing Intelligence. Documento Confidencial de Uso Profissional.
+        </div>
     </div>
 
     <script>
@@ -199,7 +223,7 @@
                 }
             });
 
-            // Trava e Preenchimento
+            // Trava
             ['FOGO','AR','AGUA','TERRA'].forEach(k => pts[k] = Math.min(pts[k], 25));
             
             document.getElementById('p-nome').innerText = dados.cliente;
@@ -226,7 +250,9 @@
             let maiorEstilo = Object.keys(estiloData).length > 0 ? Object.keys(estiloData).reduce((a,b)=>estiloData[a]>estiloData[b]?a:b) : "EM ANÁLISE";
             document.getElementById('p-estilo').innerText = maiorEstilo.toUpperCase();
             document.getElementById('p-estilo-desc').innerText = getDescEstilo(maiorEstilo);
-            renderChart('chart-estilo', estiloData, true);
+            
+            // Renderiza Estilo com Legenda Lateral
+            renderChart('chart-estilo', estiloData, true, 'legend-estilo');
 
             // Grids
             renderGrid(visualGroups, 'grid-sensorial');
@@ -240,13 +266,13 @@
                     margin: 0,
                     filename: `NeuroBriefing_${dados.cliente}.pdf`,
                     image: { type: 'jpeg', quality: 1 },
-                    html2canvas: { scale: 4, useCORS: true }, // SCALE 4 PARA MÁXIMA NITIDEZ
+                    html2canvas: { scale: 4, useCORS: true }, 
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 await html2pdf().set(opt).from(el).save();
                 el.style.display = 'none';
                 btn.innerText = originalTxt; btn.disabled = false;
-            }, 1000);
+            }, 800);
         }
 
         function renderGrid(groups, containerId) {
@@ -257,7 +283,7 @@
                 const items = groups[cat];
                 const total = items.reduce((a,b)=>a+b.val, 0);
                 
-                // HTML LEGENDA MANUAL (Para não cortar)
+                // LEGENDA HTML MANUAL
                 let leg = '';
                 let dataMap = {};
                 items.forEach((it, i) => {
@@ -271,20 +297,38 @@
                 div.className = 'chart-card';
                 div.innerHTML = `<div class="cc-title">${cat}</div><div class="canvas-box"><canvas id="${safeId}"></canvas></div><div class="cc-legend">${leg}</div>`;
                 grid.appendChild(div);
-                renderChart(safeId, dataMap, false);
+                renderChart(safeId, dataMap, false, null);
             });
         }
 
-        function renderChart(id, dataObj, isMain) {
-            new Chart(document.getElementById(id), {
+        function renderChart(id, dataObj, isMain, legendId) {
+            const ctx = document.getElementById(id);
+            if(!ctx) return;
+            const labels = Object.keys(dataObj);
+            const vals = Object.values(dataObj);
+            const total = vals.reduce((a,b)=>a+b, 0);
+
+            // Se for grafico principal, cria a legenda lateral
+            if(isMain && legendId) {
+                const legBox = document.getElementById(legendId);
+                let html = '';
+                labels.forEach((l, i) => {
+                    const color = PALETA[i % PALETA.length];
+                    const pct = Math.round((vals[i]/total)*100);
+                    html += `<div style="display:flex;align-items:center;margin-bottom:2px;"><div style="width:6px;height:6px;background:${color};margin-right:4px;"></div><span style="font-weight:600;color:#333;">${l} (${pct}%)</span></div>`;
+                });
+                legBox.innerHTML = html;
+            }
+            
+            new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: Object.keys(dataObj),
-                    datasets: [{ data: Object.values(dataObj), backgroundColor: PALETA, borderWidth: 0 }]
+                    labels: labels,
+                    datasets: [{ data: vals, backgroundColor: PALETA, borderWidth: 0 }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false, animation: false,
-                    cutout: isMain?'60%':'70%',
+                    cutout: isMain?'65%':'65%',
                     plugins: { legend: { display: false }, tooltip: { enabled: false } }
                 }
             });
