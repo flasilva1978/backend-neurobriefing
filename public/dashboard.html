@@ -3,108 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel NeuroBriefing Pro</title>
+    <title>Painel NeuroBriefing</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ESTILOS DO SISTEMA --- */
-        body { font-family: 'Segoe UI', sans-serif; background: #eef2f5; margin: 0; padding: 20px; }
-        .sys-container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        /* --- ESTILOS DO SISTEMA (TELA) --- */
+        body { font-family: 'Segoe UI', sans-serif; background: #e0e5ec; margin: 0; padding: 20px; }
+        .painel { max-width: 1100px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        th { text-align: left; padding: 10px; background: #f0f2f5; border-bottom: 2px solid #ccc; }
+        th { text-align: left; padding: 12px; background: #2c3e50; color: white; }
         td { padding: 10px; border-bottom: 1px solid #eee; }
-        .btn { background: #e74c3c; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn { background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
-        /* --- PDF ONE PAGE (A4 EXATO) --- */
+        /* --- PDF ONE PAGE (A4 RÍGIDO) --- */
         #folha-a4 {
-            width: 210mm; height: 296mm; /* A4 */
-            background: white; margin: 20px auto; padding: 10mm 12mm;
-            box-sizing: border-box; display: none; position: relative;
-            font-family: 'Montserrat', sans-serif; color: #2c3e50;
-            overflow: hidden; 
+            width: 210mm; height: 296mm; /* A4 Exato */
+            background: white; 
+            margin: 40px auto; 
+            padding: 10mm 12mm;
+            box-sizing: border-box; 
+            display: none; /* Invisível até gerar */
+            position: relative;
+            font-family: 'Montserrat', sans-serif; 
+            color: #2c3e50;
+            overflow: hidden; /* Corta qualquer coisa que passe de 1 pag */
         }
 
         /* HEADER */
-        .header { display: flex; justify-content: space-between; border-bottom: 3px solid #2c3e50; padding-bottom: 8px; margin-bottom: 15px; }
-        .logo h1 { margin: 0; font-size: 20pt; font-weight: 900; letter-spacing: -1px; }
-        .logo span { font-size: 7pt; letter-spacing: 3px; text-transform: uppercase; color: #7f8c8d; }
-        .meta { text-align: right; font-size: 7pt; line-height: 1.3; color: #555; }
-        .meta strong { color: #000; font-size: 8pt; text-transform: uppercase; }
+        .header { display: flex; justify-content: space-between; border-bottom: 3px solid #2c3e50; padding-bottom: 10px; margin-bottom: 15px; }
+        .logo h1 { margin: 0; font-size: 24pt; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+        .logo span { font-size: 8pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; }
+        .meta { text-align: right; font-size: 7.5pt; line-height: 1.4; color: #555; }
+        .meta strong { color: #000; font-size: 8.5pt; }
 
-        /* TITULOS */
+        /* SEÇÃO 1: PERFIL (BARRAS) */
         .sec-title { 
-            font-size: 8pt; font-weight: 800; text-transform: uppercase; color: #fff; background: #2c3e50;
-            padding: 4px 8px; margin: 12px 0 8px 0; border-radius: 2px; display: flex; justify-content: space-between;
+            background: #2c3e50; color: white; padding: 4px 10px; 
+            font-size: 9pt; font-weight: 700; text-transform: uppercase; 
+            margin-bottom: 10px; display: flex; justify-content: space-between;
         }
-        .scale-info { font-size: 6pt; font-weight: 400; opacity: 0.8; text-transform: none; padding-top: 2px; }
-
-        /* 1. PERFIL (BARRAS) */
-        .row-perfil { display: flex; gap: 8px; justify-content: space-between; margin-bottom: 10px; }
+        
+        .row-perfil { display: flex; gap: 15px; margin-bottom: 15px; }
         .card-perfil { 
-            flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 6px; 
-            text-align: center; position: relative; background: #fdfdfd;
+            flex: 1; border: 1px solid #eee; border-radius: 6px; padding: 8px; 
+            text-align: center; position: relative; background: #fff;
         }
-        .card-perfil.pred { border: 2px solid #f1c40f; background: #fffdf0; }
+        /* Destaque Predominante */
+        .predominante { border: 2px solid #f1c40f; background: #fffcf5; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.2); }
         .badge { 
-            position: absolute; top: -6px; left: 50%; transform: translateX(-50%); 
-            background: #f1c40f; color: #000; font-size: 5pt; font-weight: 800; 
-            padding: 1px 5px; border-radius: 3px; text-transform: uppercase; display: none;
+            position: absolute; top: -8px; left: 50%; transform: translateX(-50%); 
+            background: #f1c40f; color: #000; font-size: 6pt; font-weight: 800; 
+            padding: 2px 8px; border-radius: 4px; text-transform: uppercase; display: none;
         }
-        .card-perfil.pred .badge { display: block; }
+        .predominante .badge { display: block; }
+
+        .cp-title { font-size: 8pt; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .cp-val { font-size: 18pt; font-weight: 900; margin-bottom: 5px; display: block; line-height: 1; }
         
-        .cp-head { font-size: 7pt; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 4px; }
-        .cp-val { font-size: 14pt; font-weight: 900; margin-top: 4px; display: block; }
-        .bar-bg { width: 10px; height: 35px; background: #eee; margin: 0 auto; border-radius: 5px; position: relative; display: flex; align-items: flex-end; }
-        .bar-fill { width: 100%; border-radius: 5px; }
+        .bar-container { width: 100%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; }
 
-        /* 2. ESTILO (ATUALIZADO COM GRÁFICO) */
-        .style-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .style-info { width: 60%; }
-        .style-chart-box { width: 120px; height: 80px; display: flex; justify-content: center; } /* Container do gráfico */
+        /* SEÇÃO 2: ESTILO (BANNER) */
+        .style-row { 
+            display: flex; align-items: center; justify-content: space-between; 
+            background: #f8f9fa; border-left: 6px solid #2c3e50; 
+            padding: 12px 20px; margin-bottom: 20px; 
+        }
+        .st-name { font-size: 22pt; font-weight: 900; text-transform: uppercase; line-height: 1; color: #2c3e50; }
+        .st-desc { width: 60%; font-size: 8pt; font-style: italic; text-align: right; color: #555; }
+
+        /* SEÇÃO 3: GRÁFICOS SENSORIAIS (GRID 4 COLUNAS) */
+        /* Reduzi para 4 colunas para a legenda caber e não cortar */
+        .grid-charts { 
+            display: grid; grid-template-columns: repeat(4, 1fr); 
+            gap: 12px; row-gap: 18px; margin-bottom: 20px;
+        }
+        .chart-item { text-align: center; }
+        .ci-title { 
+            font-size: 6.5pt; font-weight: 700; color: #7f8c8d; text-transform: uppercase; 
+            border-bottom: 1px solid #eee; margin-bottom: 5px; padding-bottom: 2px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .canvas-box { position: relative; height: 80px; width: 100%; display: flex; justify-content: center; }
         
-        .sb-title { font-size: 22pt; font-weight: 900; text-transform: uppercase; color: #c0392b; margin: 0; line-height: 1; }
-        .sb-desc { font-size: 8pt; color: #555; margin-top: 5px; }
+        /* Legendas Claras */
+        .ci-legend { margin-top: 5px; text-align: left; padding-left: 5px; }
+        .leg-row { display: flex; align-items: center; margin-bottom: 2px; }
+        .leg-dot { width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; flex-shrink: 0; }
+        .leg-txt { font-size: 5.5pt; color: #333; line-height: 1; white-space: nowrap; }
 
-        /* 3 e 4. GRIDS DE DONUTS (Chart.js) */
-        .grid-donuts { 
-            display: grid; grid-template-columns: repeat(4, 1fr); /* 4 por linha para caber legenda */
-            gap: 10px; row-gap: 15px; margin-bottom: 15px;
-        }
-        .d-card { text-align: center; border: 1px solid #f9f9f9; border-radius: 4px; padding: 5px; }
-        .d-title { 
-            font-size: 6pt; font-weight: 700; color: #7f8c8d; text-transform: uppercase; 
-            margin-bottom: 5px; white-space: nowrap; overflow: hidden; border-bottom: 1px solid #eee;
-        }
-        .chart-box { position: relative; height: 70px; width: 100%; } /* Altura fixa para o Canvas */
-
-        /* RODAPÉ */
-        .footer { 
-            position: absolute; bottom: 8mm; left: 12mm; right: 12mm; 
-            border-top: 1px solid #eee; padding-top: 5px; 
-            text-align: center; font-size: 6pt; color: #bbb; 
+        /* SEÇÃO 4: LIFESTYLE (BOXES) */
+        .grid-life { display: flex; gap: 10px; }
+        .col-life { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 8px; background: #fff; }
+        .cl-head { font-size: 7pt; font-weight: 800; color: #e74c3c; text-transform: uppercase; margin-bottom: 6px; display: block; border-bottom: 1px dashed #eee; }
+        .life-tag { 
+            display: inline-block; font-size: 6pt; color: #333; 
+            background: #f4f4f4; padding: 2px 5px; border-radius: 3px; 
+            margin: 0 2px 2px 0; border: 1px solid #e0e0e0;
         }
 
-        /* Helpers */
-        canvas { max-width: 100%; max-height: 100%; }
+        /* CORES */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
+
+        /* FOOTER */
+        .footer { 
+            position: absolute; bottom: 8mm; left: 12mm; right: 12mm; 
+            border-top: 1px solid #ccc; padding-top: 6px; 
+            text-align: center; font-size: 6pt; color: #999; 
+        }
     </style>
 </head>
 <body>
 
-    <div class="sys-container">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <h2 style="margin:0;">Dashboard NeuroBriefing</h2>
-            <button class="btn" onclick="location.reload()" style="background:#333;">Atualizar</button>
+    <div class="painel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="margin:0;">Dashboard Administrativo</h2>
+            <button class="btn" onclick="location.reload()" style="background:#333;">Atualizar Lista</button>
         </div>
         <table>
-            <thead><tr><th>Data</th><th>Cliente</th><th>Email</th><th>Celular</th><th>Tempo</th><th>Ação</th></tr></thead>
+            <thead><tr><th>Data</th><th>Cliente</th><th>Email</th><th>Celular</th><th>Tempo</th><th>Relatório</th></tr></thead>
             <tbody id="lista"><tr><td colspan="6">Carregando...</td></tr></tbody>
         </table>
     </div>
@@ -123,53 +148,73 @@
             </div>
         </div>
 
-        <div class="sec-title">1. Perfil Comportamental (Arquétipo) <span class="scale-info">Escala 0-25 pts</span></div>
+        <div class="sec-title">1. Perfil Comportamental (Natureza) <span>Escala 0-25 pts</span></div>
         <div class="row-perfil">
-            <div class="card-perfil" id="cp-fogo"><span class="badge">Predominante</span><span class="cp-head c-fogo">Fogo</span><span class="cp-val c-fogo" id="v-fogo">0</span><div class="bar-bg"><div class="bar-fill bg-fogo" id="b-fogo"></div></div></div>
-            <div class="card-perfil" id="cp-ar"><span class="badge">Predominante</span><span class="cp-head c-ar">Ar</span><span class="cp-val c-ar" id="v-ar">0</span><div class="bar-bg"><div class="bar-fill bg-ar" id="b-ar"></div></div></div>
-            <div class="card-perfil" id="cp-agua"><span class="badge">Predominante</span><span class="cp-head c-agua">Água</span><span class="cp-val c-agua" id="v-agua">0</span><div class="bar-bg"><div class="bar-fill bg-agua" id="b-agua"></div></div></div>
-            <div class="card-perfil" id="cp-terra"><span class="badge">Predominante</span><span class="cp-head c-terra">Terra</span><span class="cp-val c-terra" id="v-terra">0</span><div class="bar-bg"><div class="bar-fill bg-terra" id="b-terra"></div></div></div>
+            <div class="card-perfil" id="cp-fogo">
+                <span class="badge">Predominante</span>
+                <span class="cp-title c-fogo">Fogo</span>
+                <span class="cp-val c-fogo" id="v-fogo">0</span>
+                <div class="bar-container"><div class="bar-fill bg-fogo" id="b-fogo"></div></div>
+            </div>
+            <div class="card-perfil" id="cp-ar">
+                <span class="badge">Predominante</span>
+                <span class="cp-title c-ar">Ar</span>
+                <span class="cp-val c-ar" id="v-ar">0</span>
+                <div class="bar-container"><div class="bar-fill bg-ar" id="b-ar"></div></div>
+            </div>
+            <div class="card-perfil" id="cp-agua">
+                <span class="badge">Predominante</span>
+                <span class="cp-title c-agua">Água</span>
+                <span class="cp-val c-agua" id="v-agua">0</span>
+                <div class="bar-container"><div class="bar-fill bg-agua" id="b-agua"></div></div>
+            </div>
+            <div class="card-perfil" id="cp-terra">
+                <span class="badge">Predominante</span>
+                <span class="cp-title c-terra">Terra</span>
+                <span class="cp-val c-terra" id="v-terra">0</span>
+                <div class="bar-container"><div class="bar-fill bg-terra" id="b-terra"></div></div>
+            </div>
         </div>
 
         <div class="sec-title">2. Identidade Visual Predominante</div>
         <div class="style-row">
-            <div class="style-info">
-                <div style="font-size:7pt; text-transform:uppercase; color:#777;">Tendência Identificada</div>
-                <div class="sb-title" id="p-estilo">EM ANÁLISE</div>
-                <div class="sb-desc" id="p-estilo-desc">...</div>
-            </div>
-            <div class="style-chart-box">
-                <canvas id="chart-estilo"></canvas>
-            </div>
+            <div class="st-name" id="p-estilo">EM ANÁLISE</div>
+            <div class="st-desc" id="p-estilo-desc">...</div>
         </div>
 
         <div class="sec-title">3. Mapa Sensorial & Preferências</div>
-        <div class="grid-donuts" id="grid-sensorial"></div>
+        <div class="grid-charts" id="grid-sensorial">
+            </div>
 
         <div class="sec-title">4. Lifestyle & Estratégia</div>
-        <div class="grid-donuts" id="grid-lifestyle"></div>
+        <div class="grid-life">
+            <div class="col-life" id="ls-social"><span class="cl-head">Social & Família</span></div>
+            <div class="col-life" id="ls-hobbies"><span class="cl-head">Hobbies & Lazer</span></div>
+            <div class="col-life" id="ls-invest"><span class="cl-head">Investimento</span></div>
+        </div>
 
-        <div class="footer">NeuroBriefing Intelligence • Relatório Confidencial de Uso Profissional</div>
+        <div class="footer">Relatório gerado via NeuroBriefing Intelligence. Documento Confidencial.</div>
     </div>
 
     <script>
+        // CONFIGURAÇÕES GERAIS
+        const PALETA = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e'];
         let dadosAPI = [];
-        const CORES = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e'];
 
         async function init() {
             try {
                 const req = await fetch('/api/relatorios');
                 dadosAPI = await req.json();
-                renderTable();
+                renderLista();
             } catch(e) { console.error(e); }
         }
 
-        function renderTable() {
+        function renderLista() {
             const tbody = document.getElementById('lista');
             tbody.innerHTML = '';
             [...dadosAPI].reverse().forEach((d, i) => {
                 const idx = dadosAPI.length - 1 - i;
-                const tempo = d.duracao ? Math.floor(d.duracao/60)+'m '+ (d.duracao%60)+'s' : '-';
+                const tempo = d.duracao ? `${Math.floor(d.duracao/60)}m ${d.duracao%60}s` : '-';
                 tbody.innerHTML += `
                     <tr>
                         <td>${new Date(d.data).toLocaleDateString()}</td>
@@ -185,50 +230,56 @@
         async function gerarPDF(index, btn) {
             const dados = dadosAPI[index];
             if(!dados) return;
-            const txt = btn.innerText; btn.innerText = "⏳"; btn.disabled = true;
+            const txt = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
 
-            // --- 1. MATEMÁTICA E AGRUPAMENTO ---
+            // --- 1. MATEMÁTICA SEGURA ---
             let pts = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
-            let estiloContagem = {}; // Para o gráfico de estilo
+            let estilo = "Em Análise";
             let visualGroups = {}; 
-            let lifestyleGroups = {};
+            let lifeGroups = { social:[], hobbies:[], invest:[] };
 
             const resp = dados.respostas || {};
 
             Object.keys(resp).forEach(k => {
-                let val = parseInt(resp[k], 10) || 0; // CORREÇÃO 515 -> 20
+                // CORREÇÃO CRÍTICA: Transforma "15" (string) em 15 (numero)
+                let val = parseInt(resp[k], 10);
+                if(isNaN(val)) val = 0;
 
+                // Perfil
                 if(k.includes('fogo')) pts.FOGO += val;
                 if(k.includes('ar')) pts.AR += val;
                 if(k.includes('agua')) pts.AGUA += val;
                 if(k.includes('terra')) pts.TERRA += val;
 
-                // Captura TODOS os estilos para fazer o gráfico
-                if(k.includes('ESTILO') && val > 0) {
-                    let nomeEstilo = k.split('::')[1];
-                    estiloContagem[nomeEstilo] = val;
-                }
+                // Estilo
+                if(k.includes('ESTILO') && val > 0) estilo = k.split('::')[1];
 
+                // Categorização
                 if(k.includes('::') && val > 0 && !k.includes('ESTILO')) {
                     const [catRaw, opt] = k.split('::');
                     let cat = catRaw.replace('SENSORIAL: ','').replace('PSICOLOGIA DAS ','').replace('CONEXÃO COM A ','');
                     if(cat=='AUDIÇÃO') cat='ACÚSTICA';
                     if(cat=='BIOLÓGICO/TÉRMICO') cat='TÉRMICO';
 
-                    if(['ILUMINAÇÃO','CORES','FORMAS','ACÚSTICA','TATO','AROMAS','TÉRMICO','GOURMET','BIOFILIA','NATUREZA','MEMÓRIA OLFATIVA','MEMÓRIAS AFETIVAS','CRONOTIPO'].some(x=>cat.includes(x))) {
+                    // Separa Visual (Gráficos) de Lifestyle (Texto)
+                    const visualKeys = ['ILUMINAÇÃO','CORES','FORMAS','ACÚSTICA','TATO','AROMAS','TÉRMICO','GOURMET','BIOFILIA','NATUREZA','MEMÓRIA OLFATIVA','MEMÓRIAS AFETIVAS','CRONOTIPO'];
+                    
+                    if(visualKeys.some(x => cat.includes(x))) {
                         if(!visualGroups[cat]) visualGroups[cat] = [];
                         visualGroups[cat].push({ opt, val });
                     } else {
-                        if(!lifestyleGroups[cat]) lifestyleGroups[cat] = [];
-                        lifestyleGroups[cat].push({ opt, val });
+                        // Lifestyle
+                        if(cat.includes('FASE') || cat.includes('PRIVACIDADE')) lifeGroups.social.push(opt);
+                        else if(cat.includes('HOBBIES') || cat.includes('PERSONALIDADE')) lifeGroups.hobbies.push(opt);
+                        else lifeGroups.invest.push(opt);
                     }
                 }
             });
 
-            // Trava Max 25
+            // Trava Máxima de 25 pontos
             ['FOGO','AR','AGUA','TERRA'].forEach(k => pts[k] = Math.min(pts[k], 25));
 
-            // --- 2. RENDER HTML ---
+            // --- 2. PREENCHIMENTO ---
             document.getElementById('p-nome').innerText = dados.cliente;
             document.getElementById('p-data').innerText = new Date(dados.data).toLocaleString();
             document.getElementById('p-local').innerText = dados.contato?.cidade || '-';
@@ -237,124 +288,107 @@
             const min = Math.floor((dados.duracao||0)/60); const sec = (dados.duracao||0)%60;
             document.getElementById('p-tempo').innerText = `${min}m ${sec}s`;
 
-            // Perfil
+            // Barras Perfil
             ['fogo','ar','agua','terra'].forEach(id => {
                 const k = id.toUpperCase();
-                document.getElementById('cp-'+id).classList.remove('pred');
+                document.getElementById('cp-'+id).classList.remove('predominante');
                 document.getElementById('v-'+id).innerText = pts[k];
-                document.getElementById('b-'+id).style.height = (pts[k]/25*100)+'%';
+                document.getElementById('b-'+id).style.width = (pts[k]/25*100)+'%'; // Altura na verdade (width no css, mas visualmente barra)
             });
             const maxVal = Math.max(pts.FOGO, pts.AR, pts.AGUA, pts.TERRA);
-            if(pts.FOGO===maxVal) document.getElementById('cp-fogo').classList.add('pred');
-            if(pts.AR===maxVal) document.getElementById('cp-ar').classList.add('pred');
-            if(pts.AGUA===maxVal) document.getElementById('cp-agua').classList.add('pred');
-            if(pts.TERRA===maxVal) document.getElementById('cp-terra').classList.add('pred');
+            if(pts.FOGO===maxVal) document.getElementById('cp-fogo').classList.add('predominante');
+            if(pts.AR===maxVal) document.getElementById('cp-ar').classList.add('predominante');
+            if(pts.AGUA===maxVal) document.getElementById('cp-agua').classList.add('predominante');
+            if(pts.TERRA===maxVal) document.getElementById('cp-terra').classList.add('predominante');
 
-            // Estilo Dominante e Gráfico
-            let maiorEstilo = Object.keys(estiloContagem).reduce((a, b) => estiloContagem[a] > estiloContagem[b] ? a : b, "Em Análise");
-            document.getElementById('p-estilo').innerText = maiorEstilo;
-            setDesc(maiorEstilo);
-            renderChart('chart-estilo', estiloContagem, true); // Gráfico de Estilo
+            // Estilo
+            document.getElementById('p-estilo').innerText = estilo.toUpperCase();
+            setDescricaoEstilo(estilo);
 
-            // Renderiza Grades
-            renderGrid(visualGroups, 'grid-sensorial');
-            renderGrid(lifestyleGroups, 'grid-lifestyle');
-
-            // --- 3. EXPORTAR ---
-            const element = document.getElementById('folha-a4');
-            element.style.display = 'block';
+            // GERAÇÃO DOS GRÁFICOS CHART.JS (Resolução)
+            const grid = document.getElementById('grid-sensorial');
+            grid.innerHTML = '';
             
-            // Pequeno delay para os gráficos Chart.js renderizarem
+            // Loop assíncrono para gerar cada gráfico
+            for (const cat of Object.keys(visualGroups)) {
+                const items = visualGroups[cat];
+                const total = items.reduce((a,b)=>a+b.val, 0);
+                
+                // Cria container
+                const div = document.createElement('div');
+                div.className = 'chart-item';
+                const canvasId = `chart-${cat.replace(/\s/g,'')}`;
+                
+                // HTML da Legenda
+                let legHTML = '';
+                items.forEach((it, i) => {
+                    const pct = Math.round((it.val/total)*100);
+                    const color = PALETA[i % PALETA.length];
+                    legHTML += `<div class="leg-row"><span class="leg-dot" style="background:${color}"></span><span class="leg-txt">${it.opt} (${pct}%)</span></div>`;
+                });
+
+                div.innerHTML = `<div class="ci-title">${cat}</div><div class="canvas-box"><canvas id="${canvasId}"></canvas></div><div class="ci-legend">${legHTML}</div>`;
+                grid.appendChild(div);
+
+                // Renderiza Chart.js
+                new Chart(document.getElementById(canvasId), {
+                    type: 'doughnut',
+                    data: {
+                        labels: items.map(i=>i.opt),
+                        datasets: [{
+                            data: items.map(i=>i.val),
+                            backgroundColor: PALETA,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false, // Importante para PDF
+                        cutout: '65%',
+                        plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                    }
+                });
+            }
+
+            // Lifestyle Texto
+            const fillLife = (id, arr) => {
+                const el = document.getElementById(id);
+                // Salva titulo, limpa tags
+                const tit = el.querySelector('.cl-head').outerHTML;
+                el.innerHTML = tit + arr.map(x=>`<span class="life-tag">${x}</span>`).join('');
+            };
+            fillLife('ls-social', lifeGroups.social);
+            fillLife('ls-hobbies', lifeGroups.hobbies);
+            fillLife('ls-invest', lifeGroups.invest);
+
+            // --- 3. EXPORTAR PDF ---
+            // Pequeno delay para garantir que o Canvas renderizou
             setTimeout(async () => {
+                const element = document.getElementById('folha-a4');
+                element.style.display = 'block';
+                
                 const opt = {
                     margin: 0,
                     filename: `NeuroBriefing_${dados.cliente}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
+                    image: { type: 'jpeg', quality: 1 },
+                    html2canvas: { scale: 3, useCORS: true }, // Scale 3 = Alta Definição
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
+
                 await html2pdf().set(opt).from(element).save();
                 element.style.display = 'none';
                 btn.innerText = txt; btn.disabled = false;
             }, 500);
         }
 
-        // Renderiza Mini Gráficos (Chart.js)
-        function renderGrid(groups, containerId) {
-            const grid = document.getElementById(containerId);
-            grid.innerHTML = '';
-            
-            Object.keys(groups).forEach((cat, idx) => {
-                const canvasId = `chart-${containerId}-${idx}`;
-                // Cria HTML do Card
-                const div = document.createElement('div');
-                div.className = 'd-card';
-                div.innerHTML = `<div class="d-title">${cat}</div><div class="chart-box"><canvas id="${canvasId}"></canvas></div>`;
-                grid.appendChild(div);
-
-                // Prepara dados para o Chart.js
-                let dataObj = {};
-                groups[cat].forEach(i => dataObj[i.opt] = i.val);
-                renderChart(canvasId, dataObj, false);
-            });
-        }
-
-        function renderChart(canvasId, dataObj, isMain) {
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            const labels = Object.keys(dataObj);
-            const values = Object.values(dataObj);
-            
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: values,
-                        backgroundColor: CORES,
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '60%',
-                    plugins: {
-                        legend: { 
-                            display: true, 
-                            position: 'right', 
-                            labels: { 
-                                boxWidth: 6, 
-                                font: { size: isMain ? 7 : 5 },
-                                generateLabels: (chart) => {
-                                    const data = chart.data;
-                                    if (data.labels.length && data.datasets.length) {
-                                        return data.labels.map((label, i) => {
-                                            const val = data.datasets[0].data[i];
-                                            const total = data.datasets[0].data.reduce((a,b)=>a+b,0);
-                                            const pct = Math.round((val/total)*100) + '%';
-                                            return {
-                                                text: `${label} ${pct}`,
-                                                fillStyle: data.datasets[0].backgroundColor[i],
-                                                index: i
-                                            };
-                                        });
-                                    }
-                                    return [];
-                                }
-                            } 
-                        }
-                    }
-                }
-            });
-        }
-
-        function setDesc(estilo) {
+        function setDescricaoEstilo(estilo) {
             const map = {
-                'Moderno': 'Funcionalidade, linhas retas e clareza visual.',
+                'Moderno': 'Linhas retas, funcionalidade e clareza visual.',
                 'Clássico': 'Simetria, nobreza e valorização da história.',
                 'Industrial': 'Metais, concreto aparente e estética urbana.',
                 'Rústico': 'Materiais naturais brutos, texturas e calor.',
-                'Natural': 'Conexão profunda com a natureza.'
+                'Natural': 'Conexão profunda com a natureza e materiais orgânicos.'
             };
             let desc = "Perfil personalizado.";
             for(let k in map) { if(estilo.includes(k)) desc = map[k]; }
