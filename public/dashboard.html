@@ -2,102 +2,106 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dossiê NeuroBriefing</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- RESET GERAL --- */
+        /* --- RESET --- */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
-        body { background: #555; margin: 0; padding: 20px; font-family: 'Montserrat', sans-serif; }
+        body { font-family: 'Montserrat', sans-serif; background: #555; margin: 0; padding: 20px; }
         
-        /* --- CONTROLE DE TELA (Não sai no PDF) --- */
-        .painel { max-width: 900px; margin: 0 auto 30px auto; background: white; padding: 20px; border-radius: 8px; }
-        .btn-update { background: #2c3e50; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        /* PAINEL (TELA) */
+        .painel { max-width: 900px; margin: 0 auto 30px auto; background: white; padding: 20px; border-radius: 8px; font-family: sans-serif; }
+        .btn { background: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+        td, th { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
 
-        /* --- ESTRUTURA PDF (A4 RÍGIDO) --- */
-        #pdf-container { display: none; }
+        /* --- PDF A4 FIXO --- */
+        #pdf-root { display: none; }
         
         .page {
             width: 210mm;
-            height: 296mm; /* -1mm para evitar bug de página extra */
+            height: 296mm; /* Margem de segurança para não criar folha em branco */
             background: white;
             position: relative;
-            overflow: hidden; /* Corta qualquer excesso */
+            overflow: hidden;
             margin: 0 auto;
+            page-break-after: always;
             padding: 0;
-            page-break-after: always; /* Força quebra */
         }
         .page:last-child { page-break-after: avoid; }
 
-        /* --- PÁGINA 1: CAPA --- */
-        .capa-bg {
+        /* PÁGINA 1: CAPA */
+        .capa-box {
             width: 100%; height: 100%;
-            background: #fdfdfd;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border: 20mm solid #fff; /* Margem branca */
-            outline: 2px solid #2c3e50; /* Borda decorativa */
-            outline-offset: -10mm;
+            border: 20mm solid #f4f6f8; /* Moldura */
+            text-align: center;
         }
-        .logo-main { font-size: 40pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -2px; }
-        .tagline { font-size: 10pt; letter-spacing: 5px; text-transform: uppercase; color: #888; margin-bottom: 80px; }
+        .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
+        .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
         
-        .info-block { text-align: center; margin-bottom: 40px; width: 80%; }
-        .lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 5px; }
-        .val { font-size: 18pt; font-weight: 600; color: #333; margin-bottom: 30px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .c-info { width: 80%; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 40px 0; margin-bottom: 50px; }
+        .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
+        .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
 
-        .footer-capa { position: absolute; bottom: 20mm; font-size: 8pt; color: #ccc; text-transform: uppercase; letter-spacing: 1px; }
+        .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
 
-        /* --- PÁGINA 2: MÓDULO 1 --- */
-        .content-pad { padding: 15mm; height: 100%; display: flex; flex-direction: column; }
-        
-        /* Header Modulo */
-        .mod-head { 
-            display: flex; justify-content: space-between; align-items: flex-end; 
-            border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px;
-        }
-        .mh-title { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
-        .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; }
+        /* PÁGINA 2: CONTEÚDO */
+        .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
+
+        /* Header Módulo */
+        .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 15px; }
+        .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
+        .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
+        .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
 
         /* Gráfico Compacto */
-        .chart-row { display: flex; gap: 15px; margin-bottom: 20px; height: 60px; }
-        .c-card { flex: 1; background: #f9f9f9; border: 1px solid #eee; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 50px; }
+        .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
-        .cc-lbl { font-size: 9pt; font-weight: 800; text-transform: uppercase; }
-        .cc-val { font-size: 14pt; font-weight: 900; }
-        .cc-bar { width: 100%; height: 6px; background: #ddd; border-radius: 3px; overflow: hidden; }
+        .cc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
+        .cc-val { font-size: 11pt; font-weight: 900; }
+        .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
 
-        /* Box Principal (Resultado) */
-        .res-box { 
-            flex: 1; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 20px; 
+        /* Box Principal (Vencedor) */
+        .win-box { 
+            flex: 1; /* Ocupa o espaço disponível restante com inteligência */
+            border: 1px solid #ccc; border-radius: 6px; overflow: hidden; 
+            display: flex; flex-direction: column; margin-bottom: 15px; 
         }
-        .rb-head { padding: 12px 20px; background: #333; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .rb-el { font-size: 16pt; font-weight: 800; text-transform: uppercase; }
-        .rb-st { font-size: 9pt; opacity: 0.9; text-transform: uppercase; font-weight: 600; }
+        .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
+        .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
+
+        .wb-body { display: flex; flex: 1; }
+        .wb-col { flex: 1; padding: 12px; }
+        .wb-div { border-right: 1px dashed #ddd; background: #fdfdfd; }
+
+        /* Texto dentro do box */
+        .info-row { margin-bottom: 10px; }
+        .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .iv { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.25; }
+
+        .lst-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 4px; border-bottom: 1px solid #eee; padding-bottom: 2px; }
+        .lst-ul { padding: 0; margin: 0 0 10px 0; list-style: none; }
+        .lst-li { font-size: 8pt; color: #555; padding-left: 8px; position: relative; margin-bottom: 2px; }
+        .lst-li::before { content: "•"; position: absolute; left: 0; color: #ccc; }
+
+        /* Ranking Box */
+        .rank-wrap { background: #f8f9fa; border: 1px solid #eee; border-radius: 6px; padding: 10px 15px; margin-bottom: 5px; }
+        .rk-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; }
         
-        .rb-body { display: flex; flex: 1; }
-        .rb-col { flex: 1; padding: 15px; }
-        .rb-div { border-right: 1px dashed #eee; }
+        .rk-item { display: flex; justify-content: space-between; font-size: 8.5pt; border-bottom: 1px dashed #ddd; padding: 3px 0; }
+        .rk-item:last-child { border: none; }
+        .rk-n { font-weight: 700; color: #333; }
+        .rk-d { font-size: 7.5pt; color: #777; font-style: italic; }
 
-        /* Itens Texto */
-        .t-grp { margin-bottom: 12px; }
-        .t-lbl { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; margin-bottom: 2px; display: block; }
-        .t-val { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.3; }
-
-        .l-tit { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 4px; margin-bottom: 8px; }
-        .l-ul { margin: 0; padding: 0; list-style: none; margin-bottom: 15px; }
-        .l-li { font-size: 8.5pt; color: #555; margin-bottom: 3px; padding-left: 10px; border-left: 2px solid #eee; }
-
-        /* Ranking Rodapé */
-        .rank-box { background: #f8f9fa; border: 1px solid #eee; border-radius: 6px; padding: 15px; }
-        .rk-row { display: flex; justify-content: space-between; font-size: 9pt; border-bottom: 1px dashed #ddd; padding: 4px 0; }
-        .rk-row:last-child { border: none; }
-        .rk-tit { font-weight: 800; font-size: 9pt; color: #2c3e50; margin-bottom: 5px; text-transform: uppercase; }
+        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
 
         /* Cores */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -111,102 +115,96 @@
 
     <div class="painel">
         <div class="header-painel">
-            <h2>Gestor de Dossiês</h2>
-            <button class="btn-update" onclick="location.reload()">Atualizar</button>
+            <h2>Dashboard NeuroBriefing</h2>
+            <button class="btn" onclick="location.reload()">Atualizar Lista</button>
         </div>
         <table>
-            <thead><tr><th>Data</th><th>Cliente</th><th>Status</th><th>Ação</th></tr></thead>
-            <tbody id="lista"><tr><td colspan="4">Carregando...</td></tr></tbody>
+            <thead><tr><th>Data</th><th>Cliente</th><th>Ação</th></tr></thead>
+            <tbody id="lista"><tr><td colspan="3">Buscando dados...</td></tr></tbody>
         </table>
     </div>
 
-    <div id="pdf-container">
+    <div id="pdf-root">
         
         <div class="page">
-            <div class="capa-bg">
-                <div class="logo-main">NEUROBRIEFING</div>
-                <div class="tagline">Diagnóstico Integral & Estratégia</div>
-                
-                <div class="info-block" style="margin-top: 50px;">
-                    <span class="lbl">Cliente Analisado</span>
-                    <span class="val" id="cp-nome">-</span>
+            <div class="capa-box">
+                <div class="c-logo">NEUROBRIEFING</div>
+                <div class="c-sub">Diagnóstico Integral & Estratégia</div>
+                <div class="c-info">
+                    <span class="ci-lbl">Cliente Analisado</span>
+                    <span class="ci-val" id="cp-nome">-</span>
                     
-                    <span class="lbl">Arquiteto Responsável</span>
-                    <span class="val" id="cp-arq">-</span>
+                    <span class="ci-lbl">Arquiteto Responsável</span>
+                    <span class="ci-val" id="cp-arq">-</span>
                     
-                    <span class="lbl">Data do Diagnóstico</span>
-                    <span class="val" id="cp-data">-</span>
+                    <span class="ci-lbl">Data do Diagnóstico</span>
+                    <span class="ci-val" id="cp-data">-</span>
                 </div>
-                
-                <div class="footer-capa">Documento Confidencial • Uso Profissional</div>
+                <div class="c-foot">Documento Confidencial de Uso Profissional</div>
             </div>
         </div>
 
         <div class="page">
-            <div class="content-pad">
+            <div class="mod-content">
                 
-                <div class="mod-head">
+                <div class="m-head">
                     <div>
-                        <div class="mh-title">IDENTIDADE DO SER</div>
+                        <div class="mh-tit">IDENTIDADE DO SER</div>
                         <div class="mh-sub">Mapeamento de Arquétipo & Temperamento</div>
                     </div>
-                    <div style="font-size:30pt; font-weight:900; color:#eee;">01</div>
+                    <div class="mh-num">01</div>
                 </div>
 
-                <div class="chart-row">
-                    <div class="c-card">
+                <div class="charts">
+                    <div class="cc-box">
                         <div class="cc-top"><span class="cc-lbl c-fogo">Fogo</span><span class="cc-val c-fogo" id="v-fogo">0</span></div>
                         <div class="cc-bar"><div class="cc-fill bg-fogo" id="b-fogo"></div></div>
                     </div>
-                    <div class="c-card">
+                    <div class="cc-box">
                         <div class="cc-top"><span class="cc-lbl c-ar">Ar</span><span class="cc-val c-ar" id="v-ar">0</span></div>
                         <div class="cc-bar"><div class="cc-fill bg-ar" id="b-ar"></div></div>
                     </div>
-                    <div class="c-card">
+                    <div class="cc-box">
                         <div class="cc-top"><span class="cc-lbl c-agua">Água</span><span class="cc-val c-agua" id="v-agua">0</span></div>
                         <div class="cc-bar"><div class="cc-fill bg-agua" id="b-agua"></div></div>
                     </div>
-                    <div class="c-card">
+                    <div class="cc-box">
                         <div class="cc-top"><span class="cc-lbl c-terra">Terra</span><span class="cc-val c-terra" id="v-terra">0</span></div>
                         <div class="cc-bar"><div class="cc-fill bg-terra" id="b-terra"></div></div>
                     </div>
                 </div>
 
-                <div class="res-box">
-                    <div class="rb-head" id="rb-header">
-                        <div class="rb-el" id="txt-el">ELEMENTO -</div>
-                        <div class="rb-st" id="txt-st">-</div>
+                <div class="win-box">
+                    <div class="wb-head" id="wb-head">
+                        <div class="wb-tit" id="txt-el">ELEMENTO -</div>
+                        <div class="wb-sty" id="txt-tit">-</div>
                     </div>
-                    <div class="rb-body">
-                        <div class="rb-col rb-div">
-                            <div class="t-grp"><span class="t-lbl">⚡ Energia</span><span class="t-val" id="t-en">-</span></div>
-                            <div class="t-grp"><span class="t-lbl">👤 Para Quem</span><span class="t-val" id="t-quem">-</span></div>
+                    <div class="wb-body">
+                        <div class="wb-col wb-div">
+                            <div class="info-row"><span class="il">⚡ Energia</span><span class="iv" id="t-en">-</span></div>
+                            <div class="info-row"><span class="il">👤 Para Quem</span><span class="iv" id="t-qm">-</span></div>
                             <div style="display:flex; gap:10px;">
-                                <div class="t-grp" style="flex:1"><span class="t-lbl">📋 Perfil</span><span class="t-val" id="t-perf">-</span></div>
-                                <div class="t-grp" style="flex:1"><span class="t-lbl">🧬 Temp.</span><span class="t-val" id="t-temp">-</span></div>
+                                <div class="info-row" style="flex:1"><span class="il">📋 Perfil</span><span class="iv" id="t-perf">-</span></div>
+                                <div class="info-row" style="flex:1"><span class="il">🧬 Temp.</span><span class="iv" id="t-temp">-</span></div>
                             </div>
-                            <div class="t-grp"><span class="t-lbl">🎭 Arquétipos</span><span class="t-val" id="t-arq">-</span></div>
+                            <div class="info-row"><span class="il">🎭 Arquétipos</span><span class="iv" id="t-arq">-</span></div>
                         </div>
-                        <div class="rb-col">
-                            <div class="l-tit">🏠 Estilos</div>
-                            <ul class="l-ul" id="l-est"></ul>
+                        <div class="wb-col">
+                            <div class="lst-tit">🏠 Estilos Incluídos</div>
+                            <ul class="lst-ul" id="l-est"></ul>
                             
-                            <div class="l-tit">✨ Características</div>
-                            <ul class="l-ul" id="l-car"></ul>
+                            <div class="lst-tit">✨ Características</div>
+                            <ul class="lst-ul" id="l-car"></ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="rank-box">
-                    <div class="rk-tit">📊 Leitura do Diagnóstico</div>
-                    <div id="rank-list">
-                        </div>
+                <div class="rank-wrap">
+                    <div class="rk-tit">📊 Leitura do Diagnóstico (Ranking)</div>
+                    <div id="rank-list"></div>
                 </div>
 
-                <div style="margin-top:auto; font-size:7pt; color:#ccc; text-align:center; padding-top:10px; border-top:1px solid #eee;">
-                    Relatório gerado por NeuroBriefing Intelligence
-                </div>
-
+                <div class="ft-note">Relatório gerado pela plataforma NeuroBriefing Intelligence</div>
             </div>
         </div>
 
@@ -215,10 +213,10 @@
     <script>
         // --- BASE DE DADOS ---
         const DB = {
-            FOGO: { id: 'FOGO', cor: '#e74c3c', titulo: 'Estilos de Ativação', energia: 'Ação · Direção · Intensidade', quem: 'Executor-colérico', perfil: 'Executor', temp: 'Colérico', arq: 'Herói · Governante', estilos: ['Contemporâneo', 'Industrial', 'Moderno Urbano'], carac: ['Linhas retas', 'Materiais fortes', 'Contraste'] },
-            AR: { id: 'AR', cor: '#3498db', titulo: 'Estilos de Expressão', energia: 'Expressão · Movimento', quem: 'Comunicador-sanguíneo', perfil: 'Comunicador', temp: 'Sanguíneo', arq: 'Amante · Explorador', estilos: ['Escandinavo', 'Boho Chic', 'Eclético'], carac: ['Luz natural', 'Layout fluido', 'Criatividade'] },
-            AGUA: { id: 'ÁGUA', cor: '#2980b9', titulo: 'Estilos de Acolhimento', energia: 'Sensibilidade · Ritmo', quem: 'Planejador-fleumático', perfil: 'Planejador', temp: 'Fleumático', arq: 'Cuidador · Inocente', estilos: ['Japandi', 'Orgânico', 'Wabi-Sabi'], carac: ['Texturas suaves', 'Paleta neutra', 'Conforto'] },
-            TERRA: { id: 'TERRA', cor: '#27ae60', titulo: 'Estilos de Estrutura', energia: 'Estrutura · Constância', quem: 'Analista-melancólico', perfil: 'Analista', temp: 'Melancólico', arq: 'Sábio · Criador', estilos: ['Clássico', 'Neoclássico', 'Moderno Elegante'], carac: ['Simetria', 'Materiais nobres', 'Sobriedade'] }
+            FOGO: { id:'FOGO', cor:'#e74c3c', titulo:'Estilos de Ativação', energia:'Ação · Direção · Intensidade', quem:'Pessoas executor-coléricas', perfil:'Executor', temp:'Colérico', arq:'Herói · Governante', estilos:['Contemporâneo', 'Industrial', 'Moderno Urbano'], carac:['Linhas retas', 'Materiais fortes', 'Contraste'] },
+            AR: { id:'AR', cor:'#3498db', titulo:'Estilos de Expressão', energia:'Expressão · Conexão', quem:'Comunicador-sanguíneo', perfil:'Comunicador', temp:'Sanguíneo', arq:'Amante · Explorador', estilos:['Escandinavo', 'Boho Chic', 'Eclético'], carac:['Luz natural', 'Layout fluido', 'Criatividade'] },
+            AGUA: { id:'ÁGUA', cor:'#2980b9', titulo:'Estilos de Acolhimento', energia:'Sensibilidade · Ritmo', quem:'Planejador-fleumático', perfil:'Planejador', temp:'Fleumático', arq:'Cuidador · Inocente', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], carac:['Texturas suaves', 'Paleta neutra', 'Conforto'] },
+            TERRA: { id:'TERRA', cor:'#27ae60', titulo:'Estilos de Estrutura', energia:'Estrutura · Constância', quem:'Analista-melancólico', perfil:'Analista', temp:'Melancólico', arq:'Sábio · Criador', estilos:['Clássico', 'Neoclássico', 'Moderno Elegante'], carac:['Simetria', 'Materiais nobres', 'Sobriedade'] }
         };
 
         let dadosAPI = [];
@@ -227,21 +225,21 @@
             try {
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 dadosAPI = await req.json();
-                renderLista();
+                renderTable();
             } catch(e) { console.error(e); }
         }
 
-        function renderLista() {
+        function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             [...dadosAPI].reverse().forEach((d, i) => {
                 const idx = dadosAPI.length - 1 - i;
-                t.innerHTML += `<tr><td>${new Date(d.data).toLocaleDateString()}</td><td><strong>${d.cliente}</strong></td><td>OK</td><td style="text-align:right"><button class="btn-update" onclick="printPDF(${idx}, this)">PDF</button></td></tr>`;
+                t.innerHTML += `<tr><td>${new Date(d.data).toLocaleDateString()}</td><td><strong>${d.cliente}</strong></td><td style="text-align:right"><button class="btn" onclick="makePDF(${idx}, this)">PDF</button></td></tr>`;
             });
         }
 
-        async function printPDF(index, btn) {
+        async function makePDF(index, btn) {
             const d = dadosAPI[index];
-            const old = btn.innerText; btn.innerText = "..."; btn.disabled = true;
+            const original = btn.innerText; btn.innerText = "..."; btn.disabled = true;
 
             // 1. CAPA
             document.getElementById('cp-nome').innerText = d.cliente;
@@ -259,76 +257,75 @@
                 if(k.includes('terra')) p.TERRA += v;
             });
 
-            // 3. ORDENAÇÃO (MAIOR -> MENOR)
+            // 3. ORDENAR (Decrescente)
             const sorted = [
                 { k:'FOGO', ...DB.FOGO, val: p.FOGO },
                 { k:'AR', ...DB.AR, val: p.AR },
                 { k:'AGUA', ...DB.AGUA, val: p.AGUA },
                 { k:'TERRA', ...DB.TERRA, val: p.TERRA }
-            ].sort((a,b) => b.val - a.val); // Descendente
+            ].sort((a,b) => b.val - a.val);
 
             const win = sorted[0];
 
-            // 4. PREENCHER DADOS
+            // 4. PREENCHER GRÁFICO (Barras Fixas)
             ['FOGO','AR','AGUA','TERRA'].forEach(id => {
                 const s = p[id];
-                const kid = id.toLowerCase() === 'água' ? 'agua' : id.toLowerCase(); // Correção ID
-                // No HTML os IDs são v-fogo, v-ar, v-agua, v-terra
-                // Aqui ajustamos para pegar o ID correto do objeto DB se necessário, ou usar switch simples
-                let domId = id.toLowerCase();
-                if(id === 'ÁGUA') domId = 'agua';
-
-                document.getElementById(`v-${domId}`).innerText = s;
-                document.getElementById(`b-${domId}`).style.width = Math.min((s/25)*100, 100)+'%';
+                const cleanId = id.toLowerCase() === 'água' ? 'agua' : id.toLowerCase();
+                document.getElementById(`v-${cleanId}`).innerText = s;
+                document.getElementById(`b-${cleanId}`).style.width = Math.min((s/25)*100, 100) + '%';
             });
 
-            // Box Principal
-            const head = document.getElementById('rb-header');
-            head.style.backgroundColor = win.cor;
+            // 5. PREENCHER BOX VENCEDOR
+            document.getElementById('wb-head').style.backgroundColor = win.cor;
             document.getElementById('txt-el').innerText = `ELEMENTO ${win.id}`;
-            document.getElementById('txt-st').innerText = win.titulo;
+            document.getElementById('txt-tit').innerText = win.titulo;
             
             document.getElementById('t-en').innerText = win.energia;
-            document.getElementById('t-quem').innerText = win.quem;
+            document.getElementById('t-qm').innerText = win.quem;
             document.getElementById('t-perf').innerText = win.perfil;
             document.getElementById('t-temp').innerText = win.temp;
             document.getElementById('t-arq').innerText = win.arq;
+            
+            document.getElementById('l-est').innerHTML = win.estilos.map(i => `<li>${i}</li>`).join('');
+            document.getElementById('l-car').innerHTML = win.carac.map(i => `<li>${i}</li>`).join('');
 
-            document.getElementById('l-est').innerHTML = win.estilos.map(i=>`<li>${i}</li>`).join('');
-            document.getElementById('l-car').innerHTML = win.carac.map(i=>`<li>${i}</li>`).join('');
-
-            // Ranking Lista (Loop no sorted array)
-            const rkContainer = document.getElementById('rank-list');
-            rkContainer.innerHTML = '';
+            // 6. RANKING DINÂMICO (Maior -> Menor)
+            const rkList = document.getElementById('rank-list');
+            rkList.innerHTML = '';
+            
             sorted.forEach((item, i) => {
                 let label = "Neutro";
-                if(i===0) label = "Dominante (Energia Atual)";
+                if(i===0) label = "Dominante (Energia Predominante)";
                 if(i===1) label = "Secundário (Recurso Acessível)";
                 if(i===3) label = "Menos Acessado (A Desenvolver)";
                 
-                rkContainer.innerHTML += `
-                    <div class="rk-row">
-                        <span style="font-weight:700; color:#333;">${i+1}º ${item.id} <span style="font-weight:400; color:#777;">(${item.val} pts)</span></span>
-                        <span style="font-size:8pt; color:#555;">${label}</span>
+                rkList.innerHTML += `
+                    <div class="rk-item">
+                        <span class="rk-n">${i+1}º ${item.id} <span style="font-weight:400; color:#555">(${item.val} pts)</span></span>
+                        <span class="rk-d">${label}</span>
                     </div>
                 `;
             });
 
-            // 5. GERAR PDF
-            const el = document.getElementById('pdf-container');
+            // 7. GERAR PDF (Configuração Anti-Faixa Preta)
+            const el = document.getElementById('pdf-root');
             el.style.display = 'block';
-            
-            const opt = {
-                margin: 0,
-                filename: `Dossie_${d.cliente}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            
-            await html2pdf().set(opt).from(el).save();
-            el.style.display = 'none';
-            btn.innerText = old; btn.disabled = false;
+            window.scrollTo(0, 0); // Correção crítica para html2canvas
+
+            setTimeout(async () => {
+                const opt = {
+                    margin: 0,
+                    filename: `Dossie_${d.cliente}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, scrollY: 0, useCORS: true }, // scrollY:0 remove faixas pretas
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                await html2pdf().set(opt).from(el).save();
+                
+                el.style.display = 'none';
+                btn.innerText = original; btn.disabled = false;
+            }, 800);
         }
 
         init();
