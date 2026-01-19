@@ -3,120 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossiê NeuroBriefing | Identidade do Ser</title>
+    <title>Dossiê NeuroBriefing</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ESTRUTURA GERAL --- */
-        body { font-family: 'Montserrat', sans-serif; background: #eef2f5; margin: 0; padding: 20px; color: #333; }
-        .painel { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        /* --- RESET E GERAL --- */
+        * { box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: #e0e5ec; margin: 0; padding: 20px; color: #333; }
+        
+        /* Painel de Controle (Tela) */
+        .painel { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
         .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .btn { background: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 10pt; }
+        .btn { background: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 10pt; transition: 0.2s; }
+        .btn:hover { background: #34495e; }
         table { width: 100%; border-collapse: collapse; font-size: 10pt; }
         th { text-align: left; padding: 10px; background: #34495e; color: white; }
         td { padding: 10px; border-bottom: 1px solid #eee; }
 
-        /* --- PDF A4 (DIAGRAMAÇÃO RÍGIDA) --- */
-        #relatorio-pdf { width: 210mm; background: white; margin: 20px auto; display: none; }
+        /* --- PDF A4 (ESTRUTURA RÍGIDA) --- */
+        #relatorio-pdf { display: none; margin: 0 auto; }
         
-        .pagina { 
+        .page { 
             width: 210mm; 
-            height: 296mm; /* Altura exata A4 */
-            padding: 12mm 15mm; /* Margens equilibradas */
-            box-sizing: border-box; 
-            position: relative; 
+            height: 296mm; /* Altura A4 padrão */
             background: white; 
-            overflow: hidden; /* Garante que nada vaze */
+            position: relative; 
+            overflow: hidden; /* Corta excessos */
+            page-break-after: always; /* Força nova página */
+            padding: 0; /* Controle total interno */
         }
+        .page:last-child { page-break-after: auto; }
 
-        /* HEADER DO RELATÓRIO */
-        .header-pdf { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
-        .brand { font-size: 24pt; font-weight: 900; color: #2c3e50; letter-spacing: -1px; line-height: 1; }
-        .sub-brand { font-size: 7.5pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; display: block; margin-top: 3px; }
+        /* --- PÁGINA 1: CAPA --- */
+        .capa-container { 
+            height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            border: 15mm solid white; /* Moldura branca */
+        }
+        .capa-logo { font-size: 40pt; font-weight: 900; letter-spacing: -2px; color: #2c3e50; margin-bottom: 10px; }
+        .capa-sub { font-size: 10pt; letter-spacing: 5px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 60px; }
         
-        .meta-info { 
-            display: flex; justify-content: center; gap: 20px; margin-top: 10px; 
-            font-size: 8pt; color: #555; background: #f4f6f8; 
-            padding: 6px 15px; border-radius: 20px; display: inline-flex;
-        }
+        .capa-info { text-align: center; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 30px 50px; }
+        .ci-label { font-size: 8pt; font-weight: 700; color: #95a5a6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; }
+        .ci-val { font-size: 16pt; font-weight: 600; color: #2c3e50; margin-bottom: 20px; display: block; }
+        .ci-val:last-child { margin-bottom: 0; }
 
-        /* SEÇÃO TÍTULO */
-        .sec-title { 
-            background: #2c3e50; color: white; padding: 6px 12px; border-radius: 4px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 15px; 
-        }
-        .sec-txt { font-size: 11pt; font-weight: 700; text-transform: uppercase; }
-        .sec-sub { font-size: 7pt; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+        .capa-footer { position: absolute; bottom: 15mm; font-size: 8pt; color: #bdc3c7; letter-spacing: 1px; }
 
-        /* GRÁFICO DE BARRAS (PERFIL) */
-        .grid-perfil { display: flex; gap: 8px; margin-bottom: 20px; }
-        .card-perfil { flex: 1; border: 1px solid #e0e0e0; border-radius: 5px; padding: 8px; text-align: center; background: #fff; }
-        .cp-label { font-size: 8pt; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; display: block; }
-        .cp-val { font-size: 16pt; font-weight: 900; display: block; line-height: 1; }
-        .bar-container { width: 100%; height: 5px; background: #eee; border-radius: 3px; margin-top: 5px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 3px; }
-
-        /* --- QUADRO PRINCIPAL (DOMINANTE) --- */
-        .box-dominante { 
-            border: 1px solid #ddd; border-radius: 8px; overflow: hidden; 
-            margin-bottom: 15px; background: #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        }
-        .dom-header { 
-            padding: 10px 15px; color: white; display: flex; align-items: center; justify-content: space-between;
-        }
-        .dom-title { font-size: 14pt; font-weight: 900; text-transform: uppercase; }
-        .dom-subtitle { font-size: 9pt; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* LAYOUT 2 COLUNAS (DIAGRAMAÇÃO) */
-        .dom-body { display: flex; }
-        .dom-col { padding: 15px; }
-        .dom-left { width: 45%; border-right: 1px dashed #eee; background: #fcfcfc; }
-        .dom-right { width: 55%; background: #fff; }
-
-        /* ITENS DE TEXTO */
-        .info-group { margin-bottom: 10px; }
-        .info-label { font-size: 7pt; font-weight: 700; color: #95a5a6; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .info-val { font-size: 9.5pt; font-weight: 600; color: #333; line-height: 1.3; }
+        /* --- PÁGINA 2: MÓDULO 1 --- */
+        .mod-container { padding: 15mm; height: 100%; display: flex; flex-direction: column; }
         
-        .list-title { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
-        .custom-list { padding: 0; margin: 0 0 12px 0; list-style: none; }
-        .custom-list li { 
-            font-size: 8.5pt; color: #555; margin-bottom: 3px; padding-left: 12px; position: relative; line-height: 1.3;
+        /* Cabeçalho do Módulo */
+        .mod-header { 
+            display: flex; justify-content: space-between; align-items: flex-end; 
+            border-bottom: 3px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; 
         }
-        .custom-list li::before { 
-            content: "•"; color: #ccc; font-weight: bold; position: absolute; left: 0; 
-        }
+        .mh-title { font-size: 18pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; line-height: 1; }
+        .mh-sub { font-size: 8pt; color: #7f8c8d; text-transform: uppercase; font-weight: 600; }
 
-        /* RODAPÉ (RANKING + CONCEITO) */
-        .footer-grid { display: flex; gap: 10px; margin-top: auto; }
+        /* Gráfico de Barras */
+        .chart-row { display: flex; gap: 10px; margin-bottom: 25px; height: 70px; }
+        .chart-card { flex: 1; background: #f8f9fa; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e0e0e0; }
+        .cc-head { display: flex; justify-content: space-between; align-items: center; }
+        .cc-label { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
+        .cc-val { font-size: 14pt; font-weight: 900; }
+        .cc-bar-bg { width: 100%; height: 6px; background: #ddd; border-radius: 3px; overflow: hidden; }
+        .cc-bar-fill { height: 100%; border-radius: 3px; }
+
+        /* Resultado Dominante (O Core) */
+        .result-box { flex: 1; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 20px; }
         
-        .ranking-box { 
-            flex: 1.2; border: 1px solid #eee; border-radius: 6px; padding: 10px; background: #fafafa; 
-        }
-        .concept-box { 
-            flex: 0.8; background: #fdfefe; border: 1px solid #eee; border-radius: 6px; padding: 10px; border-left: 3px solid #f1c40f; 
-        }
+        .rb-header { padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .rb-title { font-size: 14pt; font-weight: 900; text-transform: uppercase; }
+        .rb-subtitle { font-size: 9pt; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
 
-        .rank-row { display: flex; justify-content: space-between; font-size: 8pt; margin-bottom: 4px; border-bottom: 1px dashed #e0e0e0; padding-bottom: 2px; }
-        .rank-row:last-child { border: none; }
-        .rank-lbl { font-weight: 700; color: #2c3e50; }
-        .rank-desc { color: #7f8c8d; font-style: italic; }
+        .rb-body { display: flex; flex: 1; }
+        .rb-col { flex: 1; padding: 20px; }
+        .rb-left { background: #fff; border-right: 1px dashed #eee; }
+        .rb-right { background: #fcfcfc; }
 
-        .footer-legal { 
-            position: absolute; bottom: 8mm; left: 0; right: 0; text-align: center; 
-            font-size: 6pt; color: #bdc3c7; letter-spacing: 1px; 
-        }
+        /* Itens de Texto */
+        .info-item { margin-bottom: 12px; }
+        .ii-label { font-size: 7pt; font-weight: 700; color: #95a5a6; text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .ii-val { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.3; }
 
-        /* CORES */
+        .list-group { margin-bottom: 15px; }
+        .lg-title { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .lg-list { padding: 0; margin: 0; list-style: none; }
+        .lg-list li { font-size: 8.5pt; color: #555; margin-bottom: 4px; padding-left: 10px; border-left: 2px solid #eee; line-height: 1.2; }
+
+        /* Rodapé Informativo */
+        .footer-info { display: flex; gap: 15px; height: 100px; }
+        .fi-box { flex: 1; border: 1px solid #eee; border-radius: 6px; padding: 10px; background: #fafafa; }
+        .fi-title { font-size: 8pt; font-weight: 700; text-transform: uppercase; color: #7f8c8d; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 8px; }
+        
+        .rank-item { font-size: 8pt; display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .ri-name { font-weight: 700; color: #2c3e50; }
+        .ri-desc { font-style: italic; color: #777; }
+
+        .quote { font-size: 8pt; color: #555; font-style: italic; text-align: center; margin-top: 10px; line-height: 1.4; }
+
+        /* Cores Utilitárias */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
+
     </style>
 </head>
 <body>
@@ -125,130 +120,148 @@
         <div class="header-painel">
             <div>
                 <h2 style="margin:0;">Dashboard Administrativo</h2>
-                <small style="color:#777;">Gerenciador de Dossiês</small>
+                <span style="font-size:10pt; color:#777;">Geração de Dossiês</span>
             </div>
-            <button class="btn" onclick="location.reload()">🔄 Atualizar Lista</button>
+            <button class="btn" onclick="location.reload()">Atualizar Lista</button>
         </div>
         <table>
             <thead><tr><th>Data</th><th>Cliente</th><th>Status</th><th style="text-align:right">Ação</th></tr></thead>
-            <tbody id="lista"><tr><td colspan="4">Buscando dados...</td></tr></tbody>
+            <tbody id="lista"><tr><td colspan="4">Carregando...</td></tr></tbody>
         </table>
     </div>
 
     <div id="relatorio-pdf">
-        <div class="pagina">
-            
-            <div class="header-pdf">
-                <div class="brand">NEUROBRIEFING</div>
-                <span class="sub-brand">Diagnóstico Integral & Estratégia Projetual</span>
-                <div class="meta-info">
-                    <span>CLIENTE: <strong id="r-nome">Carregando...</strong></span>
-                    <span>DATA: <span id="r-data">--/--/--</span></span>
-                </div>
-            </div>
-
-            <div class="sec-title">
-                <span class="sec-txt">1. Identidade do Ser</span>
-                <span class="sec-sub">Mapeamento de Arquétipo & Temperamento</span>
-            </div>
-
-            <div class="grid-perfil">
-                <div class="card-perfil"><span class="cp-label c-fogo">Fogo</span><span class="cp-val c-fogo" id="v-fogo">0</span><div class="bar-container"><div class="bar-fill bg-fogo" id="b-fogo"></div></div></div>
-                <div class="card-perfil"><span class="cp-label c-ar">Ar</span><span class="cp-val c-ar" id="v-ar">0</span><div class="bar-container"><div class="bar-fill bg-ar" id="b-ar"></div></div></div>
-                <div class="card-perfil"><span class="cp-label c-agua">Água</span><span class="cp-val c-agua" id="v-agua">0</span><div class="bar-container"><div class="bar-fill bg-agua" id="b-agua"></div></div></div>
-                <div class="card-perfil"><span class="cp-label c-terra">Terra</span><span class="cp-val c-terra" id="v-terra">0</span><div class="bar-container"><div class="bar-fill bg-terra" id="b-terra"></div></div></div>
-            </div>
-
-            <div class="box-dominante" id="box-main">
-                <div class="dom-header" id="dom-header">
-                    <div class="dom-title" id="txt-elemento">ELEMENTO</div>
-                    <div class="dom-subtitle" id="txt-estilo-titulo">ESTILO</div>
-                </div>
+        
+        <div class="page">
+            <div class="capa-container">
+                <div class="capa-logo">NEUROBRIEFING</div>
+                <div class="capa-sub">Diagnóstico Integral & Estratégia</div>
                 
-                <div class="dom-body">
-                    <div class="dom-col dom-left">
-                        <div class="info-group">
-                            <span class="info-label">⚡ Energia</span>
-                            <div class="info-val" id="txt-energia">-</div>
-                        </div>
-                        <div class="info-group">
-                            <span class="info-label">👤 Para Quem</span>
-                            <div class="info-val" id="txt-quem">-</div>
-                        </div>
-                        <div style="display:flex; gap:10px;">
-                            <div class="info-group" style="flex:1;">
-                                <span class="info-label">📋 Perfil</span>
-                                <div class="info-val" id="txt-perfil">-</div>
-                            </div>
-                            <div class="info-group" style="flex:1;">
-                                <span class="info-label">🧬 Temperamento</span>
-                                <div class="info-val" id="txt-temp">-</div>
-                            </div>
-                        </div>
-                        <div class="info-group">
-                            <span class="info-label">🎭 Arquétipos Associados</span>
-                            <div class="info-val" id="txt-arq">-</div>
-                        </div>
-                    </div>
+                <div class="capa-info">
+                    <span class="ci-label">Cliente Analisado</span>
+                    <span class="ci-val" id="capa-nome">-</span>
+                    
+                    <span class="ci-label">Arquiteto Responsável</span>
+                    <span class="ci-val" id="capa-arq">-</span>
 
-                    <div class="dom-col dom-right">
-                        <div class="list-title">🏠 Estilos Incluídos</div>
-                        <ul class="custom-list" id="lista-estilos"></ul>
-
-                        <div class="list-title">✨ Características do Ambiente</div>
-                        <ul class="custom-list" id="lista-carac"></ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-grid">
-                <div class="ranking-box">
-                    <div class="list-title" style="font-size:8pt; border-bottom:1px solid #ddd; padding-bottom:4px; margin-bottom:8px;">📊 Leitura do Diagnóstico</div>
-                    <div class="rank-row">
-                        <span class="rank-lbl">1️⃣ Dominante <span id="r-dom-id"></span></span>
-                        <span class="rank-desc">Energia predominante atual</span>
-                    </div>
-                    <div class="rank-row">
-                        <span class="rank-lbl">2️⃣ Secundário <span id="r-sec-id"></span></span>
-                        <span class="rank-desc">Recurso acessível</span>
-                    </div>
-                    <div class="rank-row">
-                        <span class="rank-lbl">3️⃣ Menos Acessado <span id="r-last-id"></span></span>
-                        <span class="rank-desc">Área de desenvolvimento</span>
-                    </div>
+                    <span class="ci-label">Data do Diagnóstico</span>
+                    <span class="ci-val" id="capa-data">-</span>
                 </div>
 
-                <div class="concept-box">
-                    <div class="list-title" style="color:#f39c12; font-size:8pt;">💡 Princípio Fundamental</div>
-                    <div style="font-size:7.5pt; color:#555; font-style:italic; line-height:1.4;">
-                        "Você não é um tipo fixo. Você é um sistema vivo em equilíbrio dinâmico. Este guia serve para criar estratégias que harmonizem sua natureza."
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-legal">
-                Relatório gerado pela plataforma NeuroBriefing Intelligence • Uso exclusivo profissional
+                <div class="capa-footer">Documento Confidencial de Uso Profissional</div>
             </div>
         </div>
+
+        <div class="page">
+            <div class="mod-container">
+                <div class="mod-header">
+                    <div class="mh-title">1. Identidade do Ser</div>
+                    <div class="mh-sub">Comportamento, Arquétipo & Temperamento</div>
+                </div>
+
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <div class="cc-head"><span class="cc-label c-fogo">Fogo</span><span class="cc-val" id="v-fogo">0</span></div>
+                        <div class="cc-bar-bg"><div class="cc-bar-fill bg-fogo" id="b-fogo"></div></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="cc-head"><span class="cc-label c-ar">Ar</span><span class="cc-val" id="v-ar">0</span></div>
+                        <div class="cc-bar-bg"><div class="cc-bar-fill bg-ar" id="b-ar"></div></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="cc-head"><span class="cc-label c-agua">Água</span><span class="cc-val" id="v-agua">0</span></div>
+                        <div class="cc-bar-bg"><div class="cc-bar-fill bg-agua" id="b-agua"></div></div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="cc-head"><span class="cc-label c-terra">Terra</span><span class="cc-val" id="v-terra">0</span></div>
+                        <div class="cc-bar-bg"><div class="cc-bar-fill bg-terra" id="b-terra"></div></div>
+                    </div>
+                </div>
+
+                <div class="result-box">
+                    <div class="rb-header" id="rb-header">
+                        <div class="rb-title" id="txt-elemento">ELEMENTO -</div>
+                        <div class="rb-subtitle" id="txt-estilo">-</div>
+                    </div>
+                    
+                    <div class="rb-body">
+                        <div class="rb-col rb-left">
+                            <div class="info-item">
+                                <span class="ii-label">⚡ Energia</span>
+                                <div class="ii-val" id="txt-energia">-</div>
+                            </div>
+                            <div class="info-item">
+                                <span class="ii-label">👤 Para Quem</span>
+                                <div class="ii-val" id="txt-quem">-</div>
+                            </div>
+                            <div class="info-item">
+                                <span class="ii-label">📋 Perfil & Temperamento</span>
+                                <div class="ii-val"><span id="txt-perfil">-</span> | <span id="txt-temp">-</span></div>
+                            </div>
+                            <div class="info-item">
+                                <span class="ii-label">🎭 Arquétipos</span>
+                                <div class="ii-val" id="txt-arq">-</div>
+                            </div>
+                        </div>
+
+                        <div class="rb-col rb-right">
+                            <div class="list-group">
+                                <div class="lg-title" style="color:#2c3e50;">🏠 Estilos Incluídos</div>
+                                <ul class="lg-list" id="list-estilos"></ul>
+                            </div>
+                            <div class="list-group">
+                                <div class="lg-title" style="color:#2c3e50;">✨ Características</div>
+                                <ul class="lg-list" id="list-carac"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-info">
+                    <div class="fi-box">
+                        <div class="fi-title">📊 Leitura do Diagnóstico</div>
+                        <div class="rank-item">
+                            <span class="ri-name">1️⃣ Dominante <span id="r-dom"></span></span>
+                            <span class="ri-desc">Energia atual</span>
+                        </div>
+                        <div class="rank-item">
+                            <span class="ri-name">2️⃣ Secundário <span id="r-sec"></span></span>
+                            <span class="ri-desc">Recurso acessível</span>
+                        </div>
+                        <div class="rank-item">
+                            <span class="ri-name">3️⃣ Menos Acessado <span id="r-last"></span></span>
+                            <span class="ri-desc">A desenvolver</span>
+                        </div>
+                    </div>
+                    <div class="fi-box" style="display:flex; align-items:center; justify-content:center; background:#fffcf0; border-color:#fcefdc;">
+                        <div class="quote">
+                            "Você não é um tipo fixo. Você é um sistema vivo em equilíbrio dinâmico. A neuroarquitetura busca harmonizar sua natureza com o espaço."
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // --- BASE DE DADOS RICA ---
+        // --- BASE DE DADOS COMPLETA ---
         const DB = {
             FOGO: {
-                cor: '#e74c3c', // Vermelho
-                titulo_estilo: 'ESTILOS DE ATIVAÇÃO',
+                cor: '#e74c3c',
+                titulo: 'ESTILOS DE ATIVAÇÃO',
                 energia: 'Ação · Direção · Intensidade',
                 quem: 'Pessoas executor-coléricas, arquétipos de ação',
                 perfil: 'Executor',
                 temp: 'Colérico',
                 arq: 'Herói · Governante · Fora-da-Lei',
                 estilos: ['Contemporâneo', 'Industrial', 'Moderno Urbano', 'High Tech', 'Luxo Moderno'],
-                carac: ['Contrastes marcantes', 'Linhas retas e definidas', 'Materiais fortes (metal, concreto)', 'Iluminação direcionada', 'Paleta com profundidade']
+                carac: ['Contrastes marcantes', 'Linhas retas e definidas', 'Materiais fortes (metal, concreto, couro)', 'Iluminação direcionada', 'Paleta com profundidade']
             },
             AR: {
-                cor: '#3498db', // Azul Claro
-                titulo_estilo: 'ESTILOS DE EXPRESSÃO',
+                cor: '#3498db',
+                titulo: 'ESTILOS DE EXPRESSÃO',
                 energia: 'Expressão · Conexão · Movimento',
                 quem: 'Comunicador-sanguíneo, arquétipos relacionais',
                 perfil: 'Comunicador',
@@ -258,19 +271,19 @@
                 carac: ['Luz natural abundante', 'Layout fluido e aberto', 'Mistura criativa de elementos', 'Cores claras com pontos vibrantes', 'Sensação de liberdade']
             },
             AGUA: {
-                cor: '#2980b9', // Azul Escuro
-                titulo_estilo: 'ESTILOS DE ACOLHIMENTO',
+                cor: '#2980b9',
+                titulo: 'ESTILOS DE ACOLHIMENTO',
                 energia: 'Sensibilidade · Adaptação · Ritmo',
                 quem: 'Planejador-fleumático, arquétipos do cuidado',
                 perfil: 'Planejador',
                 temp: 'Fleumático',
                 arq: 'Cuidador · Inocente · Mago',
                 estilos: ['Japandi', 'Orgânico Contemporâneo', 'Wabi-Sabi', 'Coastal Sofisticado', 'Natural Chic'],
-                carac: ['Texturas suaves e táteis', 'Paleta neutra quente', 'Materiais naturais (linho, madeira)', 'Iluminação difusa', 'Ambientes que desaceleram']
+                carac: ['Texturas suaves e táteis', 'Paleta neutra quente', 'Materiais naturais (linho, madeira clara)', 'Iluminação difusa', 'Ambientes que desaceleram']
             },
             TERRA: {
-                cor: '#27ae60', // Verde
-                titulo_estilo: 'ESTILOS DE ESTRUTURA',
+                cor: '#27ae60',
+                titulo: 'ESTILOS DE ESTRUTURA',
                 energia: 'Estrutura · Profundidade · Constância',
                 quem: 'Analista-melancólico, arquétipos de sabedoria',
                 perfil: 'Analista',
@@ -285,17 +298,16 @@
 
         async function init() {
             try {
-                // Atualize com sua URL real se mudar
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 dadosAPI = await req.json();
                 renderTable();
-            } catch(e) { console.error("Erro API:", e); }
+            } catch(e) { console.error(e); }
         }
 
         function renderTable() {
             const tbody = document.getElementById('lista');
             tbody.innerHTML = '';
-            if(dadosAPI.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Nenhum teste encontrado.</td></tr>'; return; }
+            if(dadosAPI.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Sem dados.</td></tr>'; return; }
             
             [...dadosAPI].reverse().forEach((d, i) => {
                 const idx = dadosAPI.length - 1 - i;
@@ -303,8 +315,8 @@
                     <tr>
                         <td>${new Date(d.data).toLocaleDateString()}</td>
                         <td><strong>${d.cliente}</strong></td>
-                        <td><span style="background:#e8f5e9; color:#2e7d32; padding:2px 6px; border-radius:4px; font-size:8pt;">Concluído</span></td>
-                        <td style="text-align:right"><button class="btn" onclick="gerarPDF(${idx}, this)">📄 PDF</button></td>
+                        <td><span style="color:green; font-weight:bold;">Concluído</span></td>
+                        <td style="text-align:right"><button class="btn" onclick="gerarPDF(${idx}, this)">Gerar PDF</button></td>
                     </tr>
                 `;
             });
@@ -312,10 +324,14 @@
 
         async function gerarPDF(index, btn) {
             const dados = dadosAPI[index];
-            const originalTxt = btn.innerText; 
-            btn.innerText = "⏳"; btn.disabled = true;
+            const originalTxt = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
 
-            // 1. Processar Pontuação
+            // --- 1. POPULAR CAPA ---
+            document.getElementById('capa-nome').innerText = dados.cliente;
+            document.getElementById('capa-arq').innerText = dados.contato?.arquiteto || 'Não informado';
+            document.getElementById('capa-data').innerText = new Date(dados.data).toLocaleDateString();
+
+            // --- 2. CÁLCULOS MÓDULO 1 ---
             let pts = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
             const resp = dados.respostas || {};
             
@@ -327,7 +343,7 @@
                 if(k.includes('terra')) pts.TERRA += val;
             });
 
-            // Ordenar para achar o Vencedor
+            // Encontra vencedor
             const sorted = [
                 { id: 'FOGO', val: pts.FOGO, ...DB.FOGO },
                 { id: 'AR', val: pts.AR, ...DB.AR },
@@ -335,52 +351,49 @@
                 { id: 'TERRA', val: pts.TERRA, ...DB.TERRA }
             ].sort((a,b) => b.val - a.val);
 
-            const dom = sorted[0]; // Dominante
-            const sec = sorted[1];
-            const last = sorted[3];
+            const dom = sorted[0]; // 1º
+            const sec = sorted[1]; // 2º
+            const last = sorted[3]; // 4º
 
-            // 2. Preencher HTML
-            document.getElementById('r-nome').innerText = dados.cliente;
-            document.getElementById('r-data').innerText = new Date(dados.data).toLocaleDateString();
-
-            // Barras
+            // Preenche Barras
             ['FOGO','AR','AGUA','TERRA'].forEach(key => {
-                const k = key.toLowerCase();
+                const kLower = key.toLowerCase();
                 const score = pts[key];
-                document.getElementById(`v-${k}`).innerText = score;
-                document.getElementById(`b-${k}`).style.width = Math.min((score/25)*100, 100) + '%';
+                document.getElementById(`v-${kLower}`).innerText = score;
+                document.getElementById(`b-${kLower}`).style.width = Math.min((score/25)*100, 100) + '%';
             });
 
-            // Box Dominante (Estilo Visual)
-            document.getElementById('dom-header').style.backgroundColor = dom.cor;
+            // Preenche Box Dominante
+            const header = document.getElementById('rb-header');
+            header.style.backgroundColor = dom.cor;
             document.getElementById('txt-elemento').innerText = `ELEMENTO ${dom.id}`;
-            document.getElementById('txt-estilo-titulo').innerText = dom.titulo_estilo;
+            document.getElementById('txt-estilo').innerText = dom.titulo;
 
-            // Coluna Esquerda (Psico)
+            // Dados Psico
             document.getElementById('txt-energia').innerText = dom.energia;
             document.getElementById('txt-quem').innerText = dom.quem;
             document.getElementById('txt-perfil').innerText = dom.perfil;
             document.getElementById('txt-temp').innerText = dom.temp;
             document.getElementById('txt-arq').innerText = dom.arq;
 
-            // Coluna Direita (Arqui)
-            document.getElementById('lista-estilos').innerHTML = dom.estilos.map(x => `<li>${x}</li>`).join('');
-            document.getElementById('lista-carac').innerHTML = dom.carac.map(x => `<li>${x}</li>`).join('');
+            // Listas
+            document.getElementById('list-estilos').innerHTML = dom.estilos.map(x => `<li>${x}</li>`).join('');
+            document.getElementById('list-carac').innerHTML = dom.carac.map(x => `<li>${x}</li>`).join('');
 
-            // Rodapé (Ranking)
-            document.getElementById('r-dom-id').innerHTML = `<strong>${dom.id}</strong> (${dom.val} pts)`;
-            document.getElementById('r-sec-id').innerHTML = `<strong>${sec.id}</strong> (${sec.val} pts)`;
-            document.getElementById('r-last-id').innerHTML = `<strong>${last.id}</strong> (${last.val} pts)`;
+            // Ranking Rodapé
+            document.getElementById('r-dom').innerText = `${dom.id} (${dom.val})`;
+            document.getElementById('r-sec').innerText = `${sec.id} (${sec.val})`;
+            document.getElementById('r-last').innerText = `${last.id} (${last.val})`;
 
-            // 3. Exportar
+            // --- 3. EXPORTAR PDF ---
             const element = document.getElementById('relatorio-pdf');
             element.style.display = 'block';
 
             setTimeout(async () => {
                 const opt = {
                     margin: 0,
-                    filename: `NeuroBriefing_${dados.cliente}.pdf`,
-                    image: { type: 'jpeg', quality: 0.99 },
+                    filename: `Dossie_${dados.cliente}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, useCORS: true },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
