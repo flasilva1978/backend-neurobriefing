@@ -14,7 +14,7 @@
         body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
         
         /* --- PAINEL (DASHBOARD) --- */
-        .painel { max-width: 1100px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .painel { max-width: 1200px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         
         .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 20px; }
         .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
@@ -24,19 +24,29 @@
 
         /* Tabela */
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8.5pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
-        td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+        th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
+        td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
         tr:hover { background-color: #fafafa; }
 
         /* Coluna Cliente */
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
-        .cli-info { font-size: 8.5pt; color: #7f8c8d; display: block; line-height: 1.4; }
-        .cli-icon { margin-right: 5px; opacity: 0.7; }
+        .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
+        
+        /* Botões de Contato */
+        .contact-row { display: flex; gap: 8px; }
+        .btn-contact { 
+            text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;
+        }
+        .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .btn-wa:hover { background: #c8e6c9; }
+        
+        .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+        .btn-mail:hover { background: #bbdefb; }
 
         /* Botões de Módulos (Status) */
-        .mod-grid { display: flex; gap: 5px; flex-wrap: wrap; }
+        .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         .mod-tag { 
-            padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; text-transform: uppercase; 
+            padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; 
             background: #eee; color: #bbb; border: 1px solid #e0e0e0;
         }
         .mod-tag.done { 
@@ -48,13 +58,13 @@
         .btn-pdf:hover { background: #c0392b; }
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* --- PDF A4 RÍGIDO (Não mexer, layout travado) --- */
+        /* --- PDF A4 RÍGIDO (LAYOUT TRAVADO) --- */
         #pdf-root { display: none; } 
         
         .page { width: 210mm; height: 296mm; background: white; position: relative; overflow: hidden; margin: 0 auto; page-break-after: always; padding: 0; }
         .page:last-child { page-break-after: avoid; }
 
-        /* Estilos PDF (Capa e Modulo 1) - Mantidos da versão aprovada */
+        /* Estilos PDF (Capa e Modulo 1) */
         .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
@@ -67,7 +77,10 @@
         .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 15px; }
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
         .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
+        .mh-meta { text-align: right; }
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
+        .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
+
         .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 50px; }
         .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
@@ -114,12 +127,13 @@
             <thead>
                 <tr>
                     <th style="width: 100px;">Data</th>
-                    <th style="width: 35%;">Cliente & Contato</th>
+                    <th style="width: 30%;">Cliente</th>
+                    <th style="width: 20%;">Responsável</th>
                     <th>Status dos Módulos</th>
                     <th style="text-align:right;">Ação</th>
                 </tr>
             </thead>
-            <tbody id="lista"><tr><td colspan="4">Carregando dados...</td></tr></tbody>
+            <tbody id="lista"><tr><td colspan="5">Carregando dados...</td></tr></tbody>
         </table>
     </div>
 
@@ -146,7 +160,10 @@
                         <div class="mh-tit">IDENTIDADE DO SER</div>
                         <div class="mh-sub">Mapeamento de Arquétipo & Temperamento</div>
                     </div>
-                    <div class="mh-num">01</div>
+                    <div class="mh-meta">
+                        <div class="mh-num">01</div>
+                        <span class="mh-time" id="mh-time">⏱ Tempo: --:--</span>
+                    </div>
                 </div>
                 <div class="charts" id="chart-container"></div>
                 <div class="win-box">
@@ -206,10 +223,18 @@
             return Object.keys(respostas).some(k => k.includes(keyIncludes));
         }
 
+        // Formata Segundos para MM:SS
+        function formatTime(seg) {
+            if(!seg) return "N/A";
+            const min = Math.floor(seg / 60);
+            const s = seg % 60;
+            return `${min < 10 ? '0'+min : min}:${s < 10 ? '0'+s : s}`;
+        }
+
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             
-            if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="4">Nenhum dossiê encontrado.</td></tr>'; return; }
+            if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
 
             [...dadosAPI].reverse().forEach((d, i) => {
                 const idx = dadosAPI.length - 1 - i;
@@ -223,6 +248,10 @@
                 const hasMemorias = checkMod(r, 'mem_');
                 const hasAtual = checkMod(r, 'life_');
 
+                // Links
+                const waLink = c.telefone ? `https://wa.me/55${c.telefone.replace(/\D/g,'')}` : '#';
+                const mailLink = c.email ? `mailto:${c.email}` : '#';
+
                 t.innerHTML += `
                     <tr>
                         <td style="font-size:9pt; color:#666;">
@@ -230,9 +259,14 @@
                         </td>
                         <td>
                             <span class="cli-name">${d.cliente}</span>
-                            <span class="cli-info">📧 ${c.email || '-'}</span>
-                            <span class="cli-info">📞 ${c.telefone || '-'}</span>
-                            <span class="cli-info">📍 ${c.cidade || '-'} / ${c.estado || '-'}</span>
+                            <span class="cli-local">📍 ${c.cidade || '-'} / ${c.estado || '-'}</span>
+                            <div class="contact-row">
+                                ${c.telefone ? `<a href="${waLink}" target="_blank" class="btn-contact btn-wa">📱 WhatsApp</a>` : ''}
+                                ${c.email ? `<a href="${mailLink}" class="btn-contact btn-mail">✉️ Email</a>` : ''}
+                            </div>
+                        </td>
+                        <td style="font-weight:600; color:#555;">
+                            ${c.arquiteto || 'Não informado'}
                         </td>
                         <td>
                             <div class="mod-grid">
@@ -270,6 +304,9 @@
                 if(k.includes('agua')) p.AGUA += v;
                 if(k.includes('terra')) p.TERRA += v;
             });
+
+            // Tempo
+            document.getElementById('mh-time').innerText = `⏱ Tempo: ${formatTime(d.duracao)}`;
 
             // Ordena
             const sorted = [
