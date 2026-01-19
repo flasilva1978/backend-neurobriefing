@@ -6,6 +6,7 @@
     <title>Dashboard NeuroBriefing</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
@@ -138,6 +139,7 @@
     </div>
 
     <div id="pdf-root">
+        
         <div class="page">
             <div class="capa-box">
                 <div class="c-logo">NEUROBRIEFING</div>
@@ -153,6 +155,7 @@
                 <div class="c-foot">Documento Confidencial de Uso Profissional</div>
             </div>
         </div>
+
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
@@ -196,6 +199,41 @@
                 <div class="ft-note">Relatório gerado pela plataforma NeuroBriefing Intelligence</div>
             </div>
         </div>
+
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div>
+                        <div class="mh-tit">IDENTIDADE VISUAL</div>
+                        <div class="mh-sub">Estilo Predominante & Preferências</div>
+                    </div>
+                    <div class="mh-num">02</div>
+                </div>
+
+                <div class="win-box" style="flex:0 auto; margin-bottom:30px;">
+                    <div class="wb-head" style="background:#2c3e50;">
+                        <div class="wb-tit">ESTILO PREDOMINANTE</div>
+                        <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
+                    </div>
+                    <div class="wb-body" style="padding:25px; text-align:center;">
+                        <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
+                        <p style="font-size:10pt; color:#777; margin-top:10px; font-style:italic;" id="vis-top1-desc">Baseado na maior afinidade demonstrada.</p>
+                        <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">
+                            AFINIDADE: <span id="vis-top1-nota">-</span>%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rank-wrap">
+                    <div class="rk-tit">COMPOSIÇÃO ESTÉTICA (SUBSEQUENTES)</div>
+                    <div id="vis-lista-secundaria">
+                        </div>
+                </div>
+
+                <div class="ft-note" style="margin-top:auto;">A identidade visual final é uma composição do predominante com nuances dos secundários.</div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -205,6 +243,14 @@
             AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Estilos de Expressão', energia:'Expressão · Conexão', quem:'Comunicador-sanguíneo', perfil:'Comunicador', temp:'Sanguíneo', arq:'Amante · Explorador', estilos:['Escandinavo', 'Boho Chic', 'Eclético'], carac:['Luz natural', 'Layout fluido', 'Criatividade'] },
             AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Estilos de Acolhimento', energia:'Sensibilidade · Ritmo', quem:'Planejador-fleumático', perfil:'Planejador', temp:'Fleumático', arq:'Cuidador · Inocente', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], carac:['Texturas suaves', 'Paleta neutra', 'Conforto'] },
             TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Estilos de Estrutura', energia:'Estrutura · Constância', quem:'Analista-melancólico', perfil:'Analista', temp:'Melancólico', arq:'Sábio · Criador', estilos:['Clássico', 'Neoclássico', 'Moderno Elegante'], carac:['Simetria', 'Materiais nobres', 'Sobriedade'] }
+        };
+
+        const DB_VISUAL = {
+            'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
+            'est_scandi': 'Escandinavo', 'est_cont_leve': 'Contemporâneo Leve', 'est_boho': 'Boho Chic', 'est_japandi': 'Japandi', 'est_wabi': 'Wabi-Sabi',
+            'est_organico': 'Orgânico Contemporâneo', 'est_coastal': 'Coastal Sofisticado', 'est_natural': 'Natural Chic',
+            'est_mid': 'Mid-Century Modern', 'est_ecletico': 'Eclético Curado', 'est_classico': 'Clássico Atemporal', 'est_neoclass': 'Neoclássico',
+            'est_trad': 'Tradicional Contemporâneo', 'est_mod_eleg': 'Moderno Elegante', 'est_colonial': 'Colonial Atualizado'
         };
 
         let dadosAPI = [];
@@ -217,13 +263,12 @@
             } catch(e) { console.error(e); }
         }
 
-        // Função Auxiliar para verificar se existe resposta em um módulo
+        // Função Auxiliar
         function checkMod(respostas, keyIncludes) {
             if(!respostas) return false;
             return Object.keys(respostas).some(k => k.includes(keyIncludes));
         }
 
-        // Formata Segundos para MM:SS
         function formatTime(seg) {
             if(!seg) return "N/A";
             const min = Math.floor(seg / 60);
@@ -241,14 +286,12 @@
                 const r = d.respostas || {};
                 const c = d.contato || {};
 
-                // Verifica quais módulos estão completos
                 const hasHumana = checkMod(r, 'fogo') || checkMod(r, 'ar_');
-                const hasVisual = checkMod(r, 'estilo_visual');
-                const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_') || checkMod(r, 'olf_');
+                const hasVisual = checkMod(r, 'est_');
+                const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_');
                 const hasMemorias = checkMod(r, 'mem_');
                 const hasAtual = checkMod(r, 'life_');
 
-                // Links
                 const waLink = c.telefone ? `https://wa.me/55${c.telefone.replace(/\D/g,'')}` : '#';
                 const mailLink = c.email ? `mailto:${c.email}` : '#';
 
@@ -289,12 +332,12 @@
             const d = dadosAPI[index];
             const original = btn.innerText; btn.innerText = "..."; btn.disabled = true;
 
-            // Preenche Capa
+            // 1. CAPA
             document.getElementById('cp-nome').innerText = d.cliente;
             document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
             document.getElementById('cp-data').innerText = new Date(d.data).toLocaleDateString();
 
-            // Preenche Módulo 1 (Lógica de Ranking)
+            // 2. MÓDULO 1
             let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
             const r = d.respostas || {};
             Object.keys(r).forEach(k => {
@@ -305,10 +348,8 @@
                 if(k.includes('terra')) p.TERRA += v;
             });
 
-            // Tempo
             document.getElementById('mh-time').innerText = `⏱ Tempo: ${formatTime(d.duracao)}`;
 
-            // Ordena
             const sorted = [
                 { k:'FOGO', ...DB.FOGO, val: p.FOGO },
                 { k:'AR', ...DB.AR, val: p.AR },
@@ -318,7 +359,6 @@
 
             const win = sorted[0];
 
-            // Renderiza Gráfico
             const chartC = document.getElementById('chart-container');
             chartC.innerHTML = ''; 
             sorted.forEach(item => {
@@ -331,7 +371,6 @@
                 `;
             });
 
-            // Renderiza Box Vencedor
             document.getElementById('wb-head').style.backgroundColor = win.cor;
             document.getElementById('txt-el').innerText = `ELEMENTO ${win.id}`;
             document.getElementById('txt-tit').innerText = win.titulo;
@@ -343,7 +382,6 @@
             document.getElementById('l-est').innerHTML = win.estilos.map(i => `<li class="lst-li">${i}</li>`).join('');
             document.getElementById('l-car').innerHTML = win.carac.map(i => `<li class="lst-li">${i}</li>`).join('');
 
-            // Renderiza Ranking
             const rkList = document.getElementById('rank-list');
             rkList.innerHTML = '';
             sorted.forEach((item, i) => {
@@ -359,7 +397,43 @@
                 `;
             });
 
-            // Gera PDF
+            // 3. MÓDULO 2 (VISUAL)
+            let visualScores = [];
+            Object.keys(r).forEach(k => {
+                if (k.startsWith('est_')) {
+                    visualScores.push({
+                        id: k,
+                        nome: DB_VISUAL[k] || k,
+                        val: parseInt(r[k]) || 0
+                    });
+                }
+            });
+
+            visualScores.sort((a,b) => b.val - a.val);
+
+            // Preenche Top 1
+            if (visualScores.length > 0) {
+                const top1 = visualScores[0];
+                document.getElementById('vis-top1-nome').innerText = top1.nome;
+                document.getElementById('vis-top1-nota').innerText = top1.val;
+            } else {
+                document.getElementById('vis-top1-nome').innerText = "Não Avaliado";
+                document.getElementById('vis-top1-nota').innerText = "0";
+            }
+
+            // Preenche Top 2-5
+            const secContainer = document.getElementById('vis-lista-secundaria');
+            secContainer.innerHTML = '';
+            visualScores.slice(1, 5).forEach((item, i) => {
+                secContainer.innerHTML += `
+                    <div class="rk-item">
+                        <span class="rk-n">${i+2}º ${item.nome}</span>
+                        <span class="rk-d" style="font-weight:bold; color:#333;">${item.val}%</span>
+                    </div>
+                `;
+            });
+
+            // 4. EXPORTAR
             const el = document.getElementById('pdf-root');
             el.style.display = 'block';
             window.scrollTo(0, 0); 
