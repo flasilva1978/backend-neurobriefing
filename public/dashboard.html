@@ -8,234 +8,162 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- TELA DE ADMINISTRAÇÃO --- */
+        /* ESTILOS BASE */
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
         .painel { max-width: 1200px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         .header-painel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        
+        .btn { background: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 12px; background: #2c3e50; color: white; border-radius: 4px 4px 0 0; }
+        th { text-align: left; padding: 12px; background: #34495e; color: white; }
         td { padding: 12px; border-bottom: 1px solid #eee; }
-        .tag-mod { font-size: 9px; padding: 2px 6px; background: #e0e0e0; border-radius: 4px; margin-right: 2px; }
-        .btn { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn:hover { background: #c0392b; }
 
-        /* --- PDF GERAL (ESTILOS BASE) --- */
-        #relatorio-pdf {
-            width: 210mm; /* Largura A4 */
-            background: white; margin: 40px auto; display: none;
-        }
-
-        .pagina {
-            width: 210mm; min-height: 296mm; /* Altura A4 */
-            padding: 15mm; box-sizing: border-box;
-            position: relative; background: white;
-            border-bottom: 1px dashed #ccc; /* Só para visualização na tela se visível */
-            page-break-before: always; /* O SEGREDO DA MULTIPÁGINA */
-        }
+        /* PDF CONFIG */
+        #relatorio-pdf { width: 210mm; background: white; margin: 40px auto; display: none; }
+        .pagina { width: 210mm; min-height: 296mm; padding: 15mm; box-sizing: border-box; position: relative; background: white; page-break-before: always; }
         .pagina:first-child { page-break-before: auto; }
 
-        /* TIPOGRAFIA */
-        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; margin: 0; }
-        .brand { font-size: 24pt; font-weight: 900; letter-spacing: -1px; color: #2c3e50; }
-        .brand span { font-size: 8pt; letter-spacing: 3px; text-transform: uppercase; color: #7f8c8d; display: block; }
+        /* TIPOGRAFIA RELATÓRIO */
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; margin: 0; }
+        .brand { font-size: 22pt; font-weight: 900; color: #2c3e50; letter-spacing: -1px; }
+        .sub-brand { font-size: 9pt; letter-spacing: 3px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 20px; display: block; }
         
-        .mod-header { 
-            background: #2c3e50; color: white; padding: 10px 15px; border-radius: 4px;
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
-        }
-        .mod-title { font-size: 14pt; font-weight: 700; text-transform: uppercase; }
-        .mod-tag { font-size: 8pt; background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 3px; }
+        .mod-header { background: #2c3e50; color: white; padding: 8px 15px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; margin-top: 10px; }
+        .mod-title { font-size: 12pt; font-weight: 700; text-transform: uppercase; }
 
-        /* --- MÓDULO 1: CAPA/RESUMO (O antigo One Page) --- */
-        .row-perfil { display: flex; gap: 10px; margin-bottom: 20px; }
-        .card-perfil { flex: 1; border: 1px solid #eee; border-radius: 6px; padding: 10px; text-align: center; }
-        .card-perfil.pred { border: 2px solid #f1c40f; background: #fffcf0; }
-        .cp-val { font-size: 20pt; font-weight: 800; color: #333; display: block; }
+        /* MÓDULO 1: GRÁFICO */
+        .row-perfil { display: flex; gap: 10px; margin-bottom: 15px; }
+        .card-perfil { flex: 1; border: 1px solid #eee; border-radius: 6px; padding: 8px; text-align: center; }
+        .cp-val { font-size: 18pt; font-weight: 800; display: block; margin-top: 5px; }
         .bar-bg { width: 100%; height: 6px; background: #eee; border-radius: 3px; margin-top: 5px; }
         .bar-fill { height: 100%; border-radius: 3px; }
 
-        /* --- MÓDULO 2: VISUAL (Moodboard) --- */
-        .moodboard-grid { display: flex; gap: 15px; height: 300px; margin-bottom: 20px; }
-        .mb-main { flex: 2; background: #eee; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #999; }
-        .mb-side { flex: 1; display: flex; flex-direction: column; gap: 15px; }
-        .mb-img { flex: 1; background: #eee; border-radius: 6px; }
+        /* BOX DE RESULTADO DETALHADO */
+        .resumo-box { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; background: #fdfdfd; margin-top: 10px; }
+        .resumo-title { color: #e74c3c; font-weight: 800; font-size: 11pt; text-transform: uppercase; margin-bottom: 10px; border-bottom: 2px solid #f1f1f1; padding-bottom: 5px; }
         
-        /* --- MÓDULO 3: SENSORIAL (Detalhado) --- */
-        .sensory-row { display: flex; flex-wrap: wrap; gap: 20px; }
-        .sense-box { width: 48%; border: 1px solid #f0f0f0; padding: 15px; border-radius: 8px; box-sizing: border-box; }
-        .sb-head { border-bottom: 2px solid #eee; padding-bottom: 5px; margin-bottom: 10px; font-weight: 700; color: #e74c3c; font-size: 9pt; text-transform: uppercase; }
-        .sb-content { font-size: 9pt; color: #555; }
+        .detail-row { display: flex; margin-bottom: 8px; font-size: 9pt; align-items: baseline; }
+        .detail-label { font-weight: 700; color: #2c3e50; width: 100px; }
+        .detail-val { color: #555; font-style: italic; }
 
-        /* --- MÓDULO 4: MEMÓRIAS (Texto) --- */
-        .narrative-box { background: #f9f9f9; border-left: 4px solid #3498db; padding: 20px; margin-bottom: 15px; border-radius: 0 6px 6px 0; }
-        .nb-q { font-weight: 700; color: #2c3e50; font-size: 10pt; margin-bottom: 5px; }
-        .nb-a { font-style: italic; color: #555; font-size: 11pt; }
+        .interpretacao-box { background: #f0f7fa; padding: 15px; border-radius: 6px; margin-top: 15px; border-left: 4px solid #3498db; }
+        .principio-box { background: #fffcf0; padding: 15px; border-radius: 6px; margin-top: 10px; border-left: 4px solid #f1c40f; }
+        
+        .destaque-txt { font-weight: 700; color: #2c3e50; }
+        .lista-ranking { list-style: none; padding: 0; margin: 10px 0; }
+        .lista-ranking li { font-size: 9pt; margin-bottom: 4px; padding: 4px; background: #fff; border: 1px solid #eee; }
 
-        /* --- MÓDULO 5: TÉCNICO --- */
-        .tech-list { list-style: none; padding: 0; }
-        .tech-item { padding: 8px 0; border-bottom: 1px dashed #eee; display: flex; align-items: center; font-size: 9pt; }
-        .tech-check { color: #27ae60; margin-right: 8px; font-weight: bold; }
+        /* FOOTER */
+        .footer { position: absolute; bottom: 10mm; left: 15mm; right: 15mm; text-align: center; font-size: 7pt; color: #aaa; border-top: 1px solid #eee; padding-top: 5px; }
 
-        /* --- IA INTEGRADA --- */
-        .ai-box { background: #eef2f5; padding: 30px; border-radius: 8px; margin-top: 30px; border: 1px solid #ccd6dd; }
-        .ai-title { font-size: 12pt; font-weight: 800; color: #2c3e50; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-
-        /* CORES & UTILITÁRIOS */
+        /* CORES */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
-        
-        .footer { position: absolute; bottom: 10mm; left: 15mm; right: 15mm; text-align: center; font-size: 8pt; color: #aaa; border-top: 1px solid #eee; padding-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="painel">
         <div class="header-painel">
-            <div>
-                <h2 style="margin:0;">Gestão NeuroBriefing</h2>
-                <span style="font-size:12px; color:#666;">Sistema Modular de Relatórios</span>
-            </div>
-            <button class="btn" style="background:#333;" onclick="location.reload()">🔄 Atualizar</button>
+            <h2>Gestão NeuroBriefing</h2>
+            <button class="btn" onclick="location.reload()">Atualizar</button>
         </div>
         <table>
-            <thead><tr><th>Data</th><th>Cliente</th><th>Módulos Ativos</th><th>Ação</th></tr></thead>
+            <thead><tr><th>Data</th><th>Cliente</th><th>Módulos</th><th>Ação</th></tr></thead>
             <tbody id="lista"><tr><td colspan="4">Carregando...</td></tr></tbody>
         </table>
     </div>
 
     <div id="relatorio-pdf">
         
-        <div class="pagina" id="pag-resumo">
-            <div style="text-align:center; margin-bottom:40px; margin-top:20px;">
+        <div class="pagina">
+            <div style="text-align:center; margin-bottom:30px;">
                 <div class="brand">NEUROBRIEFING</div>
-                <div class="brand"><span>DOSSIÊ DE DIAGNÓSTICO INTEGRAL</span></div>
-            </div>
-            
-            <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin-bottom:30px; font-size:10pt;">
-                <strong>CLIENTE:</strong> <span id="r-nome">-</span><br>
-                <strong>DATA:</strong> <span id="r-data">-</span><br>
-                <strong>LOCAL:</strong> <span id="r-local">-</span>
+                <span class="sub-brand">DIAGNÓSTICO INTEGRAL & ESTRATÉGIA</span>
+                
+                <div style="font-size:9pt; background:#f8f9fa; padding:10px; display:inline-block; border-radius:4px;">
+                    CLIENTE: <strong id="r-nome">-</strong> | DATA: <span id="r-data">-</span>
+                </div>
             </div>
 
             <div class="mod-header">
-                <div class="mod-title">1. Identidade Humana</div>
-                <div class="mod-tag">Arquétipo & Temperamento</div>
+                <div class="mod-title">1. Identidade do Ser</div>
+                <div style="font-size:8pt; opacity:0.8;">Arquétipo & Temperamento</div>
             </div>
             
             <div class="row-perfil">
-                <div class="card-perfil" id="cp-fogo"><span style="color:#e74c3c; font-weight:800;">FOGO</span><span class="cp-val" id="v-fogo">0</span><div class="bar-bg"><div class="bar-fill bg-fogo" id="b-fogo"></div></div></div>
-                <div class="card-perfil" id="cp-ar"><span style="color:#3498db; font-weight:800;">AR</span><span class="cp-val" id="v-ar">0</span><div class="bar-bg"><div class="bar-fill bg-ar" id="b-ar"></div></div></div>
-                <div class="card-perfil" id="cp-agua"><span style="color:#2980b9; font-weight:800;">ÁGUA</span><span class="cp-val" id="v-agua">0</span><div class="bar-bg"><div class="bar-fill bg-agua" id="b-agua"></div></div></div>
-                <div class="card-perfil" id="cp-terra"><span style="color:#27ae60; font-weight:800;">TERRA</span><span class="cp-val" id="v-terra">0</span><div class="bar-bg"><div class="bar-fill bg-terra" id="b-terra"></div></div></div>
+                <div class="card-perfil"><span class="c-fogo" style="font-weight:800;">FOGO</span><span class="cp-val" id="v-fogo">0</span><div class="bar-bg"><div class="bar-fill bg-fogo" id="b-fogo"></div></div></div>
+                <div class="card-perfil"><span class="c-ar" style="font-weight:800;">AR</span><span class="cp-val" id="v-ar">0</span><div class="bar-bg"><div class="bar-fill bg-ar" id="b-ar"></div></div></div>
+                <div class="card-perfil"><span class="c-agua" style="font-weight:800;">ÁGUA</span><span class="cp-val" id="v-agua">0</span><div class="bar-bg"><div class="bar-fill bg-agua" id="b-agua"></div></div></div>
+                <div class="card-perfil"><span class="c-terra" style="font-weight:800;">TERRA</span><span class="cp-val" id="v-terra">0</span><div class="bar-bg"><div class="bar-fill bg-terra" id="b-terra"></div></div></div>
             </div>
 
-            <div style="margin-top:30px; padding:20px; border:1px solid #eee; border-radius:8px;">
-                <h3 style="color:#2c3e50; margin-bottom:10px;">RESUMO EXECUTIVO</h3>
-                <p style="font-size:10pt; color:#555; line-height:1.5;">
-                    O perfil aponta uma predominância de <strong id="txt-pred">-</strong>, indicando uma personalidade voltada para <span id="txt-comport">-</span>. 
-                    A neuroarquitetura sugerida deve focar em equilibrar essa natureza com elementos de compensação.
-                </p>
-            </div>
-
-            <div class="footer">Página 1 - Resumo Executivo | NeuroBriefing Intelligence</div>
-        </div>
-
-        <div class="pagina" id="pag-visual" style="display:none;">
-            <div class="mod-header">
-                <div class="mod-title">2. Identidade Visual</div>
-                <div class="mod-tag">Estilo & Moodboard</div>
-            </div>
-
-            <div style="margin-bottom:20px;">
-                <span style="font-size:9pt; color:#999; text-transform:uppercase; font-weight:bold;">Estilo Predominante</span>
-                <h1 style="font-size:36pt; color:#2c3e50; text-transform:uppercase;" id="r-estilo">MODERNO</h1>
-                <p style="font-style:italic; color:#666;" id="r-estilo-desc">...</p>
-            </div>
-
-            <div class="moodboard-grid">
-                <div class="mb-main">Referência Principal (Imagem)</div>
-                <div class="mb-side">
-                    <div class="mb-img">Detalhe 1</div>
-                    <div class="mb-img">Detalhe 2</div>
-                </div>
-            </div>
-
-            <div class="footer">Página 2 - Identidade Visual | NeuroBriefing Intelligence</div>
-        </div>
-
-        <div class="pagina" id="pag-sensorial" style="display:none;">
-            <div class="mod-header">
-                <div class="mod-title">3. Identidade Sensorial</div>
-                <div class="mod-tag">5 Sentidos & Percepção</div>
-            </div>
-
-            <div class="sensory-row" id="container-sensorial">
+            <div class="resumo-box">
+                <div class="resumo-title">RESULTADO DO TESTE</div>
+                
+                <div style="background:#fff; padding:10px; border-left:5px solid #333; margin-bottom:15px;" id="box-dominante">
+                    <h3 style="margin:0; font-size:14pt; color:#333;" id="txt-elemento">ELEMENTO -</h3>
+                    <div style="margin-top:5px;">
+                        <div class="detail-row"><span class="detail-label">Energia:</span> <span class="detail-val" id="txt-energia">-</span></div>
+                        <div class="detail-row"><span class="detail-label">Perfil:</span> <span class="detail-val" id="txt-perfil">-</span></div>
+                        <div class="detail-row"><span class="detail-label">Temperamento:</span> <span class="detail-val" id="txt-temp">-</span></div>
+                        <div class="detail-row"><span class="detail-label">Arquétipos:</span> <span class="detail-val" id="txt-arq">-</span></div>
+                    </div>
                 </div>
 
-            <div class="footer">Página 3 - Mapeamento Sensorial | NeuroBriefing Intelligence</div>
-        </div>
-
-        <div class="pagina" id="pag-profundo" style="display:none;">
-            
-            <div class="mod-header" style="background:#34495e;">
-                <div class="mod-title">4. Memórias & Narrativas</div>
-                <div class="mod-tag">Vínculos Emocionais</div>
-            </div>
-            <div id="container-memorias">
-                <div class="narrative-box">
-                    <div class="nb-q">Lugar de Paz:</div>
-                    <div class="nb-a">"A casa da minha avó no interior, com cheiro de bolo."</div>
-                </div>
-            </div>
-
-            <br>
-
-            <div class="mod-header" style="background:#7f8c8d;">
-                <div class="mod-title">5. Identidade Técnica</div>
-                <div class="mod-tag">Rotinas & Necessidades</div>
-            </div>
-            
-            <div style="display:flex; gap:20px;">
-                <div class="sense-box" style="width:100%;">
-                    <div class="sb-head">CHECKLIST DE ROTINA</div>
-                    <ul class="tech-list" id="lista-rotina">
-                        <li class="tech-item"><span class="tech-check">✓</span> Trabalha em Home Office</li>
-                        <li class="tech-item"><span class="tech-check">✓</span> Recebe amigos frequentemente</li>
+                <div class="resumo-title" style="font-size:9pt; color:#555; border:none; margin-bottom:5px;">📊 LEITURA DO DIAGNÓSTICO</div>
+                <ul class="lista-ranking" id="lista-ranking">
                     </ul>
+            </div>
+
+            <div class="interpretacao-box">
+                <div class="destaque-txt" style="margin-bottom:5px;">🧩 INTERPRETAÇÃO INTEGRADA</div>
+                <div style="font-size:8.5pt; color:#444; line-height:1.4;">
+                    <strong>Elemento dominante</strong> → como a energia se manifesta<br>
+                    <strong>Temperamento</strong> → reação emocional básica<br>
+                    <strong>Perfil comportamental</strong> → forma de agir no mundo<br>
+                    <strong>Arquétipos</strong> → motivações profundas ativas
                 </div>
             </div>
 
-            <div class="ai-box">
-                <div class="ai-title">🤖 Análise Integrada (NeuroIA)</div>
-                <p style="font-size:10pt; line-height:1.6; color:#444;">
-                    Com base no cruzamento do perfil <strong>[ARQUÉTIPO]</strong> com as memórias afetivas citadas, recomenda-se criar ambientes que priorizem a <strong>[NECESSIDADE]</strong>. 
-                    A preferência visual por <strong>[ESTILO]</strong> sugere o uso de materiais como...
-                </p>
+            <div class="principio-box">
+                <div class="destaque-txt" style="margin-bottom:5px;">✨ PRINCÍPIO FUNDAMENTAL</div>
+                <div style="font-size:8.5pt; color:#555; font-style:italic;">
+                    "Você não é um tipo. Você é um sistema vivo em equilíbrio dinâmico."
+                </div>
+                <div style="margin-top:8px; font-size:8.5pt;">
+                    <strong>APLICAÇÕES:</strong> Orientar a conduta do projeto e criar estratégias para equilibrar os ambientes residencial ou comercial.
+                </div>
             </div>
 
-            <div class="footer">Página 4 - Análise Profunda | NeuroBriefing Intelligence</div>
+            <div class="footer">Página 1 - Identidade do Ser | NeuroBriefing Intelligence</div>
         </div>
+        
+        <div id="paginas-extras"></div>
 
     </div>
 
     <script>
+        // DADOS DE REFERÊNCIA (TEXTOS FIXOS)
+        const DEFINICOES = {
+            FOGO: { cor:'#e74c3c', energia: 'Ação · Direção · Intensidade', perfil: 'Executor', temp: 'Colérico', arq: 'Herói · Governante · Fora-da-Lei' },
+            AR:   { cor:'#3498db', energia: 'Expressão · Conexão · Movimento', perfil: 'Comunicador', temp: 'Sanguíneo', arq: 'Amante · Bobo da Corte · Explorador' },
+            AGUA: { cor:'#2980b9', energia: 'Sensibilidade · Adaptação · Ritmo', perfil: 'Planejador', temp: 'Fleumático', arq: 'Cuidador · Inocente · Mago' },
+            TERRA:{ cor:'#27ae60', energia: 'Estrutura · Profundidade · Constância', perfil: 'Analista', temp: 'Melancólico', arq: 'Sábio · Criador · Órfão' }
+        };
+
         let dadosAPI = [];
 
         async function init() {
             try {
-                // Simulação de dados para teste (enquanto o app não atualiza)
-                // No futuro virá do fetch('/api/relatorios')
-                const req = await fetch('/api/relatorios');
-                const raw = await req.json();
-                dadosAPI = raw.length ? raw : []; 
+                const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
+                dadosAPI = await req.json();
                 renderLista();
-            } catch(e) { console.error(e); }
+            } catch(e) { console.log(e); }
         }
 
         function renderLista() {
@@ -243,108 +171,89 @@
             tbody.innerHTML = '';
             [...dadosAPI].reverse().forEach((d, i) => {
                 const idx = dadosAPI.length - 1 - i;
-                // Simula detecção de módulos (Todos ativos por enquanto)
-                const mods = '<span class="tag-mod">M1</span><span class="tag-mod">M2</span><span class="tag-mod">M3</span>...';
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${new Date(d.data).toLocaleDateString()}</td>
-                        <td><strong>${d.cliente}</strong></td>
-                        <td>${mods}</td>
-                        <td style="text-align:right"><button class="btn" onclick="gerarPDF(${idx}, this)">📄 Gerar Dossiê</button></td>
-                    </tr>`;
+                tbody.innerHTML += `<tr>
+                    <td>${new Date(d.data).toLocaleDateString()}</td>
+                    <td><strong>${d.cliente}</strong></td>
+                    <td>${d.modulosCompletos ? '✅ Completo' : '⚠️ Parcial'}</td>
+                    <td style="text-align:right"><button class="btn" onclick="gerarPDF(${idx}, this)">📄 Dossiê</button></td>
+                </tr>`;
             });
         }
 
         async function gerarPDF(index, btn) {
             const dados = dadosAPI[index];
             const originalTxt = btn.innerText; 
-            btn.innerText = "Processando..."; btn.disabled = true;
+            btn.innerText = "Gerando..."; btn.disabled = true;
 
-            // 1. PREPARAR DADOS (MÓDULO 1)
+            // 1. CÁLCULOS DO MÓDULO 1
             let pts = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
-            let estilo = "Em Análise";
-            
-            // Arrays para Módulo 3 (Sensorial)
-            let visual=[], auditivo=[], olfativo=[], tatil=[];
-
             const resp = dados.respostas || {};
+
             Object.keys(resp).forEach(k => {
                 let val = parseInt(resp[k], 10) || 0;
-                
-                // Módulo 1
                 if(k.includes('fogo')) pts.FOGO += val;
                 if(k.includes('ar')) pts.AR += val;
                 if(k.includes('agua')) pts.AGUA += val;
                 if(k.includes('terra')) pts.TERRA += val;
-
-                // Módulo 2 (Estilo)
-                if(k.includes('ESTILO') && val > 0) estilo = k.split('::')[1];
-
-                // Módulo 3 (Categorização Básica)
-                if(k.includes('::') && !k.includes('ESTILO')) {
-                    const [cat, opt] = k.split('::');
-                    const cleanCat = cat.replace('SENSORIAL: ','').replace('PSICOLOGIA DAS ','');
-                    const item = `<li style="margin-bottom:4px;">• <strong>${opt}</strong> <span style="opacity:0.6">(${cleanCat})</span></li>`;
-                    
-                    if(cleanCat.match(/LUZ|COR|FORMA|BIOFILIA/)) visual.push(item);
-                    else if(cleanCat.match(/SOM|ECO|AUDI/)) auditivo.push(item);
-                    else if(cleanCat.match(/AROMA|OLFAT/)) olfativo.push(item);
-                    else tatil.push(item);
-                }
             });
 
-            // Preencher Pág 1 (Capa)
+            // Ordenar Scores (Do maior para o menor)
+            let scores = [
+                { id: 'FOGO', val: pts.FOGO, ...DEFINICOES.FOGO },
+                { id: 'AR', val: pts.AR, ...DEFINICOES.AR },
+                { id: 'AGUA', val: pts.AGUA, ...DEFINICOES.AGUA },
+                { id: 'TERRA', val: pts.TERRA, ...DEFINICOES.TERRA }
+            ].sort((a,b) => b.val - a.val);
+
+            // Preencher Capa
             document.getElementById('r-nome').innerText = dados.cliente;
             document.getElementById('r-data').innerText = new Date(dados.data).toLocaleDateString();
-            document.getElementById('r-local').innerText = dados.contato?.cidade || '-';
-            
-            // Gráficos M1
-            const max = 25;
+
+            // Barras Coloridas
             ['fogo','ar','agua','terra'].forEach(id => {
                 const k = id.toUpperCase();
-                document.getElementById('v-'+id).innerText = Math.min(pts[k], 25);
-                document.getElementById('b-'+id).style.width = (Math.min(pts[k], 25)/25*100)+'%';
+                const score = pts[k];
+                document.getElementById('v-'+id).innerText = score;
+                document.getElementById('b-'+id).style.width = Math.min((score/25)*100, 100) + '%';
             });
 
-            // Preencher Pág 2 (Visual)
-            document.getElementById('pag-visual').style.display = 'block'; // Ativa se tiver dados
-            document.getElementById('r-estilo').innerText = estilo;
+            // Preencher Box Dominante
+            const dom = scores[0];
+            document.getElementById('box-dominante').style.borderLeftColor = dom.cor;
+            document.getElementById('txt-elemento').innerText = `ELEMENTO ${dom.id}`;
+            document.getElementById('txt-elemento').style.color = dom.cor;
+            
+            document.getElementById('txt-energia').innerText = dom.energia;
+            document.getElementById('txt-perfil').innerText = dom.perfil;
+            document.getElementById('txt-temp').innerText = dom.temp;
+            document.getElementById('txt-arq').innerText = dom.arq;
 
-            // Preencher Pág 3 (Sensorial)
-            document.getElementById('pag-sensorial').style.display = 'block';
-            const boxSensorial = document.getElementById('container-sensorial');
-            boxSensorial.innerHTML = `
-                <div class="sense-box"><div class="sb-head">👁️ VISÃO</div><ul style="padding-left:15px; margin:0;">${visual.join('')}</ul></div>
-                <div class="sense-box"><div class="sb-head">👂 AUDIÇÃO</div><ul style="padding-left:15px; margin:0;">${auditivo.join('')}</ul></div>
-                <div class="sense-box"><div class="sb-head">👃 OLFATO</div><ul style="padding-left:15px; margin:0;">${olfativo.join('')}</ul></div>
-                <div class="sense-box"><div class="sb-head">✋ TATO & CONFORTO</div><ul style="padding-left:15px; margin:0;">${tatil.join('')}</ul></div>
+            // Preencher Ranking
+            const rankingList = document.getElementById('lista-ranking');
+            rankingList.innerHTML = `
+                <li><strong>1️⃣ Elemento Dominante:</strong> ${dom.id} (${dom.val} pts) <span style="color:#777">→ Energia predominante atual</span></li>
+                <li><strong>2️⃣ Elemento Secundário:</strong> ${scores[1].id} (${scores[1].val} pts) <span style="color:#777">→ Recurso acessível</span></li>
+                <li><strong>3️⃣ Elemento Menos Acessado:</strong> ${scores[3].id} (${scores[3].val} pts) <span style="color:#777">→ Área de desenvolvimento</span></li>
             `;
 
-            // Preencher Pág 4 (Profundo)
-            document.getElementById('pag-profundo').style.display = 'block';
+            // GERAR PÁGINAS EXTRAS (VISUAL, SENSORIAL, ETC) - Lógica Simplificada para Exibição
+            // ... (Aqui você pode manter a lógica anterior de appendChild para os outros módulos)
 
-            // GERAR PDF
+            // EXPORTAR
             const element = document.getElementById('relatorio-pdf');
             element.style.display = 'block';
 
             setTimeout(async () => {
                 const opt = {
                     margin: 0,
-                    filename: `Dossie_NeuroBriefing_${dados.cliente}.pdf`,
+                    filename: `Dossie_${dados.cliente}.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak: { mode: ['css', 'legacy'] } // Respeita o page-break-before
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 await html2pdf().set(opt).from(element).save();
-                
                 element.style.display = 'none';
                 btn.innerText = originalTxt; btn.disabled = false;
-                
-                // Esconder páginas extras para não atrapalhar o próximo
-                document.getElementById('pag-visual').style.display = 'none';
-                document.getElementById('pag-sensorial').style.display = 'none';
-                document.getElementById('pag-profundo').style.display = 'none';
             }, 1000);
         }
 
