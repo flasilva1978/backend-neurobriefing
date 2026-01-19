@@ -4,49 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard NeuroBriefing</title>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- RESET --- */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
         body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
-        
-        /* --- PAINEL (DASHBOARD) --- */
         .painel { max-width: 1200px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 20px; }
         .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
         .btn-refresh { background: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; font-weight: 700; font-size: 9pt; transition: 0.2s; }
         .btn-refresh:hover { background: #34495e; }
-
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
         tr:hover { background-color: #fafafa; }
-
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
         .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
         .contact-row { display: flex; gap: 8px; }
         .btn-contact { text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
         .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
         .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         .mod-tag { padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; background: #eee; color: #bbb; border: 1px solid #e0e0e0; }
         .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
-
         .btn-pdf { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 8pt; cursor: pointer; }
         .btn-pdf:hover { background: #c0392b; }
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
-
-        /* --- PDF A4 RÍGIDO --- */
+        
         #pdf-root { display: none; } 
         .page { width: 210mm; height: 296mm; background: white; position: relative; overflow: hidden; margin: 0 auto; page-break-after: always; padding: 0; }
         .page:last-child { page-break-after: avoid; }
-
-        /* Estilos PDF Gerais */
+        
         .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
@@ -54,7 +42,7 @@
         .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
-
+        
         .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
         .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 15px; }
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
@@ -62,7 +50,7 @@
         .mh-meta { text-align: right; }
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
-
+        
         .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 50px; }
         .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
@@ -70,7 +58,7 @@
         .cc-val { font-size: 11pt; font-weight: 900; }
         .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
-
+        
         .win-box { flex: 1; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 15px; }
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
@@ -78,11 +66,9 @@
         .wb-body { display: flex; flex: 1; }
         .wb-col { flex: 1; padding: 12px; }
         .wb-div { border-right: 1px dashed #ddd; background: #fdfdfd; }
-        
         .info-row { margin-bottom: 10px; }
         .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
         .iv { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.25; }
-        
         .lst-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 4px; border-bottom: 1px solid #eee; padding-bottom: 2px; }
         .lst-ul { padding: 0; margin: 0 0 10px 0; list-style: none; }
         .lst-li { font-size: 8pt; color: #555; padding-left: 8px; position: relative; margin-bottom: 2px; }
@@ -94,13 +80,11 @@
         .rk-item:last-child { border: none; }
         .rk-n { font-weight: 700; color: #333; }
         .rk-d { font-size: 7.5pt; color: #777; font-style: italic; }
-        
         .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
-
     </style>
 </head>
 <body>
@@ -209,7 +193,7 @@
                         <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
                     </div>
                     <div class="wb-body" style="padding:25px; text-align:center;">
-                        <h2 style="margin:0; font-size:20pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
+                        <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
                         <p style="font-size:10pt; color:#777; margin-top:10px; font-style:italic;" id="vis-top1-desc">Baseado na maior afinidade demonstrada.</p>
                         <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">
                             AFINIDADE: <span id="vis-top1-nota">-</span>%
@@ -252,6 +236,10 @@
             try {
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 dadosAPI = await req.json();
+                
+                // --- CORREÇÃO DE ORDENAÇÃO (MAIS RECENTE PRIMEIRO) ---
+                dadosAPI.sort((a, b) => new Date(b.data) - new Date(a.data));
+                
                 renderTable();
             } catch(e) { console.error(e); }
         }
@@ -272,8 +260,7 @@
             const t = document.getElementById('lista'); t.innerHTML = '';
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
 
-            [...dadosAPI].reverse().forEach((d, i) => {
-                const idx = dadosAPI.length - 1 - i;
+            dadosAPI.forEach((d, i) => { // Removido o .reverse() pois já ordenei no init()
                 const r = d.respostas || {};
                 const c = d.contato || {};
 
@@ -308,7 +295,7 @@
                             </div>
                         </td>
                         <td style="text-align:right">
-                            <button class="btn-pdf" onclick="makePDF(${idx}, this)">Gerar PDF</button>
+                            <button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button>
                         </td>
                     </tr>
                 `;
@@ -335,8 +322,8 @@
                 if(k.includes('terra')) p.TERRA += v;
             });
 
-            // Tempo Mod 1
-            const t1 = d.tempos ? d.tempos[0] : 0;
+            // Tempo Mod 1 (Tenta pegar do objeto tempos, senão fallback antigo)
+            const t1 = (d.tempos && d.tempos[0]) ? d.tempos[0] : (d.duracao || 0);
             document.getElementById('mh-time').innerText = `⏱ Tempo: ${formatTime(t1)}`;
 
             const sorted = [
@@ -387,7 +374,7 @@
             });
 
             // MÓDULO 2 (VISUAL)
-            const t2 = d.tempos ? d.tempos[1] : 0;
+            const t2 = (d.tempos && d.tempos[1]) ? d.tempos[1] : 0;
             document.getElementById('vis-time').innerText = `⏱ Tempo: ${formatTime(t2)}`;
             if (t2 > 0 && t2 < 60) {
                 document.getElementById('vis-warning').style.display = 'block';
