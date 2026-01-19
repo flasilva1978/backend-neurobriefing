@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard NeuroBriefing</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
+        /* RESET */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
         body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
         .painel { max-width: 1200px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -73,7 +77,6 @@
         .lst-ul { padding: 0; margin: 0 0 10px 0; list-style: none; }
         .lst-li { font-size: 8pt; color: #555; padding-left: 8px; position: relative; margin-bottom: 2px; }
         .lst-li::before { content: "•"; position: absolute; left: 0; color: #ccc; }
-        
         .rank-wrap { background: #f8f9fa; border: 1px solid #eee; border-radius: 6px; padding: 10px 15px; margin-bottom: 5px; }
         .rk-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; }
         .rk-item { display: flex; justify-content: space-between; font-size: 8.5pt; border-bottom: 1px dashed #ddd; padding: 3px 0; }
@@ -237,7 +240,7 @@
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 dadosAPI = await req.json();
                 
-                // --- CORREÇÃO DE ORDENAÇÃO (MAIS RECENTE PRIMEIRO) ---
+                // ORDENAÇÃO: MAIS NOVO PRIMEIRO
                 dadosAPI.sort((a, b) => new Date(b.data) - new Date(a.data));
                 
                 renderTable();
@@ -250,17 +253,18 @@
         }
 
         function formatTime(seg) {
-            if(!seg) return "N/A";
-            const min = Math.floor(seg / 60);
-            const s = seg % 60;
-            return `${min < 10 ? '0'+min : min}:${s < 10 ? '0'+s : s}`;
+            const s = parseInt(seg);
+            if (isNaN(s)) return "00:00"; 
+            const min = Math.floor(s / 60);
+            const sec = s % 60;
+            return `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
         }
 
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
 
-            dadosAPI.forEach((d, i) => { // Removido o .reverse() pois já ordenei no init()
+            dadosAPI.forEach((d, i) => {
                 const r = d.respostas || {};
                 const c = d.contato || {};
 
@@ -322,8 +326,8 @@
                 if(k.includes('terra')) p.TERRA += v;
             });
 
-            // Tempo Mod 1 (Tenta pegar do objeto tempos, senão fallback antigo)
-            const t1 = (d.tempos && d.tempos[0]) ? d.tempos[0] : (d.duracao || 0);
+            // Tempo Mod 1
+            const t1 = (d.tempos && d.tempos[0] !== undefined) ? d.tempos[0] : (d.duracao || 0);
             document.getElementById('mh-time').innerText = `⏱ Tempo: ${formatTime(t1)}`;
 
             const sorted = [
@@ -374,8 +378,9 @@
             });
 
             // MÓDULO 2 (VISUAL)
-            const t2 = (d.tempos && d.tempos[1]) ? d.tempos[1] : 0;
+            const t2 = (d.tempos && d.tempos[1] !== undefined) ? d.tempos[1] : 0;
             document.getElementById('vis-time').innerText = `⏱ Tempo: ${formatTime(t2)}`;
+            
             if (t2 > 0 && t2 < 60) {
                 document.getElementById('vis-warning').style.display = 'block';
             } else {
