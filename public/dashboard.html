@@ -14,7 +14,7 @@
         * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
         body { font-family: 'Montserrat', sans-serif; background: #e0e5ec; margin: 0; padding: 20px; color: #333; }
         
-        /* Painel de Controle (Não sai no PDF) */
+        /* --- PAINEL DE CONTROLE (TELA) --- */
         .painel { max-width: 1000px; margin: 0 auto 30px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
         .btn { background: #1a1a1a; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; text-transform: uppercase; font-size: 9pt; letter-spacing: 1px; }
@@ -22,12 +22,12 @@
         th { text-align: left; padding: 10px; background: #f4f4f4; color: #333; font-weight: 700; }
         td { padding: 10px; border-bottom: 1px solid #eee; }
 
-        /* --- ESTRUTURA DO PDF (A4 RÍGIDO) --- */
+        /* --- PDF A4 (ESTRUTURA RÍGIDA) --- */
         #relatorio-pdf { display: none; }
         
         .page { 
             width: 210mm; 
-            height: 297mm; /* Altura A4 exata */
+            height: 296mm; /* Altura A4 padrão */
             background: white; 
             position: relative; 
             overflow: hidden; 
@@ -58,52 +58,52 @@
         
         /* Cabeçalho Modulo */
         .mod-head { border-bottom: 4px solid #1a1a1a; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .mh-left h1 { margin: 0; font-size: 24pt; font-weight: 800; color: #1a1a1a; line-height: 1; }
+        .mh-left h1 { margin: 0; font-size: 22pt; font-weight: 800; color: #1a1a1a; line-height: 1; }
         .mh-left span { font-size: 8pt; text-transform: uppercase; color: #777; letter-spacing: 1px; font-weight: 600; }
         .mh-right { font-size: 30pt; color: #eee; font-weight: 900; line-height: 0.8; }
 
         /* Barras de Perfil (Compactas) */
-        .perf-grid { display: flex; gap: 10px; margin-bottom: 25px; height: 60px; }
+        .perf-grid { display: flex; gap: 10px; margin-bottom: 20px; height: 55px; }
         .perf-card { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; }
         .pc-top { display: flex; justify-content: space-between; align-items: center; }
         .pc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
-        .pc-val { font-size: 12pt; font-weight: 900; }
+        .pc-val { font-size: 11pt; font-weight: 900; }
         .pc-bar-bg { width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
         .pc-bar-fill { height: 100%; border-radius: 3px; }
 
         /* RESULTADO PRINCIPAL (O grande destaque) */
         .main-result { 
             flex: 1; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; 
-            margin-bottom: 20px; background: #fff;
+            margin-bottom: 15px; background: #fff;
         }
-        .mr-header { padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .mr-title { font-size: 16pt; font-weight: 800; text-transform: uppercase; }
-        .mr-sub { font-size: 9pt; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+        .mr-header { padding: 12px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .mr-title { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
+        .mr-sub { font-size: 8pt; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
 
         .mr-content { display: flex; flex: 1; }
-        .mr-col { padding: 20px; width: 50%; }
+        .mr-col { padding: 15px; width: 50%; }
         .mr-left { border-right: 1px dashed #eee; }
         
         /* Lista de Detalhes */
-        .det-item { margin-bottom: 15px; }
-        .det-lbl { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 3px; letter-spacing: 0.5px; }
-        .det-val { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.3; }
+        .det-item { margin-bottom: 12px; }
+        .det-lbl { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; letter-spacing: 0.5px; }
+        .det-val { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.3; }
 
-        .feat-title { font-size: 9pt; font-weight: 800; color: #1a1a1a; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 3px; }
-        .feat-list { list-style: none; padding: 0; margin: 0 0 20px 0; }
-        .feat-list li { font-size: 8.5pt; color: #555; margin-bottom: 4px; padding-left: 12px; position: relative; }
+        .feat-title { font-size: 8pt; font-weight: 800; color: #1a1a1a; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #eee; padding-bottom: 3px; }
+        .feat-list { list-style: none; padding: 0; margin: 0 0 15px 0; }
+        .feat-list li { font-size: 8pt; color: #555; margin-bottom: 3px; padding-left: 12px; position: relative; }
         .feat-list li::before { content: "▪"; color: #ccc; position: absolute; left: 0; }
 
         /* Rodapé com Ranking */
-        .rank-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; gap: 20px; }
+        .rank-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 6px; padding: 12px; display: flex; gap: 20px; }
         .rank-col { flex: 1; }
         .rk-head { font-size: 8pt; font-weight: 800; color: #1a1a1a; text-transform: uppercase; margin-bottom: 5px; }
-        .rk-row { display: flex; justify-content: space-between; font-size: 9pt; margin-bottom: 3px; border-bottom: 1px dashed #e0e0e0; padding-bottom: 3px; }
+        .rk-row { display: flex; justify-content: space-between; font-size: 8pt; margin-bottom: 3px; border-bottom: 1px dashed #e0e0e0; padding-bottom: 2px; }
         .rk-row:last-child { border: none; }
         .rk-n { font-weight: 700; color: #333; }
-        .rk-d { color: #777; font-size: 8pt; font-style: italic; }
+        .rk-d { color: #777; font-size: 7pt; font-style: italic; }
 
-        .footer-note { margin-top: auto; text-align: center; font-size: 7pt; color: #aaa; border-top: 1px solid #eee; padding-top: 8px; }
+        .footer-note { margin-top: auto; text-align: center; font-size: 6pt; color: #aaa; border-top: 1px solid #eee; padding-top: 5px; }
 
         /* Cores Elementais */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -166,24 +166,8 @@
                     <div class="mh-right">01</div>
                 </div>
 
-                <div class="perf-grid">
-                    <div class="perf-card">
-                        <div class="pc-top"><span class="pc-lbl c-fogo">Fogo</span><span class="pc-val c-fogo" id="v-fogo">0</span></div>
-                        <div class="pc-bar-bg"><div class="pc-bar-fill bg-fogo" id="b-fogo"></div></div>
+                <div class="perf-grid" id="chart-container">
                     </div>
-                    <div class="perf-card">
-                        <div class="pc-top"><span class="pc-lbl c-ar">Ar</span><span class="pc-val c-ar" id="v-ar">0</span></div>
-                        <div class="pc-bar-bg"><div class="pc-bar-fill bg-ar" id="b-ar"></div></div>
-                    </div>
-                    <div class="perf-card">
-                        <div class="pc-top"><span class="pc-lbl c-agua">Água</span><span class="pc-val c-agua" id="v-agua">0</span></div>
-                        <div class="pc-bar-bg"><div class="pc-bar-fill bg-agua" id="b-agua"></div></div>
-                    </div>
-                    <div class="perf-card">
-                        <div class="pc-top"><span class="pc-lbl c-terra">Terra</span><span class="pc-val c-terra" id="v-terra">0</span></div>
-                        <div class="pc-bar-bg"><div class="pc-bar-fill bg-terra" id="b-terra"></div></div>
-                    </div>
-                </div>
 
                 <div class="main-result">
                     <div class="mr-header" id="mr-header">
@@ -230,21 +214,10 @@
                 <div class="rank-box">
                     <div class="rank-col">
                         <div class="rk-head">Leitura do Diagnóstico</div>
-                        <div class="rk-row">
-                            <span class="rk-n">1️⃣ Dominante <span id="r-dom"></span></span>
-                            <span class="rk-d">Energia atual</span>
-                        </div>
-                        <div class="rk-row">
-                            <span class="rk-n">2️⃣ Secundário <span id="r-sec"></span></span>
-                            <span class="rk-d">Recurso</span>
-                        </div>
-                        <div class="rk-row">
-                            <span class="rk-n">3️⃣ Menos Acessado <span id="r-last"></span></span>
-                            <span class="rk-d">A desenvolver</span>
-                        </div>
+                        <div id="ranking-list-container"></div>
                     </div>
                     <div class="rank-col" style="border-left:1px solid #ddd; padding-left:20px; display:flex; align-items:center;">
-                        <div style="font-size:8pt; color:#666; font-style:italic; line-height:1.5;">
+                        <div style="font-size:7pt; color:#666; font-style:italic; line-height:1.5;">
                             "Você não é um tipo fixo. Você é um sistema vivo em equilíbrio dinâmico. A neuroarquitetura busca harmonizar sua natureza com o espaço."
                         </div>
                     </div>
@@ -263,6 +236,7 @@
         // DADOS RICOS
         const DB = {
             FOGO: {
+                id: 'FOGO',
                 cor: '#e74c3c',
                 titulo: 'ESTILOS DE ATIVAÇÃO',
                 energia: 'Ação · Direção · Intensidade',
@@ -274,6 +248,7 @@
                 carac: ['Contrastes marcantes', 'Linhas retas definidas', 'Materiais fortes (metal, couro)', 'Iluminação direcionada', 'Paleta profunda']
             },
             AR: {
+                id: 'AR',
                 cor: '#3498db',
                 titulo: 'ESTILOS DE EXPRESSÃO',
                 energia: 'Expressão · Conexão · Movimento',
@@ -285,6 +260,7 @@
                 carac: ['Luz natural abundante', 'Layout fluido e aberto', 'Mistura criativa', 'Cores claras vibrantes', 'Sensação de liberdade']
             },
             AGUA: {
+                id: 'ÁGUA',
                 cor: '#2980b9',
                 titulo: 'ESTILOS DE ACOLHIMENTO',
                 energia: 'Sensibilidade · Adaptação · Ritmo',
@@ -296,6 +272,7 @@
                 carac: ['Texturas suaves e táteis', 'Paleta neutra quente', 'Materiais naturais (linho, madeira)', 'Iluminação difusa', 'Ambientes calmos']
             },
             TERRA: {
+                id: 'TERRA',
                 cor: '#27ae60',
                 titulo: 'ESTILOS DE ESTRUTURA',
                 energia: 'Estrutura · Profundidade · Constância',
@@ -321,14 +298,17 @@
         function renderTable() {
             const tbody = document.getElementById('lista');
             tbody.innerHTML = '';
+            if(dadosAPI.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Sem dados.</td></tr>'; return; }
+            
             [...dadosAPI].reverse().forEach((d, i) => {
                 const idx = dadosAPI.length - 1 - i;
-                tbody.innerHTML += `<tr>
-                    <td>${new Date(d.data).toLocaleDateString()}</td>
-                    <td><strong>${d.cliente}</strong></td>
-                    <td><span style="color:#27ae60; font-weight:700;">Recebido</span></td>
-                    <td style="text-align:right"><button class="btn" onclick="gerarPDF(${idx}, this)">PDF</button></td>
-                </tr>`;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${new Date(d.data).toLocaleDateString()}</td>
+                        <td><strong>${d.cliente}</strong></td>
+                        <td><span style="color:#27ae60; font-weight:700;">Recebido</span></td>
+                        <td style="text-align:right"><button class="btn" onclick="gerarPDF(${idx}, this)">PDF</button></td>
+                    </tr>`;
             });
         }
 
@@ -341,7 +321,7 @@
             document.getElementById('capa-arq').innerText = dados.contato?.arquiteto || '-';
             document.getElementById('capa-data').innerText = new Date(dados.data).toLocaleDateString();
 
-            // 2. MÓDULO 1
+            // 2. CÁLCULOS MÓDULO 1
             let pts = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
             const resp = dados.respostas || {};
             
@@ -353,55 +333,85 @@
                 if(k.includes('terra')) pts.TERRA += val;
             });
 
-            // Ordenação
+            // Ordenação (Ranking Real)
             const sorted = [
-                { id: 'FOGO', val: pts.FOGO, ...DB.FOGO },
-                { id: 'AR', val: pts.AR, ...DB.AR },
-                { id: 'AGUA', val: pts.AGUA, ...DB.AGUA },
-                { id: 'TERRA', val: pts.TERRA, ...DB.TERRA }
-            ].sort((a,b) => b.val - a.val);
+                { key: 'FOGO', ...DB.FOGO, score: pts.FOGO },
+                { key: 'AR', ...DB.AR, score: pts.AR },
+                { key: 'AGUA', ...DB.AGUA, score: pts.AGUA },
+                { key: 'TERRA', ...DB.TERRA, score: pts.TERRA }
+            ].sort((a,b) => b.score - a.score);
 
-            const dom = sorted[0];
-            const sec = sorted[1];
-            const last = sorted[3];
+            const dom = sorted[0]; // 1º
+            const sec = sorted[1]; // 2º
+            const third = sorted[2]; // 3º
+            const last = sorted[3]; // 4º
 
-            // Barras
+            // 3. PREENCHER GRÁFICO (Mantendo ordem Fogo, Ar, Água, Terra fixa para visualização padrão ou Ordenada se preferir)
+            // Vou manter fixo na ordem elemental para ser fácil de comparar
+            const chartContainer = document.getElementById('chart-container');
+            chartContainer.innerHTML = ''; // Limpa
+            
             ['FOGO','AR','AGUA','TERRA'].forEach(key => {
-                const kLower = key.toLowerCase();
+                const info = DB[key];
                 const score = pts[key];
-                document.getElementById(`v-${kLower}`).innerText = score;
-                document.getElementById(`b-${kLower}`).style.width = Math.min((score/25)*100, 100) + '%';
+                const cssClass = `c-${key.toLowerCase() === 'água' ? 'agua' : key.toLowerCase()}`;
+                const bgClass = `bg-${key.toLowerCase() === 'água' ? 'agua' : key.toLowerCase()}`;
+                
+                chartContainer.innerHTML += `
+                    <div class="perf-card">
+                        <div class="pc-top">
+                            <span class="pc-lbl ${cssClass}">${info.id}</span>
+                            <span class="pc-val ${cssClass}">${score}</span>
+                        </div>
+                        <div class="pc-bar-bg">
+                            <div class="pc-bar-fill ${bgClass}" style="width:${Math.min((score/25)*100, 100)}%"></div>
+                        </div>
+                    </div>`;
             });
 
-            // Box Principal
+            // 4. PREENCHER BOX DOMINANTE
             const header = document.getElementById('mr-header');
             header.style.backgroundColor = dom.cor;
             document.getElementById('txt-elemento').innerText = `ELEMENTO ${dom.id}`;
             document.getElementById('txt-estilo').innerText = dom.titulo;
 
-            // Textos
             document.getElementById('txt-energia').innerText = dom.energia;
             document.getElementById('txt-quem').innerText = dom.quem;
             document.getElementById('txt-perfil').innerText = dom.perfil;
             document.getElementById('txt-temp').innerText = dom.temp;
             document.getElementById('txt-arq').innerText = dom.arq;
 
-            // Listas
             document.getElementById('list-estilos').innerHTML = dom.estilos.map(x => `<li>${x}</li>`).join('');
             document.getElementById('list-carac').innerHTML = dom.carac.map(x => `<li>${x}</li>`).join('');
 
-            // Ranking
-            document.getElementById('r-dom').innerText = `${dom.id} (${dom.val})`;
-            document.getElementById('r-sec').innerText = `${sec.id} (${sec.val})`;
-            document.getElementById('r-last').innerText = `${last.id} (${last.val})`;
+            // 5. PREENCHER RANKING (ORDENADO MAIOR PARA MENOR)
+            const rankContainer = document.getElementById('ranking-list-container');
+            rankContainer.innerHTML = `
+                <div class="rk-row">
+                    <span class="rk-n">1️⃣ ${dom.id} (${dom.score})</span>
+                    <span class="rk-d">Dominante (Energia atual)</span>
+                </div>
+                <div class="rk-row">
+                    <span class="rk-n">2️⃣ ${sec.id} (${sec.score})</span>
+                    <span class="rk-d">Secundário (Recurso)</span>
+                </div>
+                <div class="rk-row">
+                    <span class="rk-n">3️⃣ ${third.id} (${third.score})</span>
+                    <span class="rk-d">Equilíbrio</span>
+                </div>
+                <div class="rk-row">
+                    <span class="rk-n">4️⃣ ${last.id} (${last.score})</span>
+                    <span class="rk-d">Menos Acessado (A desenvolver)</span>
+                </div>
+            `;
 
-            // 3. EXPORTAR
+            // 6. EXPORTAR
             const element = document.getElementById('relatorio-pdf');
             element.style.display = 'block';
 
             setTimeout(async () => {
                 const opt = {
-                    margin: 0, // Margem ZERO para o HTML controlar tudo
+                    margin: 0,
                     filename: `Dossie_${dados.cliente}.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, useCORS: true },
@@ -411,7 +421,7 @@
                 
                 element.style.display = 'none';
                 btn.innerText = originalTxt; btn.disabled = false;
-            }, 500);
+            }, 800);
         }
 
         init();
