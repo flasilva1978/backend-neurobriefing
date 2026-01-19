@@ -16,56 +16,37 @@
         
         /* --- PAINEL (DASHBOARD) --- */
         .painel { max-width: 1200px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        
         .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 20px; }
         .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
-        
         .btn-refresh { background: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; font-weight: 700; font-size: 9pt; transition: 0.2s; }
         .btn-refresh:hover { background: #34495e; }
 
-        /* Tabela */
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
         tr:hover { background-color: #fafafa; }
 
-        /* Coluna Cliente */
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
         .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
-        
-        /* Botões de Contato */
         .contact-row { display: flex; gap: 8px; }
-        .btn-contact { 
-            text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;
-        }
+        .btn-contact { text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
         .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        .btn-wa:hover { background: #c8e6c9; }
-        
         .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-        .btn-mail:hover { background: #bbdefb; }
 
-        /* Botões de Módulos (Status) */
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
-        .mod-tag { 
-            padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; 
-            background: #eee; color: #bbb; border: 1px solid #e0e0e0;
-        }
-        .mod-tag.done { 
-            background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; 
-        }
+        .mod-tag { padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; background: #eee; color: #bbb; border: 1px solid #e0e0e0; }
+        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
 
-        /* Botão PDF */
         .btn-pdf { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 8pt; cursor: pointer; }
         .btn-pdf:hover { background: #c0392b; }
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* --- PDF A4 RÍGIDO (LAYOUT TRAVADO) --- */
+        /* --- PDF A4 RÍGIDO --- */
         #pdf-root { display: none; } 
-        
         .page { width: 210mm; height: 296mm; background: white; position: relative; overflow: hidden; margin: 0 auto; page-break-after: always; padding: 0; }
         .page:last-child { page-break-after: avoid; }
 
-        /* Estilos PDF (Capa e Modulo 1) */
+        /* Estilos PDF Gerais */
         .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
@@ -89,6 +70,7 @@
         .cc-val { font-size: 11pt; font-weight: 900; }
         .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
+
         .win-box { flex: 1; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 15px; }
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
@@ -96,19 +78,23 @@
         .wb-body { display: flex; flex: 1; }
         .wb-col { flex: 1; padding: 12px; }
         .wb-div { border-right: 1px dashed #ddd; background: #fdfdfd; }
+        
         .info-row { margin-bottom: 10px; }
         .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
         .iv { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.25; }
+        
         .lst-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 4px; border-bottom: 1px solid #eee; padding-bottom: 2px; }
         .lst-ul { padding: 0; margin: 0 0 10px 0; list-style: none; }
         .lst-li { font-size: 8pt; color: #555; padding-left: 8px; position: relative; margin-bottom: 2px; }
         .lst-li::before { content: "•"; position: absolute; left: 0; color: #ccc; }
+        
         .rank-wrap { background: #f8f9fa; border: 1px solid #eee; border-radius: 6px; padding: 10px 15px; margin-bottom: 5px; }
         .rk-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; }
         .rk-item { display: flex; justify-content: space-between; font-size: 8.5pt; border-bottom: 1px dashed #ddd; padding: 3px 0; }
         .rk-item:last-child { border: none; }
         .rk-n { font-weight: 700; color: #333; }
         .rk-d { font-size: 7.5pt; color: #777; font-style: italic; }
+        
         .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
@@ -152,7 +138,7 @@
                     <span class="ci-lbl">Data do Diagnóstico</span>
                     <span class="ci-val" id="cp-data">-</span>
                 </div>
-                <div class="c-foot">Documento Confidencial de Uso Profissional - @FlasDev</div>
+                <div class="c-foot">Documento Confidencial de Uso Profissional</div>
             </div>
         </div>
 
@@ -196,7 +182,7 @@
                     <div class="rk-tit">📊 Leitura do Diagnóstico (Ranking)</div>
                     <div id="rank-list"></div>
                 </div>
-                <div class="ft-note">Relatório gerado pela plataforma NeuroBriefing Intelligence - @FlasDev</div>
+                <div class="ft-note">Relatório gerado pela plataforma NeuroBriefing Intelligence</div>
             </div>
         </div>
 
@@ -207,7 +193,14 @@
                         <div class="mh-tit">IDENTIDADE VISUAL</div>
                         <div class="mh-sub">Estilo Predominante & Preferências</div>
                     </div>
-                    <div class="mh-num">02</div>
+                    <div class="mh-meta">
+                        <div class="mh-num">02</div>
+                        <span class="mh-time" id="vis-time">⏱ Tempo: --:--</span>
+                    </div>
+                </div>
+
+                <div id="vis-warning" style="display:none; background:#ffebeb; color:#c0392b; padding:10px; font-size:9pt; font-weight:bold; text-align:center; border:1px solid #e74c3c; margin-bottom:15px; border-radius:4px;">
+                    ⚠️ ATENÇÃO: Tempo de execução muito baixo. Indica respostas sem reflexão.
                 </div>
 
                 <div class="win-box" style="flex:0 auto; margin-bottom:30px;">
@@ -216,7 +209,7 @@
                         <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
                     </div>
                     <div class="wb-body" style="padding:25px; text-align:center;">
-                        <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
+                        <h2 style="margin:0; font-size:20pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
                         <p style="font-size:10pt; color:#777; margin-top:10px; font-style:italic;" id="vis-top1-desc">Baseado na maior afinidade demonstrada.</p>
                         <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">
                             AFINIDADE: <span id="vis-top1-nota">-</span>%
@@ -263,7 +256,6 @@
             } catch(e) { console.error(e); }
         }
 
-        // Função Auxiliar
         function checkMod(respostas, keyIncludes) {
             if(!respostas) return false;
             return Object.keys(respostas).some(k => k.includes(keyIncludes));
@@ -278,7 +270,6 @@
 
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
-            
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
 
             [...dadosAPI].reverse().forEach((d, i) => {
@@ -297,9 +288,7 @@
 
                 t.innerHTML += `
                     <tr>
-                        <td style="font-size:9pt; color:#666;">
-                            ${new Date(d.data).toLocaleDateString()}
-                        </td>
+                        <td style="font-size:9pt; color:#666;">${new Date(d.data).toLocaleDateString()}</td>
                         <td>
                             <span class="cli-name">${d.cliente}</span>
                             <span class="cli-local">📍 ${c.cidade || '-'} / ${c.estado || '-'}</span>
@@ -308,9 +297,7 @@
                                 ${c.email ? `<a href="${mailLink}" class="btn-contact btn-mail">✉️ Email</a>` : ''}
                             </div>
                         </td>
-                        <td style="font-weight:600; color:#555;">
-                            ${c.arquiteto || 'Não informado'}
-                        </td>
+                        <td style="font-weight:600; color:#555;">${c.arquiteto || 'Não informado'}</td>
                         <td>
                             <div class="mod-grid">
                                 <span class="mod-tag ${hasHumana ? 'done' : ''}">Humana</span>
@@ -332,12 +319,12 @@
             const d = dadosAPI[index];
             const original = btn.innerText; btn.innerText = "..."; btn.disabled = true;
 
-            // 1. CAPA
+            // CAPA
             document.getElementById('cp-nome').innerText = d.cliente;
             document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
             document.getElementById('cp-data').innerText = new Date(d.data).toLocaleDateString();
 
-            // 2. MÓDULO 1
+            // MÓDULO 1
             let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
             const r = d.respostas || {};
             Object.keys(r).forEach(k => {
@@ -348,7 +335,9 @@
                 if(k.includes('terra')) p.TERRA += v;
             });
 
-            document.getElementById('mh-time').innerText = `⏱ Tempo: ${formatTime(d.duracao)}`;
+            // Tempo Mod 1
+            const t1 = d.tempos ? d.tempos[0] : 0;
+            document.getElementById('mh-time').innerText = `⏱ Tempo: ${formatTime(t1)}`;
 
             const sorted = [
                 { k:'FOGO', ...DB.FOGO, val: p.FOGO },
@@ -396,24 +385,16 @@
                     </div>
                 `;
             });
-            <div class="page">
-                <div class="mod-content">
-                    <div class="m-head">
-                        <div>
-                            <div class="mh-tit">IDENTIDADE VISUAL</div>
-                            <div class="mh-sub">Estilo Predominante & Preferências</div>
-                        </div>
-                    <div class="mh-meta">
-                <div class="mh-num">02</div>
-                    <span class="mh-time" id="vis-time">⏱ Tempo: --:--</span>
-                    </div>
-                </div>
 
-                <div id="vis-warning" style="display:none; background:#ffebeb; color:#c0392b; padding:10px; font-size:9pt; font-weight:bold; text-align:center; border:1px solid #e74c3c; margin-bottom:15px; border-radius:4px;">
-                    ⚠️ ATENÇÃO: Tempo de execução muito baixo. Indica respostas sem reflexão.
-                </div>
+            // MÓDULO 2 (VISUAL)
+            const t2 = d.tempos ? d.tempos[1] : 0;
+            document.getElementById('vis-time').innerText = `⏱ Tempo: ${formatTime(t2)}`;
+            if (t2 > 0 && t2 < 60) {
+                document.getElementById('vis-warning').style.display = 'block';
+            } else {
+                document.getElementById('vis-warning').style.display = 'none';
+            }
 
-            // 3. MÓDULO 2 (VISUAL)
             let visualScores = [];
             Object.keys(r).forEach(k => {
                 if (k.startsWith('est_')) {
@@ -427,7 +408,6 @@
 
             visualScores.sort((a,b) => b.val - a.val);
 
-            // Preenche Top 1
             if (visualScores.length > 0) {
                 const top1 = visualScores[0];
                 document.getElementById('vis-top1-nome').innerText = top1.nome;
@@ -437,7 +417,6 @@
                 document.getElementById('vis-top1-nota').innerText = "0";
             }
 
-            // Preenche Top 2-5
             const secContainer = document.getElementById('vis-lista-secundaria');
             secContainer.innerHTML = '';
             visualScores.slice(1, 5).forEach((item, i) => {
@@ -449,7 +428,7 @@
                 `;
             });
 
-            // 4. EXPORTAR
+            // EXPORTAR
             const el = document.getElementById('pdf-root');
             el.style.display = 'block';
             window.scrollTo(0, 0); 
@@ -465,7 +444,7 @@
                 await html2pdf().set(opt).from(el).save();
                 el.style.display = 'none';
                 btn.innerText = original; btn.disabled = false;
-            }, 800);
+            }, 1000);
         }
 
         init();
