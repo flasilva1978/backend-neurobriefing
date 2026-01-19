@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dossiê NeuroBriefing</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -10,102 +9,97 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- RESET --- */
+        /* --- RESET GERAL --- */
         * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
-        body { font-family: 'Montserrat', sans-serif; background: #e0e5ec; margin: 0; padding: 20px; color: #333; }
+        body { background: #555; margin: 0; padding: 20px; font-family: 'Montserrat', sans-serif; }
         
-        /* --- PAINEL DE CONTROLE (TELA) --- */
-        .painel { max-width: 1000px; margin: 0 auto 30px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .btn { background: #1a1a1a; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; text-transform: uppercase; font-size: 9pt; letter-spacing: 1px; }
-        table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-        th { text-align: left; padding: 10px; background: #f4f4f4; color: #333; font-weight: 700; }
-        td { padding: 10px; border-bottom: 1px solid #eee; }
+        /* --- CONTROLE DE TELA (Não sai no PDF) --- */
+        .painel { max-width: 900px; margin: 0 auto 30px auto; background: white; padding: 20px; border-radius: 8px; }
+        .btn-update { background: #2c3e50; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
 
-        /* --- PDF A4 (ESTRUTURA RÍGIDA) --- */
-        #relatorio-pdf { display: none; }
+        /* --- ESTRUTURA PDF (A4 RÍGIDO) --- */
+        #pdf-container { display: none; }
         
-        .page { 
-            width: 210mm; 
-            height: 296mm; /* Altura A4 padrão */
-            background: white; 
-            position: relative; 
-            overflow: hidden; 
-            page-break-after: always;
+        .page {
+            width: 210mm;
+            height: 296mm; /* -1mm para evitar bug de página extra */
+            background: white;
+            position: relative;
+            overflow: hidden; /* Corta qualquer excesso */
             margin: 0 auto;
             padding: 0;
+            page-break-after: always; /* Força quebra */
         }
-        .page:last-child { page-break-after: auto; }
+        .page:last-child { page-break-after: avoid; }
 
-        /* --- PÁGINA 1: CAPA (Design Minimalista) --- */
-        .capa-wrapper {
-            height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: #fff; padding: 20mm; text-align: center; border: 15mm solid #f8f9fa;
+        /* --- PÁGINA 1: CAPA --- */
+        .capa-bg {
+            width: 100%; height: 100%;
+            background: #fdfdfd;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border: 20mm solid #fff; /* Margem branca */
+            outline: 2px solid #2c3e50; /* Borda decorativa */
+            outline-offset: -10mm;
         }
-        .capa-logo { font-size: 36pt; font-weight: 900; letter-spacing: -1px; color: #1a1a1a; margin-bottom: 5px; }
-        .capa-tagline { font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #999; margin-bottom: 60px; }
+        .logo-main { font-size: 40pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -2px; }
+        .tagline { font-size: 10pt; letter-spacing: 5px; text-transform: uppercase; color: #888; margin-bottom: 80px; }
         
-        .capa-data-box { width: 100%; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 30px 0; margin-bottom: 40px; }
-        .cd-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 10pt; }
-        .cd-row:last-child { margin-bottom: 0; }
-        .cd-lbl { font-weight: 700; color: #999; text-transform: uppercase; font-size: 8pt; letter-spacing: 1px; }
-        .cd-val { font-weight: 600; color: #333; text-align: right; }
+        .info-block { text-align: center; margin-bottom: 40px; width: 80%; }
+        .lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 5px; }
+        .val { font-size: 18pt; font-weight: 600; color: #333; margin-bottom: 30px; display: block; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
-        .capa-footer { font-size: 7pt; color: #ccc; text-transform: uppercase; letter-spacing: 2px; position: absolute; bottom: 20mm; }
+        .footer-capa { position: absolute; bottom: 20mm; font-size: 8pt; color: #ccc; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- PÁGINA 2: MÓDULO 1 (Layout Compacto) --- */
-        .mod-wrapper { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
+        /* --- PÁGINA 2: MÓDULO 1 --- */
+        .content-pad { padding: 15mm; height: 100%; display: flex; flex-direction: column; }
         
-        /* Cabeçalho Modulo */
-        .mod-head { border-bottom: 4px solid #1a1a1a; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .mh-left h1 { margin: 0; font-size: 22pt; font-weight: 800; color: #1a1a1a; line-height: 1; }
-        .mh-left span { font-size: 8pt; text-transform: uppercase; color: #777; letter-spacing: 1px; font-weight: 600; }
-        .mh-right { font-size: 30pt; color: #eee; font-weight: 900; line-height: 0.8; }
-
-        /* Barras de Perfil (Compactas) */
-        .perf-grid { display: flex; gap: 10px; margin-bottom: 20px; height: 55px; }
-        .perf-card { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; }
-        .pc-top { display: flex; justify-content: space-between; align-items: center; }
-        .pc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
-        .pc-val { font-size: 11pt; font-weight: 900; }
-        .pc-bar-bg { width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
-        .pc-bar-fill { height: 100%; border-radius: 3px; }
-
-        /* RESULTADO PRINCIPAL (O grande destaque) */
-        .main-result { 
-            flex: 1; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; 
-            margin-bottom: 15px; background: #fff;
+        /* Header Modulo */
+        .mod-head { 
+            display: flex; justify-content: space-between; align-items: flex-end; 
+            border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px;
         }
-        .mr-header { padding: 12px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .mr-title { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
-        .mr-sub { font-size: 8pt; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+        .mh-title { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
+        .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; }
 
-        .mr-content { display: flex; flex: 1; }
-        .mr-col { padding: 15px; width: 50%; }
-        .mr-left { border-right: 1px dashed #eee; }
+        /* Gráfico Compacto */
+        .chart-row { display: flex; gap: 15px; margin-bottom: 20px; height: 60px; }
+        .c-card { flex: 1; background: #f9f9f9; border: 1px solid #eee; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
+        .cc-top { display: flex; justify-content: space-between; align-items: center; }
+        .cc-lbl { font-size: 9pt; font-weight: 800; text-transform: uppercase; }
+        .cc-val { font-size: 14pt; font-weight: 900; }
+        .cc-bar { width: 100%; height: 6px; background: #ddd; border-radius: 3px; overflow: hidden; }
+        .cc-fill { height: 100%; }
+
+        /* Box Principal (Resultado) */
+        .res-box { 
+            flex: 1; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 20px; 
+        }
+        .rb-head { padding: 12px 20px; background: #333; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .rb-el { font-size: 16pt; font-weight: 800; text-transform: uppercase; }
+        .rb-st { font-size: 9pt; opacity: 0.9; text-transform: uppercase; font-weight: 600; }
         
-        /* Lista de Detalhes */
-        .det-item { margin-bottom: 12px; }
-        .det-lbl { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; letter-spacing: 0.5px; }
-        .det-val { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.3; }
+        .rb-body { display: flex; flex: 1; }
+        .rb-col { flex: 1; padding: 15px; }
+        .rb-div { border-right: 1px dashed #eee; }
 
-        .feat-title { font-size: 8pt; font-weight: 800; color: #1a1a1a; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #eee; padding-bottom: 3px; }
-        .feat-list { list-style: none; padding: 0; margin: 0 0 15px 0; }
-        .feat-list li { font-size: 8pt; color: #555; margin-bottom: 3px; padding-left: 12px; position: relative; }
-        .feat-list li::before { content: "▪"; color: #ccc; position: absolute; left: 0; }
+        /* Itens Texto */
+        .t-grp { margin-bottom: 12px; }
+        .t-lbl { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; margin-bottom: 2px; display: block; }
+        .t-val { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.3; }
 
-        /* Rodapé com Ranking */
-        .rank-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 6px; padding: 12px; display: flex; gap: 20px; }
-        .rank-col { flex: 1; }
-        .rk-head { font-size: 8pt; font-weight: 800; color: #1a1a1a; text-transform: uppercase; margin-bottom: 5px; }
-        .rk-row { display: flex; justify-content: space-between; font-size: 8pt; margin-bottom: 3px; border-bottom: 1px dashed #e0e0e0; padding-bottom: 2px; }
+        .l-tit { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 4px; margin-bottom: 8px; }
+        .l-ul { margin: 0; padding: 0; list-style: none; margin-bottom: 15px; }
+        .l-li { font-size: 8.5pt; color: #555; margin-bottom: 3px; padding-left: 10px; border-left: 2px solid #eee; }
+
+        /* Ranking Rodapé */
+        .rank-box { background: #f8f9fa; border: 1px solid #eee; border-radius: 6px; padding: 15px; }
+        .rk-row { display: flex; justify-content: space-between; font-size: 9pt; border-bottom: 1px dashed #ddd; padding: 4px 0; }
         .rk-row:last-child { border: none; }
-        .rk-n { font-weight: 700; color: #333; }
-        .rk-d { color: #777; font-size: 7pt; font-style: italic; }
+        .rk-tit { font-weight: 800; font-size: 9pt; color: #2c3e50; margin-bottom: 5px; text-transform: uppercase; }
 
-        .footer-note { margin-top: auto; text-align: center; font-size: 6pt; color: #aaa; border-top: 1px solid #eee; padding-top: 5px; }
-
-        /* Cores Elementais */
+        /* Cores */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
@@ -117,114 +111,100 @@
 
     <div class="painel">
         <div class="header-painel">
-            <div>
-                <h2 style="margin:0; font-weight:800;">NEUROBRIEFING | DASHBOARD</h2>
-                <span style="font-size:9pt; color:#888;">Controle de Relatórios</span>
-            </div>
-            <button class="btn" onclick="location.reload()">Atualizar</button>
+            <h2>Gestor de Dossiês</h2>
+            <button class="btn-update" onclick="location.reload()">Atualizar</button>
         </div>
         <table>
-            <thead><tr><th>Data</th><th>Cliente</th><th>Status</th><th style="text-align:right">Opções</th></tr></thead>
+            <thead><tr><th>Data</th><th>Cliente</th><th>Status</th><th>Ação</th></tr></thead>
             <tbody id="lista"><tr><td colspan="4">Carregando...</td></tr></tbody>
         </table>
     </div>
 
-    <div id="relatorio-pdf">
+    <div id="pdf-container">
         
         <div class="page">
-            <div class="capa-wrapper">
-                <div class="capa-logo">NEUROBRIEFING</div>
-                <div class="capa-tagline">Diagnóstico Integral & Estratégia</div>
+            <div class="capa-bg">
+                <div class="logo-main">NEUROBRIEFING</div>
+                <div class="tagline">Diagnóstico Integral & Estratégia</div>
                 
-                <div class="capa-data-box">
-                    <div class="cd-row">
-                        <span class="cd-lbl">Cliente Analisado</span>
-                        <span class="cd-val" id="capa-nome">-</span>
-                    </div>
-                    <div class="cd-row">
-                        <span class="cd-lbl">Arquiteto Responsável</span>
-                        <span class="cd-val" id="capa-arq">-</span>
-                    </div>
-                    <div class="cd-row">
-                        <span class="cd-lbl">Data do Dossiê</span>
-                        <span class="cd-val" id="capa-data">-</span>
-                    </div>
+                <div class="info-block" style="margin-top: 50px;">
+                    <span class="lbl">Cliente Analisado</span>
+                    <span class="val" id="cp-nome">-</span>
+                    
+                    <span class="lbl">Arquiteto Responsável</span>
+                    <span class="val" id="cp-arq">-</span>
+                    
+                    <span class="lbl">Data do Diagnóstico</span>
+                    <span class="val" id="cp-data">-</span>
                 </div>
-
-                <div class="capa-footer">Documento Confidencial • Uso Profissional</div>
+                
+                <div class="footer-capa">Documento Confidencial • Uso Profissional</div>
             </div>
         </div>
 
         <div class="page">
-            <div class="mod-wrapper">
+            <div class="content-pad">
                 
                 <div class="mod-head">
-                    <div class="mh-left">
-                        <h1>IDENTIDADE DO SER</h1>
-                        <span>Mapeamento de Arquétipo & Temperamento</span>
+                    <div>
+                        <div class="mh-title">IDENTIDADE DO SER</div>
+                        <div class="mh-sub">Mapeamento de Arquétipo & Temperamento</div>
                     </div>
-                    <div class="mh-right">01</div>
+                    <div style="font-size:30pt; font-weight:900; color:#eee;">01</div>
                 </div>
 
-                <div class="perf-grid" id="chart-container">
+                <div class="chart-row">
+                    <div class="c-card">
+                        <div class="cc-top"><span class="cc-lbl c-fogo">Fogo</span><span class="cc-val c-fogo" id="v-fogo">0</span></div>
+                        <div class="cc-bar"><div class="cc-fill bg-fogo" id="b-fogo"></div></div>
                     </div>
+                    <div class="c-card">
+                        <div class="cc-top"><span class="cc-lbl c-ar">Ar</span><span class="cc-val c-ar" id="v-ar">0</span></div>
+                        <div class="cc-bar"><div class="cc-fill bg-ar" id="b-ar"></div></div>
+                    </div>
+                    <div class="c-card">
+                        <div class="cc-top"><span class="cc-lbl c-agua">Água</span><span class="cc-val c-agua" id="v-agua">0</span></div>
+                        <div class="cc-bar"><div class="cc-fill bg-agua" id="b-agua"></div></div>
+                    </div>
+                    <div class="c-card">
+                        <div class="cc-top"><span class="cc-lbl c-terra">Terra</span><span class="cc-val c-terra" id="v-terra">0</span></div>
+                        <div class="cc-bar"><div class="cc-fill bg-terra" id="b-terra"></div></div>
+                    </div>
+                </div>
 
-                <div class="main-result">
-                    <div class="mr-header" id="mr-header">
-                        <div class="mr-title" id="txt-elemento">ELEMENTO -</div>
-                        <div class="mr-sub" id="txt-estilo">-</div>
+                <div class="res-box">
+                    <div class="rb-head" id="rb-header">
+                        <div class="rb-el" id="txt-el">ELEMENTO -</div>
+                        <div class="rb-st" id="txt-st">-</div>
                     </div>
-                    
-                    <div class="mr-content">
-                        <div class="mr-col mr-left">
-                            <div class="det-item">
-                                <span class="det-lbl">⚡ Energia</span>
-                                <div class="det-val" id="txt-energia">-</div>
+                    <div class="rb-body">
+                        <div class="rb-col rb-div">
+                            <div class="t-grp"><span class="t-lbl">⚡ Energia</span><span class="t-val" id="t-en">-</span></div>
+                            <div class="t-grp"><span class="t-lbl">👤 Para Quem</span><span class="t-val" id="t-quem">-</span></div>
+                            <div style="display:flex; gap:10px;">
+                                <div class="t-grp" style="flex:1"><span class="t-lbl">📋 Perfil</span><span class="t-val" id="t-perf">-</span></div>
+                                <div class="t-grp" style="flex:1"><span class="t-lbl">🧬 Temp.</span><span class="t-val" id="t-temp">-</span></div>
                             </div>
-                            <div class="det-item">
-                                <span class="det-lbl">👤 Para Quem</span>
-                                <div class="det-val" id="txt-quem">-</div>
-                            </div>
-                            <div style="display:flex; gap:15px;">
-                                <div class="det-item" style="flex:1;">
-                                    <span class="det-lbl">📋 Perfil</span>
-                                    <div class="det-val" id="txt-perfil">-</div>
-                                </div>
-                                <div class="det-item" style="flex:1;">
-                                    <span class="det-lbl">🧬 Temperamento</span>
-                                    <div class="det-val" id="txt-temp">-</div>
-                                </div>
-                            </div>
-                            <div class="det-item">
-                                <span class="det-lbl">🎭 Arquétipos</span>
-                                <div class="det-val" id="txt-arq">-</div>
-                            </div>
+                            <div class="t-grp"><span class="t-lbl">🎭 Arquétipos</span><span class="t-val" id="t-arq">-</span></div>
                         </div>
-
-                        <div class="mr-col">
-                            <div class="feat-title">🏠 Estilos Incluídos</div>
-                            <ul class="feat-list" id="list-estilos"></ul>
-
-                            <div class="feat-title">✨ Características</div>
-                            <ul class="feat-list" id="list-carac"></ul>
+                        <div class="rb-col">
+                            <div class="l-tit">🏠 Estilos</div>
+                            <ul class="l-ul" id="l-est"></ul>
+                            
+                            <div class="l-tit">✨ Características</div>
+                            <ul class="l-ul" id="l-car"></ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="rank-box">
-                    <div class="rank-col">
-                        <div class="rk-head">Leitura do Diagnóstico</div>
-                        <div id="ranking-list-container"></div>
-                    </div>
-                    <div class="rank-col" style="border-left:1px solid #ddd; padding-left:20px; display:flex; align-items:center;">
-                        <div style="font-size:7pt; color:#666; font-style:italic; line-height:1.5;">
-                            "Você não é um tipo fixo. Você é um sistema vivo em equilíbrio dinâmico. A neuroarquitetura busca harmonizar sua natureza com o espaço."
+                    <div class="rk-tit">📊 Leitura do Diagnóstico</div>
+                    <div id="rank-list">
                         </div>
-                    </div>
                 </div>
 
-                <div class="footer-note">
-                    Relatório gerado pela plataforma NeuroBriefing Intelligence
+                <div style="margin-top:auto; font-size:7pt; color:#ccc; text-align:center; padding-top:10px; border-top:1px solid #eee;">
+                    Relatório gerado por NeuroBriefing Intelligence
                 </div>
 
             </div>
@@ -233,56 +213,12 @@
     </div>
 
     <script>
-        // DADOS RICOS
+        // --- BASE DE DADOS ---
         const DB = {
-            FOGO: {
-                id: 'FOGO',
-                cor: '#e74c3c',
-                titulo: 'ESTILOS DE ATIVAÇÃO',
-                energia: 'Ação · Direção · Intensidade',
-                quem: 'Pessoas executor-coléricas, ação',
-                perfil: 'Executor',
-                temp: 'Colérico',
-                arq: 'Herói · Governante · Fora-da-Lei',
-                estilos: ['Contemporâneo', 'Industrial', 'Moderno Urbano', 'High Tech', 'Luxo Moderno'],
-                carac: ['Contrastes marcantes', 'Linhas retas definidas', 'Materiais fortes (metal, couro)', 'Iluminação direcionada', 'Paleta profunda']
-            },
-            AR: {
-                id: 'AR',
-                cor: '#3498db',
-                titulo: 'ESTILOS DE EXPRESSÃO',
-                energia: 'Expressão · Conexão · Movimento',
-                quem: 'Comunicador-sanguíneo, relacionais',
-                perfil: 'Comunicador',
-                temp: 'Sanguíneo',
-                arq: 'Amante · Bobo da Corte · Explorador',
-                estilos: ['Escandinavo', 'Contemporâneo Leve', 'Mid-Century Modern', 'Boho Chic', 'Eclético'],
-                carac: ['Luz natural abundante', 'Layout fluido e aberto', 'Mistura criativa', 'Cores claras vibrantes', 'Sensação de liberdade']
-            },
-            AGUA: {
-                id: 'ÁGUA',
-                cor: '#2980b9',
-                titulo: 'ESTILOS DE ACOLHIMENTO',
-                energia: 'Sensibilidade · Adaptação · Ritmo',
-                quem: 'Planejador-fleumático, cuidado',
-                perfil: 'Planejador',
-                temp: 'Fleumático',
-                arq: 'Cuidador · Inocente · Mago',
-                estilos: ['Japandi', 'Orgânico Contemporâneo', 'Wabi-Sabi', 'Coastal Sofisticado', 'Natural Chic'],
-                carac: ['Texturas suaves e táteis', 'Paleta neutra quente', 'Materiais naturais (linho, madeira)', 'Iluminação difusa', 'Ambientes calmos']
-            },
-            TERRA: {
-                id: 'TERRA',
-                cor: '#27ae60',
-                titulo: 'ESTILOS DE ESTRUTURA',
-                energia: 'Estrutura · Profundidade · Constância',
-                quem: 'Analista-melancólico, sabedoria',
-                perfil: 'Analista',
-                temp: 'Melancólico',
-                arq: 'Sábio · Criador · Órfão',
-                estilos: ['Clássico Atemporal', 'Neoclássico', 'Tradicional', 'Moderno Elegante', 'Colonial Atualizado'],
-                carac: ['Proporção e simetria', 'Materiais nobres/duráveis', 'Paleta sóbria e profunda', 'Organização visual', 'Sensação de permanência']
-            }
+            FOGO: { id: 'FOGO', cor: '#e74c3c', titulo: 'Estilos de Ativação', energia: 'Ação · Direção · Intensidade', quem: 'Executor-colérico', perfil: 'Executor', temp: 'Colérico', arq: 'Herói · Governante', estilos: ['Contemporâneo', 'Industrial', 'Moderno Urbano'], carac: ['Linhas retas', 'Materiais fortes', 'Contraste'] },
+            AR: { id: 'AR', cor: '#3498db', titulo: 'Estilos de Expressão', energia: 'Expressão · Movimento', quem: 'Comunicador-sanguíneo', perfil: 'Comunicador', temp: 'Sanguíneo', arq: 'Amante · Explorador', estilos: ['Escandinavo', 'Boho Chic', 'Eclético'], carac: ['Luz natural', 'Layout fluido', 'Criatividade'] },
+            AGUA: { id: 'ÁGUA', cor: '#2980b9', titulo: 'Estilos de Acolhimento', energia: 'Sensibilidade · Ritmo', quem: 'Planejador-fleumático', perfil: 'Planejador', temp: 'Fleumático', arq: 'Cuidador · Inocente', estilos: ['Japandi', 'Orgânico', 'Wabi-Sabi'], carac: ['Texturas suaves', 'Paleta neutra', 'Conforto'] },
+            TERRA: { id: 'TERRA', cor: '#27ae60', titulo: 'Estilos de Estrutura', energia: 'Estrutura · Constância', quem: 'Analista-melancólico', perfil: 'Analista', temp: 'Melancólico', arq: 'Sábio · Criador', estilos: ['Clássico', 'Neoclássico', 'Moderno Elegante'], carac: ['Simetria', 'Materiais nobres', 'Sobriedade'] }
         };
 
         let dadosAPI = [];
@@ -291,137 +227,108 @@
             try {
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 dadosAPI = await req.json();
-                renderTable();
+                renderLista();
             } catch(e) { console.error(e); }
         }
 
-        function renderTable() {
-            const tbody = document.getElementById('lista');
-            tbody.innerHTML = '';
-            if(dadosAPI.length === 0) { tbody.innerHTML = '<tr><td colspan="4">Sem dados.</td></tr>'; return; }
-            
+        function renderLista() {
+            const t = document.getElementById('lista'); t.innerHTML = '';
             [...dadosAPI].reverse().forEach((d, i) => {
                 const idx = dadosAPI.length - 1 - i;
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${new Date(d.data).toLocaleDateString()}</td>
-                        <td><strong>${d.cliente}</strong></td>
-                        <td><span style="color:#27ae60; font-weight:700;">Recebido</span></td>
-                        <td style="text-align:right"><button class="btn" onclick="gerarPDF(${idx}, this)">PDF</button></td>
-                    </tr>`;
+                t.innerHTML += `<tr><td>${new Date(d.data).toLocaleDateString()}</td><td><strong>${d.cliente}</strong></td><td>OK</td><td style="text-align:right"><button class="btn-update" onclick="printPDF(${idx}, this)">PDF</button></td></tr>`;
             });
         }
 
-        async function gerarPDF(index, btn) {
-            const dados = dadosAPI[index];
-            const originalTxt = btn.innerText; btn.innerText = "..."; btn.disabled = true;
+        async function printPDF(index, btn) {
+            const d = dadosAPI[index];
+            const old = btn.innerText; btn.innerText = "..."; btn.disabled = true;
 
             // 1. CAPA
-            document.getElementById('capa-nome').innerText = dados.cliente;
-            document.getElementById('capa-arq').innerText = dados.contato?.arquiteto || '-';
-            document.getElementById('capa-data').innerText = new Date(dados.data).toLocaleDateString();
+            document.getElementById('cp-nome').innerText = d.cliente;
+            document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
+            document.getElementById('cp-data').innerText = new Date(d.data).toLocaleDateString();
 
-            // 2. CÁLCULOS MÓDULO 1
-            let pts = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
-            const resp = dados.respostas || {};
-            
-            Object.keys(resp).forEach(k => {
-                let val = parseInt(resp[k], 10) || 0;
-                if(k.includes('fogo')) pts.FOGO += val;
-                if(k.includes('ar')) pts.AR += val;
-                if(k.includes('agua')) pts.AGUA += val;
-                if(k.includes('terra')) pts.TERRA += val;
+            // 2. CÁLCULO
+            let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
+            const r = d.respostas || {};
+            Object.keys(r).forEach(k => {
+                let v = parseInt(r[k]) || 0;
+                if(k.includes('fogo')) p.FOGO += v;
+                if(k.includes('ar')) p.AR += v;
+                if(k.includes('agua')) p.AGUA += v;
+                if(k.includes('terra')) p.TERRA += v;
             });
 
-            // Ordenação (Ranking Real)
+            // 3. ORDENAÇÃO (MAIOR -> MENOR)
             const sorted = [
-                { key: 'FOGO', ...DB.FOGO, score: pts.FOGO },
-                { key: 'AR', ...DB.AR, score: pts.AR },
-                { key: 'AGUA', ...DB.AGUA, score: pts.AGUA },
-                { key: 'TERRA', ...DB.TERRA, score: pts.TERRA }
-            ].sort((a,b) => b.score - a.score);
+                { k:'FOGO', ...DB.FOGO, val: p.FOGO },
+                { k:'AR', ...DB.AR, val: p.AR },
+                { k:'AGUA', ...DB.AGUA, val: p.AGUA },
+                { k:'TERRA', ...DB.TERRA, val: p.TERRA }
+            ].sort((a,b) => b.val - a.val); // Descendente
 
-            const dom = sorted[0]; // 1º
-            const sec = sorted[1]; // 2º
-            const third = sorted[2]; // 3º
-            const last = sorted[3]; // 4º
+            const win = sorted[0];
 
-            // 3. PREENCHER GRÁFICO (Mantendo ordem Fogo, Ar, Água, Terra fixa para visualização padrão ou Ordenada se preferir)
-            // Vou manter fixo na ordem elemental para ser fácil de comparar
-            const chartContainer = document.getElementById('chart-container');
-            chartContainer.innerHTML = ''; // Limpa
-            
-            ['FOGO','AR','AGUA','TERRA'].forEach(key => {
-                const info = DB[key];
-                const score = pts[key];
-                const cssClass = `c-${key.toLowerCase() === 'água' ? 'agua' : key.toLowerCase()}`;
-                const bgClass = `bg-${key.toLowerCase() === 'água' ? 'agua' : key.toLowerCase()}`;
-                
-                chartContainer.innerHTML += `
-                    <div class="perf-card">
-                        <div class="pc-top">
-                            <span class="pc-lbl ${cssClass}">${info.id}</span>
-                            <span class="pc-val ${cssClass}">${score}</span>
-                        </div>
-                        <div class="pc-bar-bg">
-                            <div class="pc-bar-fill ${bgClass}" style="width:${Math.min((score/25)*100, 100)}%"></div>
-                        </div>
-                    </div>`;
+            // 4. PREENCHER DADOS
+            ['FOGO','AR','AGUA','TERRA'].forEach(id => {
+                const s = p[id];
+                const kid = id.toLowerCase() === 'água' ? 'agua' : id.toLowerCase(); // Correção ID
+                // No HTML os IDs são v-fogo, v-ar, v-agua, v-terra
+                // Aqui ajustamos para pegar o ID correto do objeto DB se necessário, ou usar switch simples
+                let domId = id.toLowerCase();
+                if(id === 'ÁGUA') domId = 'agua';
+
+                document.getElementById(`v-${domId}`).innerText = s;
+                document.getElementById(`b-${domId}`).style.width = Math.min((s/25)*100, 100)+'%';
             });
 
-            // 4. PREENCHER BOX DOMINANTE
-            const header = document.getElementById('mr-header');
-            header.style.backgroundColor = dom.cor;
-            document.getElementById('txt-elemento').innerText = `ELEMENTO ${dom.id}`;
-            document.getElementById('txt-estilo').innerText = dom.titulo;
+            // Box Principal
+            const head = document.getElementById('rb-header');
+            head.style.backgroundColor = win.cor;
+            document.getElementById('txt-el').innerText = `ELEMENTO ${win.id}`;
+            document.getElementById('txt-st').innerText = win.titulo;
+            
+            document.getElementById('t-en').innerText = win.energia;
+            document.getElementById('t-quem').innerText = win.quem;
+            document.getElementById('t-perf').innerText = win.perfil;
+            document.getElementById('t-temp').innerText = win.temp;
+            document.getElementById('t-arq').innerText = win.arq;
 
-            document.getElementById('txt-energia').innerText = dom.energia;
-            document.getElementById('txt-quem').innerText = dom.quem;
-            document.getElementById('txt-perfil').innerText = dom.perfil;
-            document.getElementById('txt-temp').innerText = dom.temp;
-            document.getElementById('txt-arq').innerText = dom.arq;
+            document.getElementById('l-est').innerHTML = win.estilos.map(i=>`<li>${i}</li>`).join('');
+            document.getElementById('l-car').innerHTML = win.carac.map(i=>`<li>${i}</li>`).join('');
 
-            document.getElementById('list-estilos').innerHTML = dom.estilos.map(x => `<li>${x}</li>`).join('');
-            document.getElementById('list-carac').innerHTML = dom.carac.map(x => `<li>${x}</li>`).join('');
-
-            // 5. PREENCHER RANKING (ORDENADO MAIOR PARA MENOR)
-            const rankContainer = document.getElementById('ranking-list-container');
-            rankContainer.innerHTML = `
-                <div class="rk-row">
-                    <span class="rk-n">1️⃣ ${dom.id} (${dom.score})</span>
-                    <span class="rk-d">Dominante (Energia atual)</span>
-                </div>
-                <div class="rk-row">
-                    <span class="rk-n">2️⃣ ${sec.id} (${sec.score})</span>
-                    <span class="rk-d">Secundário (Recurso)</span>
-                </div>
-                <div class="rk-row">
-                    <span class="rk-n">3️⃣ ${third.id} (${third.score})</span>
-                    <span class="rk-d">Equilíbrio</span>
-                </div>
-                <div class="rk-row">
-                    <span class="rk-n">4️⃣ ${last.id} (${last.score})</span>
-                    <span class="rk-d">Menos Acessado (A desenvolver)</span>
-                </div>
-            `;
-
-            // 6. EXPORTAR
-            const element = document.getElementById('relatorio-pdf');
-            element.style.display = 'block';
-
-            setTimeout(async () => {
-                const opt = {
-                    margin: 0,
-                    filename: `Dossie_${dados.cliente}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-                await html2pdf().set(opt).from(element).save();
+            // Ranking Lista (Loop no sorted array)
+            const rkContainer = document.getElementById('rank-list');
+            rkContainer.innerHTML = '';
+            sorted.forEach((item, i) => {
+                let label = "Neutro";
+                if(i===0) label = "Dominante (Energia Atual)";
+                if(i===1) label = "Secundário (Recurso Acessível)";
+                if(i===3) label = "Menos Acessado (A Desenvolver)";
                 
-                element.style.display = 'none';
-                btn.innerText = originalTxt; btn.disabled = false;
-            }, 800);
+                rkContainer.innerHTML += `
+                    <div class="rk-row">
+                        <span style="font-weight:700; color:#333;">${i+1}º ${item.id} <span style="font-weight:400; color:#777;">(${item.val} pts)</span></span>
+                        <span style="font-size:8pt; color:#555;">${label}</span>
+                    </div>
+                `;
+            });
+
+            // 5. GERAR PDF
+            const el = document.getElementById('pdf-container');
+            el.style.display = 'block';
+            
+            const opt = {
+                margin: 0,
+                filename: `Dossie_${d.cliente}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            await html2pdf().set(opt).from(el).save();
+            el.style.display = 'none';
+            btn.innerText = old; btn.disabled = false;
         }
 
         init();
