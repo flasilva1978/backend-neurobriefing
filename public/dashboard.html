@@ -11,11 +11,11 @@
     
     <style>
         /* ==========================================================================
-           ESTILOS GERAIS
+           1. ESTILOS GERAIS E RESET
            ========================================================================== */
         * { 
             box-sizing: border-box; 
-            -webkit-print-color-adjust: exact; 
+            -webkit-print-color-adjust: exact; /* Garante impressão de cores de fundo */
         }
         
         body { 
@@ -26,7 +26,9 @@
             color: #333; 
         }
         
-        /* --- PAINEL (TELA DO COMPUTADOR) --- */
+        /* ==========================================================================
+           2. ESTILOS DO PAINEL ADMINISTRATIVO (VISÃO TELA)
+           ========================================================================== */
         .painel { 
             max-width: 1200px; 
             margin: 0 auto 30px auto; 
@@ -106,6 +108,7 @@
         .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
         .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
         
+        /* TAGS DE STATUS */
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         .mod-tag { 
             padding: 3px 6px; 
@@ -132,7 +135,9 @@
         .btn-pdf:hover { background: #c0392b; }
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
         
-        /* --- ESTILOS DO RELATÓRIO PDF (A4) --- */
+        /* ==========================================================================
+           3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
+           ========================================================================== */
         #pdf-root { display: none; } 
         
         .page { 
@@ -147,7 +152,7 @@
         }
         .page:last-child { page-break-after: avoid; }
         
-        /* CAPA */
+        /* --- CAPA --- */
         .capa-box { 
             width: 100%; height: 100%; 
             display: flex; flex-direction: column; 
@@ -169,7 +174,7 @@
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        /* HEADER DO MODULO */
+        /* --- CABEÇALHOS INTERNOS --- */
         .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
         
         .m-head { 
@@ -183,7 +188,7 @@
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        /* BOXES DE CONTEÚDO */
+        /* --- CAIXAS DE CONTEÚDO (WIN BOX) --- */
         .win-box { 
             border: 1px solid #ccc; 
             border-radius: 6px; 
@@ -196,8 +201,14 @@
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
         .wb-body { padding: 20px; flex: 1; }
         
-        /* GRÁFICOS DE BARRAS (MOD 1) */
-        .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 50px; }
+        /* --- BOX DE ESTRATÉGIA (NOVO MOD 1) --- */
+        .strategy-grid { display: flex; gap: 15px; margin-bottom: 20px; }
+        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; }
+        .st-head { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
+        .st-text { font-size: 9pt; color: #555; line-height: 1.5; text-align: justify; }
+
+        /* --- GRÁFICOS DE BARRAS --- */
+        .charts { display: flex; gap: 10px; margin-bottom: 20px; height: 50px; }
         .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
         .cc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
@@ -205,7 +216,7 @@
         .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
 
-        /* BOX DE CONCLUSÃO TÉCNICA */
+        /* --- BOX DE CONCLUSÃO TÉCNICA (RODAPÉ) --- */
         .box-conclusao { 
             background: #fdfdfd; 
             border-left: 4px solid #2c3e50; 
@@ -217,31 +228,29 @@
         }
         .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
         
-        /* GRIDS AUXILIARES */
+        /* --- UTILITÁRIOS DE LAYOUT --- */
         .grid-2 { display: flex; gap: 20px; }
         .col { flex: 1; }
-        
-        /* LISTAS */
-        .info-row { margin-bottom: 10px; }
+        .info-row { margin-bottom: 10px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+        .il { font-size: 8pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .iv { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.2; }
         .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
-        .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .iv { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.25; }
         .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
         .il-val { font-size: 9pt; color: #555; }
         
-        /* BARRAS SENSORIAIS */
+        /* --- BARRAS SENSORIAIS --- */
         .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
         .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
         .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
-        /* TAGS DE CHECKLIST (NOVO: Módulo 5) */
+        /* --- TAGS DE CHECKLIST (NOVO MOD 5) --- */
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 6px 12px; border-radius: 4px; font-size: 9pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
         .ct-item.highlight { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
 
-        /* UTILITÁRIOS DE COR */
+        /* CORES */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
@@ -291,17 +300,29 @@
                     <div><div class="mh-tit">IDENTIDADE DO SER</div><div class="mh-sub">Arquétipo & Temperamento</div></div>
                     <div class="mh-meta"><div class="mh-num">01</div><span class="mh-time" id="t1-time">--:--</span></div>
                 </div>
+                
                 <div class="charts" id="chart-container"></div>
+                
                 <div class="win-box">
                     <div class="wb-head" id="wb-head"><div class="wb-tit" id="txt-el">-</div><div class="wb-sty" id="txt-tit">-</div></div>
                     <div class="wb-body" id="m1-content"></div>
                 </div>
+
+                <div class="strategy-grid">
+                    <div class="st-card">
+                        <div class="st-head">🧠 NEUROARQUITETURA APLICADA</div>
+                        <div class="st-text" id="m1-neuro"></div>
+                    </div>
+                    <div class="st-card">
+                        <div class="st-head">🗣️ ESTRATÉGIA DE ATENDIMENTO</div>
+                        <div class="st-text" id="m1-comunicacao"></div>
+                    </div>
+                </div>
+
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
                     O perfil identificado exige uma estratégia de design que respeite a "Energia Base" do cliente. 
-                    Para perfis quentes (Fogo/Ar), priorize espaços de conexão, movimento e expressão. 
-                    Para perfis frios (Terra/Água), foque em acolhimento, privacidade e lógica espacial. 
-                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
+                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta (Dopamina vs Ocitocina).
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -325,8 +346,7 @@
                     </div>
                 </div>
 
-                <div id="m2-content">
-                    </div>
+                <div id="m2-content"></div>
 
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
@@ -346,10 +366,8 @@
                 </div>
                 
                 <div class="grid-2">
-                    <div class="col" id="m3-visual">
-                        </div>
-                    <div class="col" id="m3-outros">
-                        </div>
+                    <div class="col" id="m3-visual"></div>
+                    <div class="col" id="m3-outros"></div>
                 </div>
 
                 <div class="box-conclusao">
@@ -378,8 +396,7 @@
                         <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
                         <div class="wb-sty">O QUE O CLIENTE DIZ</div>
                     </div>
-                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px;">
-                        </div>
+                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px;"></div>
                 </div>
 
                 <div class="win-box">
@@ -387,12 +404,11 @@
                         <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
                         <div class="wb-sty">O QUE O CLIENTE SENTE/FAZ</div>
                     </div>
-                    <div class="wb-body" id="m4-impl">
-                        </div>
+                    <div class="wb-body" id="m4-impl"></div>
                 </div>
 
                 <div class="box-conclusao">
-                    <span class="bc-tit">CONCLUSÃO & APLICAÇÃO PRÁTICA (NEUROARQUITETURA E MEMÓRIA)</span>
+                    <span class="bc-tit">APLICAÇÃO PRÁTICA (MEMÓRIA)</span>
                     Baseado em <strong>Endel Tulving</strong> e <strong>Daniel Kahneman</strong> (Sistemas 1 e 2), a casa deve ser um espelho da biografia do cliente.
                     <br><br>
                     <strong>1. Memória Episódica (O Filme):</strong> Crie "altares de memória" para os objetos/histórias citados nas respostas explícitas. Isso ancora a identidade.
@@ -424,7 +440,7 @@
                 </div>
 
                 <div class="win-box">
-                    <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & LAZER (Cenários Comportamentais)</div></div>
+                    <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & LAZER (Behavior Settings)</div></div>
                     <div class="wb-body"><div class="check-tags" id="m5-hobbies"></div></div>
                 </div>
 
@@ -440,7 +456,7 @@
                             <div class="sensory-bar" style="margin-top:5px;">
                                 <span class="sb-lbl" style="width:auto; margin-right:10px;">Provisório</span>
                                 <div class="sb-track"><div class="sb-fill" id="m5-tempo-bar" style="width:50%; background:#e67e22;"></div></div>
-                                <span class="sb-val" style="width:auto; margin-left:10px;">Raiz/Eterno</span>
+                                <span class="sb-val" style="width:auto; margin-left:10px;">Eterno</span>
                             </div>
                             <div style="text-align:center; font-size:9pt; font-weight:bold; color:#e67e22;" id="m5-tempo-val">50%</div>
                         </div>
@@ -465,11 +481,40 @@
     </div>
 
     <script>
+        // 1. BANCO DE DADOS INTELIGENTE (MOD 1 ATUALIZADO)
         const DB = {
-            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Estilos de Ativação', energia:'Ação · Intensidade', quem:'Executor-colérico', perfil:'Executor', estilos:['Contemporâneo', 'Industrial'], carac:['Linhas retas', 'Contraste'] },
-            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Estilos de Expressão', energia:'Expressão · Conexão', quem:'Comunicador-sanguíneo', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético'], carac:['Luz natural', 'Criatividade'] },
-            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Estilos de Acolhimento', energia:'Sensibilidade · Ritmo', quem:'Planejador-fleumático', perfil:'Planejador', estilos:['Japandi', 'Orgânico'], carac:['Texturas suaves', 'Conforto'] },
-            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Estilos de Estrutura', energia:'Estrutura · Constância', quem:'Analista-melancólico', perfil:'Analista', estilos:['Clássico', 'Moderno Elegante'], carac:['Simetria', 'Sobriedade'] }
+            FOGO: { 
+                id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
+                energia:'Ação · Direção · Intensidade', 
+                quem:'Pessoas focadas em resultados e agilidade.', 
+                perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], 
+                neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong> (sem obstáculos), iluminação clara e setorização eficiente. Evite excessos visuais que atrapalhem a função.',
+                comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência. Mostre que você respeita o tempo dele.'
+            },
+            AR: { 
+                id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', 
+                energia:'Expressão · Conexão · Novidade', 
+                quem:'Pessoas sociáveis, criativas e visuais.', 
+                perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], 
+                neuro: 'Este cérebro busca <strong>estímulos variados</strong>. O projeto precisa de <strong>áreas de convivência integradas</strong>, elementos "instagramáveis" e flexibilidade para mudanças. Luz natural é vital.',
+                comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens, amostras e referências. Foque na experiência social e na beleza dos ambientes.'
+            },
+            AGUA: { 
+                id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', 
+                energia:'Acolhimento · Calma · Empatia', 
+                quem:'Pessoas diplomáticas, constantes e sensíveis.', 
+                perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], 
+                neuro: 'Este cérebro busca <strong>segurança e ocitocina</strong> (afeto). O projeto deve ser um <strong>refúgio (casulo)</strong>. Priorize acústica, texturas táteis macias e cantos de leitura/descanso.',
+                comunicacao: 'Seja <strong>paciente e ouvinte</strong>. Dê tempo para ele pensar. Transmita segurança nas decisões. Foque no conforto e bem-estar da família.'
+            },
+            TERRA: { 
+                id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', 
+                energia:'Estrutura · Ordem · Detalhe', 
+                quem:'Pessoas metódicas, profundas e perfeccionistas.', 
+                perfil:'Analista', estilos:['Clássico', 'Moderno Elegante', 'Minimalismo'], 
+                neuro: 'Este cérebro busca <strong>previsibilidade e ordem</strong>. O projeto precisa de <strong>simetria</strong>, armários fechados (menos ruído visual) e acabamentos impecáveis. A qualidade é inegociável.',
+                comunicacao: 'Seja <strong>detalhista e técnico</strong>. Mostre cronogramas, orçamentos detalhados e especificações. Foque na durabilidade e na lógica do projeto.'
+            }
         };
 
         const DB_VISUAL = {
@@ -515,7 +560,7 @@
                 const hasVisual = checkMod(r, 'est_');
                 const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_');
                 const hasMemorias = checkMod(r, 'mem_');
-                const hasAtual = checkMod(r, 'atu_'); // Modulo 5
+                const hasAtual = checkMod(r, 'atu_'); 
 
                 t.innerHTML += `
                     <tr>
@@ -547,7 +592,7 @@
             document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
             document.getElementById('cp-data').innerText = new Date(d.data).toLocaleDateString();
 
-            // MÓDULO 1
+            // MÓDULO 1 (LÓGICA E PREENCHIMENTO)
             let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
             Object.keys(r).forEach(k => {
                 let v = parseInt(r[k]) || 0;
@@ -557,17 +602,30 @@
                 if(k.startsWith('terra')) p.TERRA += v;
             });
             const sorted = [{k:'FOGO',...DB.FOGO,v:p.FOGO},{k:'AR',...DB.AR,v:p.AR},{k:'AGUA',...DB.AGUA,v:p.AGUA},{k:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
-            const win = sorted[0];
+            const win = sorted[0]; // Vencedor
+            
             document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
+            
+            // Gráficos Mod 1
             let chartHTML = '';
             sorted.forEach(i => {
                 chartHTML += `<div class="cc-box"><div class="cc-top"><span class="cc-lbl c-${i.class}">${i.id}</span><span class="cc-val">${i.v}</span></div><div class="cc-bar"><div class="cc-fill bg-${i.class}" style="width:${Math.min((i.v/25)*100,100)}%"></div></div></div>`;
             });
             document.getElementById('chart-container').innerHTML = chartHTML;
+            
+            // Box Principal Mod 1
             document.getElementById('wb-head').style.backgroundColor = win.cor;
             document.getElementById('txt-el').innerText = win.id;
             document.getElementById('txt-tit').innerText = win.titulo;
-            document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia</span><span class="iv">${win.energia}</span></div><div class="info-row"><span class="il">Perfil</span><span class="iv">${win.perfil}</span></div><div class="info-row"><span class="il">Estilos</span><span class="iv">${win.estilos.join(', ')}</span></div>`;
+            document.getElementById('m1-content').innerHTML = `
+                <div class="info-row"><span class="il">Energia</span><span class="iv">${win.energia}</span></div>
+                <div class="info-row"><span class="il">Quem é</span><span class="iv">${win.quem}</span></div>
+                <div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${win.estilos.join(', ')}</span></div>
+            `;
+            
+            // Novos campos de Estratégia Mod 1
+            document.getElementById('m1-neuro').innerHTML = win.neuro;
+            document.getElementById('m1-comunicacao').innerHTML = win.comunicacao;
 
             // MÓDULO 2
             document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
@@ -612,22 +670,15 @@
             document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
             document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
 
-            // MÓDULO 5 (NOVO)
+            // MÓDULO 5
             document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
-            
             const makeTags = (key, elId) => {
-                const el = document.getElementById(elId);
-                el.innerHTML = '';
+                const el = document.getElementById(elId); el.innerHTML = '';
                 const val = r[key];
-                if(Array.isArray(val)) {
-                    val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
-                } else if(val) {
-                    el.innerHTML = `<span class="ct-item">${val}</span>`;
-                } else {
-                    el.innerHTML = '-';
-                }
+                if(Array.isArray(val)) val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
+                else if(val) el.innerHTML = `<span class="ct-item">${val}</span>`;
+                else el.innerHTML = '-';
             };
-
             makeTags('atu_fase_vida', 'm5-fase');
             makeTags('atu_investimento', 'm5-invest');
             makeTags('atu_hobbies', 'm5-hobbies');
@@ -638,11 +689,10 @@
             document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
             document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
 
-            // DOWNLOAD PDF
+            // DOWNLOAD
             const el = document.getElementById('pdf-root');
             el.style.display = 'block';
             window.scrollTo(0, 0); 
-
             setTimeout(async () => {
                 const opt = {
                     margin: 0,
