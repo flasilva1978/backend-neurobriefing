@@ -11,141 +11,242 @@
     
     <style>
         /* ==========================================================================
-           ESTILOS CSS (A "Maquiagem" da Página)
+           ESTILOS GERAIS
            ========================================================================== */
+        * { 
+            box-sizing: border-box; 
+            -webkit-print-color-adjust: exact; 
+        }
         
-        /* Reset básico para garantir que todos os navegadores mostrem igual */
-        * { box-sizing: border-box; -webkit-print-color-adjust: exact; } /* Garante que cores de fundo saiam na impressão */
-        body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: #f0f2f5; 
+            margin: 0; 
+            padding: 20px; 
+            color: #333; 
+        }
         
-        /* --- ESTILOS DO PAINEL (TELA DO COMPUTADOR) --- */
+        /* --- PAINEL (TELA DO COMPUTADOR) --- */
         .painel { 
-            max-width: 1200px; /* Largura máxima para não esticar demais em monitores grandes */
-            margin: 0 auto 30px auto; /* Centraliza na tela */
+            max-width: 1200px; 
+            margin: 0 auto 30px auto; 
             background: white; 
             padding: 25px; 
             border-radius: 10px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Sombra suave */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
         }
         
         .header-painel { 
-            display: flex; /* Flexbox: Coloca itens lado a lado */
-            justify-content: space-between; /* Espalha: um na esquerda, outro na direita */
+            display: flex; 
+            justify-content: space-between; 
             align-items: center; 
             border-bottom: 2px solid #f0f0f0; 
             padding-bottom: 20px; 
             margin-bottom: 20px; 
         }
         
-        .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
-        
-        /* Botão de Atualizar */
-        .btn-refresh { 
-            background: #2c3e50; color: white; 
-            padding: 10px 20px; border: none; cursor: pointer; 
-            border-radius: 6px; font-weight: 700; transition: 0.2s; 
+        .hp-title { 
+            font-size: 18pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
         }
-        .btn-refresh:hover { background: #34495e; } /* Efeito ao passar o mouse */
         
-        /* Tabela de Clientes */
+        .btn-refresh { 
+            background: #2c3e50; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            font-size: 9pt; 
+            transition: 0.2s; 
+        }
+        .btn-refresh:hover { background: #34495e; }
+        
+        /* TABELA DE CLIENTES */
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
-        td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
-        tr:hover { background-color: #fafafa; } /* Destaca a linha ao passar o mouse */
         
-        /* Elementos da Tabela */
+        th { 
+            text-align: left; 
+            padding: 15px 10px; 
+            background: #f8f9fa; 
+            color: #7f8c8d; 
+            font-weight: 700; 
+            font-size: 8pt; 
+            text-transform: uppercase; 
+            border-bottom: 2px solid #eee; 
+        }
+        
+        td { 
+            padding: 15px 10px; 
+            border-bottom: 1px solid #eee; 
+            vertical-align: top; 
+            font-size: 9.5pt; 
+        }
+        
+        tr:hover { background-color: #fafafa; }
+        
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
         .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
         
         .contact-row { display: flex; gap: 8px; }
-        .btn-contact { text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
-        .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; } /* Verde WhatsApp */
-        .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; } /* Azul Email */
         
-        /* Tags de Status (Pílulas coloridas) */
+        .btn-contact { 
+            text-decoration: none; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 7.5pt; 
+            font-weight: 700; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 4px; 
+            transition: 0.2s; 
+        }
+        .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+        
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
-        .mod-tag { padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; background: #eee; color: #bbb; border: 1px solid #e0e0e0; }
-        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; } /* Verde se concluído */
+        .mod-tag { 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            font-size: 7pt; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            background: #eee; 
+            color: #bbb; 
+            border: 1px solid #e0e0e0; 
+        }
+        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
         
-        .btn-pdf { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 8pt; cursor: pointer; }
+        .btn-pdf { 
+            background: #e74c3c; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            font-weight: 700; 
+            font-size: 8pt; 
+            cursor: pointer; 
+        }
         .btn-pdf:hover { background: #c0392b; }
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
         
-        /* --- ESTILOS DO RELATÓRIO PDF --- */
-        /* Ocultamos da tela normal (display: none) para aparecer só na geração do PDF */
+        /* --- ESTILOS DO RELATÓRIO PDF (A4) --- */
         #pdf-root { display: none; } 
         
-        /* Configuração de Página A4 */
         .page { 
-            width: 210mm; height: 296mm; /* Tamanho exato A4 */
+            width: 210mm; 
+            height: 296mm; 
             background: white; 
-            position: relative; overflow: hidden; 
+            position: relative; 
+            overflow: hidden; 
             margin: 0 auto; 
-            page-break-after: always; /* Força nova página após cada div .page */
+            page-break-after: always; 
             padding: 0; 
         }
-        .page:last-child { page-break-after: avoid; } /* Não cria página em branco no final */
+        .page:last-child { page-break-after: avoid; }
         
-        /* Layout da Capa */
-        .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
+        /* CAPA */
+        .capa-box { 
+            width: 100%; height: 100%; 
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; 
+            border: 20mm solid #f4f6f8; 
+            text-align: center; 
+        }
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
-        .c-info { width: 80%; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 40px 0; margin-bottom: 50px; }
+        
+        .c-info { 
+            width: 80%; 
+            border-top: 2px solid #2c3e50; 
+            border-bottom: 2px solid #2c3e50; 
+            padding: 40px 0; 
+            margin-bottom: 50px; 
+        }
         .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        /* Layout Interno das Páginas */
+        /* HEADER DO MODULO */
         .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
         
-        /* Cabeçalho de cada Módulo */
-        .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; }
+        .m-head { 
+            display: flex; justify-content: space-between; align-items: flex-end; 
+            border-bottom: 4px solid #2c3e50; 
+            padding-bottom: 10px; margin-bottom: 20px; 
+        }
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
         .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
         .mh-meta { text-align: right; }
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        /* Boxes de Conteúdo (Resultados) */
-        .win-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 20px; }
+        /* BOXES DE CONTEÚDO */
+        .win-box { 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin-bottom: 20px; 
+            display: flex; flex-direction: column;
+        }
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
-        .wb-body { padding: 20px; }
+        .wb-body { padding: 20px; flex: 1; }
         
-        /* Box de Conclusão Técnica */
+        /* GRÁFICOS DE BARRAS (MOD 1) */
+        .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 50px; }
+        .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
+        .cc-top { display: flex; justify-content: space-between; align-items: center; }
+        .cc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
+        .cc-val { font-size: 11pt; font-weight: 900; }
+        .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
+        .cc-fill { height: 100%; }
+
+        /* BOX DE CONCLUSÃO TÉCNICA */
         .box-conclusao { 
             background: #fdfdfd; 
-            border-left: 4px solid #2c3e50; /* Linha lateral grossa */
+            border-left: 4px solid #2c3e50; 
             padding: 15px; 
             font-size: 9pt; color: #555; line-height: 1.5; 
-            margin-top: auto; /* Empurra para o final da página se usar flexbox */
+            margin-top: auto; 
             margin-bottom: 20px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
         }
         .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
         
-        /* Grids Auxiliares */
+        /* GRIDS AUXILIARES */
         .grid-2 { display: flex; gap: 20px; }
         .col { flex: 1; }
         
-        /* Itens de Lista no PDF */
+        /* LISTAS */
+        .info-row { margin-bottom: 10px; }
         .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .iv { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.25; }
         .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
         .il-val { font-size: 9pt; color: #555; }
         
-        /* Barras de Gráfico Sensorial (CSS puro, sem JS complexo) */
+        /* BARRAS SENSORIAIS */
         .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
         .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
         .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
-        /* Utilitários de Cor */
+        /* TAGS DE CHECKLIST (NOVO: Módulo 5) */
+        .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+        .ct-item { background: #f0f2f5; padding: 6px 12px; border-radius: 4px; font-size: 9pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
+        .ct-item.highlight { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
+
+        /* UTILITÁRIOS DE COR */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
+        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
     </style>
 </head>
 <body>
@@ -193,8 +294,7 @@
                 <div class="charts" id="chart-container"></div>
                 <div class="win-box">
                     <div class="wb-head" id="wb-head"><div class="wb-tit" id="txt-el">-</div><div class="wb-sty" id="txt-tit">-</div></div>
-                    <div class="wb-body" id="m1-content">
-                        </div>
+                    <div class="wb-body" id="m1-content"></div>
                 </div>
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
@@ -221,7 +321,6 @@
                     </div>
                     <div class="wb-body" style="padding:25px; text-align:center;">
                         <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
-                        <p style="font-size:10pt; color:#777; margin-top:10px; font-style:italic;" id="vis-top1-desc">Baseado na maior afinidade demonstrada.</p>
                         <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
                     </div>
                 </div>
@@ -306,11 +405,66 @@
             </div>
         </div>
 
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Estilo de Vida & Estratégia</div></div>
+                    <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" id="t5-time">--:--</span></div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="win-box col">
+                        <div class="wb-head" style="background:#2980b9;"><div class="wb-tit">FASE DE VIDA</div></div>
+                        <div class="wb-body"><div class="check-tags" id="m5-fase"></div></div>
+                    </div>
+                    <div class="win-box col">
+                        <div class="wb-head" style="background:#27ae60;"><div class="wb-tit">INVESTIMENTO (BUDGET)</div></div>
+                        <div class="wb-body"><div class="check-tags" id="m5-invest"></div></div>
+                    </div>
+                </div>
+
+                <div class="win-box">
+                    <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & LAZER (Cenários Comportamentais)</div></div>
+                    <div class="wb-body"><div class="check-tags" id="m5-hobbies"></div></div>
+                </div>
+
+                <div class="win-box">
+                    <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
+                    <div class="wb-body">
+                        <div style="margin-bottom:15px;">
+                            <span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span>
+                            <div class="check-tags" id="m5-pers"></div>
+                        </div>
+                        <div>
+                            <span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span>
+                            <div class="sensory-bar" style="margin-top:5px;">
+                                <span class="sb-lbl" style="width:auto; margin-right:10px;">Provisório</span>
+                                <div class="sb-track"><div class="sb-fill" id="m5-tempo-bar" style="width:50%; background:#e67e22;"></div></div>
+                                <span class="sb-val" style="width:auto; margin-left:10px;">Raiz/Eterno</span>
+                            </div>
+                            <div style="text-align:center; font-size:9pt; font-weight:bold; color:#e67e22;" id="m5-tempo-val">50%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="win-box">
+                    <div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">OBSERVAÇÕES GERAIS</div></div>
+                    <div class="wb-body" style="font-style:italic; color:#555;" id="m5-obs">-</div>
+                </div>
+
+                <div class="box-conclusao">
+                    <span class="bc-tit">CONCLUSÃO (ESTRATÉGIA)</span>
+                    A "Identidade Atual" é o briefing funcional. Baseado em <strong>Roger Barker (Behavioral Settings)</strong>, o ambiente deve sustentar os hobbies (ex: se "Cozinhar", a cozinha é palco, não serviço). 
+                    A fase de vida dita a flexibilidade: ninhos vazios precisam de ressignificação; famílias, de durabilidade. 
+                    O alinhamento do budget com a expectativa de tempo (Curto vs Longo Prazo) define a materialidade: móveis soltos para curto prazo, marcenaria fixa para longo.
+                </div>
+                <div class="ft-note">NeuroBriefing Intelligence</div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // 1. BASE DE CONHECIMENTO (Interpretação dos Dados)
-        // Aqui definimos o que cada resposta "significa" para gerar os textos do relatório.
         const DB = {
             FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Estilos de Ativação', energia:'Ação · Intensidade', quem:'Executor-colérico', perfil:'Executor', estilos:['Contemporâneo', 'Industrial'], carac:['Linhas retas', 'Contraste'] },
             AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Estilos de Expressão', energia:'Expressão · Conexão', quem:'Comunicador-sanguíneo', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético'], carac:['Luz natural', 'Criatividade'] },
@@ -318,7 +472,6 @@
             TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Estilos de Estrutura', energia:'Estrutura · Constância', quem:'Analista-melancólico', perfil:'Analista', estilos:['Clássico', 'Moderno Elegante'], carac:['Simetria', 'Sobriedade'] }
         };
 
-        // Dicionário para traduzir códigos (est_contemp) em nomes bonitos (Contemporâneo)
         const DB_VISUAL = {
             'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
             'est_scandi': 'Escandinavo', 'est_cont_leve': 'Contemporâneo Leve', 'est_boho': 'Boho Chic', 'est_japandi': 'Japandi', 'est_wabi': 'Wabi-Sabi',
@@ -328,30 +481,20 @@
 
         let dadosAPI = [];
 
-        // 2. FUNÇÃO DE INICIALIZAÇÃO
-        // Carrega os dados da API assim que a página abre.
         async function init() {
             try {
-                // Requisição GET para o servidor
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 dadosAPI = await req.json();
-                
-                // Ordena por data (mais recente primeiro)
                 dadosAPI.sort((a, b) => new Date(b.data) - new Date(a.data));
-                
-                // Desenha a tabela
                 renderTable();
-            } catch(e) { console.error("Erro ao carregar dados:", e); }
+            } catch(e) { console.error(e); }
         }
 
-        // 3. FUNÇÃO AUXILIAR: Verifica se um módulo foi feito
-        // Procura se existe alguma resposta que começa com o prefixo (ex: 'mem_')
         function checkMod(r, keyStart) {
             if(!r) return false;
             return Object.keys(r).some(k => k.startsWith(keyStart));
         }
 
-        // 4. FUNÇÃO AUXILIAR: Formata Segundos -> MM:SS
         function formatTime(s) {
             s = parseInt(s);
             if (isNaN(s)) return "00:00"; 
@@ -360,7 +503,6 @@
             return `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
         }
 
-        // 5. RENDERIZA A TABELA DE CLIENTES
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
@@ -369,13 +511,11 @@
                 const r = d.respostas || {};
                 const c = d.contato || {};
                 
-                // Lógica de Detecção dos Módulos (Atualizada com Módulo 4)
                 const hasHumana = checkMod(r, 'fogo') || checkMod(r, 'ar_');
                 const hasVisual = checkMod(r, 'est_');
-                // Módulo 3 inclui visual, auditivo, olfativo, tatil e gustativo
-                const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_') || checkMod(r, 'bio_');
-                // Módulo 4 são as memórias
+                const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_');
                 const hasMemorias = checkMod(r, 'mem_');
+                const hasAtual = checkMod(r, 'atu_'); // Modulo 5
 
                 t.innerHTML += `
                     <tr>
@@ -388,6 +528,7 @@
                                 <span class="mod-tag ${hasVisual?'done':''}">Visual</span>
                                 <span class="mod-tag ${hasSensorial?'done':''}">Sensorial</span>
                                 <span class="mod-tag ${hasMemorias?'done':''}">Memórias</span>
+                                <span class="mod-tag ${hasAtual?'done':''}">Atual</span>
                             </div>
                         </td>
                         <td style="text-align:right"><button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button></td>
@@ -396,18 +537,17 @@
             });
         }
 
-        // 6. FUNÇÃO GERADORA DE PDF (A Mágica!)
         async function makePDF(index, btn) {
             const d = dadosAPI[index];
             const original = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
             const r = d.respostas || {};
 
-            // --- PREENCHIMENTO DA CAPA ---
+            // CAPA
             document.getElementById('cp-nome').innerText = d.cliente;
             document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
             document.getElementById('cp-data').innerText = new Date(d.data).toLocaleDateString();
 
-            // --- MÓDULO 1: CÁLCULO DE TEMPERAMENTO ---
+            // MÓDULO 1
             let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
             Object.keys(r).forEach(k => {
                 let v = parseInt(r[k]) || 0;
@@ -416,11 +556,8 @@
                 if(k.startsWith('agua')) p.AGUA += v;
                 if(k.startsWith('terra')) p.TERRA += v;
             });
-            // Ordena do maior para o menor
             const sorted = [{k:'FOGO',...DB.FOGO,v:p.FOGO},{k:'AR',...DB.AR,v:p.AR},{k:'AGUA',...DB.AGUA,v:p.AGUA},{k:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
-            const win = sorted[0]; // Vencedor
-            
-            // Preenche HTML do Mod 1
+            const win = sorted[0];
             document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
             let chartHTML = '';
             sorted.forEach(i => {
@@ -430,99 +567,96 @@
             document.getElementById('wb-head').style.backgroundColor = win.cor;
             document.getElementById('txt-el').innerText = win.id;
             document.getElementById('txt-tit').innerText = win.titulo;
-            document.getElementById('m1-content').innerHTML = `
-                <div class="info-row"><span class="il">Energia</span><span class="iv">${win.energia}</span></div>
-                <div class="info-row"><span class="il">Perfil</span><span class="iv">${win.perfil}</span></div>
-                <div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${win.estilos.join(', ')}</span></div>
-            `;
+            document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia</span><span class="iv">${win.energia}</span></div><div class="info-row"><span class="il">Perfil</span><span class="iv">${win.perfil}</span></div><div class="info-row"><span class="il">Estilos</span><span class="iv">${win.estilos.join(', ')}</span></div>`;
 
-            // --- MÓDULO 2: ESTILOS VISUAIS ---
+            // MÓDULO 2
             document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
             let visualScores = [];
-            Object.keys(r).forEach(k => {
-                if(k.startsWith('est_')) visualScores.push({nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0});
-            });
+            Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0}); });
             visualScores.sort((a,b) => b.val - a.val);
-            
             if(visualScores.length > 0) {
                 document.getElementById('vis-top1-nome').innerText = visualScores[0].nome;
                 document.getElementById('vis-top1-nota').innerText = visualScores[0].val;
-                // Lista os 4 próximos estilos
                 document.getElementById('m2-content').innerHTML = visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
             }
 
-            // --- MÓDULO 3: SENSORIAL ---
+            // MÓDULO 3
             document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
             let m3v = '', m3o = '';
-            
-            // Coluna 1: Visual & Biofilia
             Object.keys(r).forEach(k => {
                 if((k.startsWith('vis_') || k.startsWith('bio_')) && typeof r[k] === 'number') {
                     let label = k.replace('vis_', '').replace('bio_', '').replace(/_/g, ' ').toUpperCase();
                     m3v += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
                 }
-            });
-            // Coluna 2: Outros Sentidos (Audio, Olfato, Tato)
-            Object.keys(r).forEach(k => {
                 if((k.startsWith('aud_') || k.startsWith('olf_') || k.startsWith('tat_')) && typeof r[k] === 'number') {
                     let label = k.replace('aud_', '').replace('olf_', '').replace('tat_', '').replace(/_/g, ' ').toUpperCase();
                     m3o += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
                 }
             });
-            document.getElementById('m3-visual').innerHTML = `<span class="il-lbl" style="margin-bottom:15px; border-bottom:1px solid #ddd;">VISUAL & BIOFILIA</span>` + m3v;
-            document.getElementById('m3-outros').innerHTML = `<span class="il-lbl" style="margin-bottom:15px; border-bottom:1px solid #ddd;">OUTROS SENTIDOS</span>` + m3o;
+            document.getElementById('m3-visual').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">VISUAL & BIOFILIA</span>` + m3v;
+            document.getElementById('m3-outros').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">OUTROS SENTIDOS</span>` + m3o;
 
-            // --- MÓDULO 4: MEMÓRIAS ---
+            // MÓDULO 4
             document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
             let explHTML = '', implHTML = '';
-            
-            // Filtra Memórias
             Object.keys(r).forEach(k => {
-                // Memórias Explícitas (Episódica e Semântica)
                 if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
-                    if(typeof r[k] === 'string') {
-                        // Se for texto livre
-                        explHTML += `<div style="width:100%; margin-bottom:12px; background:#f9f9f9; padding:8px; border-radius:4px;"><span class="il-lbl" style="color:#8e44ad">${k.replace('mem_epi_','História: ').replace('mem_sem_','Conceito: ').toUpperCase().replace(/_/g,' ')}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
-                    } else {
-                        // Se for escala (barra)
-                        explHTML += `<div style="width:48%; margin-bottom:8px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#8e44ad"></div></div><div style="font-size:7pt; text-align:right; color:#8e44ad; font-weight:bold;">${r[k]}%</div></div>`;
-                    }
+                    if(typeof r[k] === 'string') explHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#8e44ad">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
+                    else explHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#8e44ad"></div></div></div>`;
                 }
-                // Memórias Implícitas (Procedural, Priming, Condicionamento)
                 if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
-                    if(typeof r[k] === 'string') {
-                        implHTML += `<div style="width:100%; margin-bottom:12px; background:#f9f9f9; padding:8px; border-radius:4px;"><span class="il-lbl" style="color:#2c3e50">${k.replace('mem_proc_','Rotina: ').replace('mem_cond_','Gatilho: ').toUpperCase().replace(/_/g,' ')}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
-                    } else {
-                        implHTML += `<div style="width:48%; margin-bottom:8px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#2c3e50"></div></div><div style="font-size:7pt; text-align:right; color:#2c3e50; font-weight:bold;">${r[k]}%</div></div>`;
-                    }
+                    if(typeof r[k] === 'string') implHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#2c3e50">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
+                    else implHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#2c3e50"></div></div></div>`;
                 }
             });
             document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
             document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
 
-            // --- FINALIZAÇÃO E DOWNLOAD ---
+            // MÓDULO 5 (NOVO)
+            document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
+            
+            const makeTags = (key, elId) => {
+                const el = document.getElementById(elId);
+                el.innerHTML = '';
+                const val = r[key];
+                if(Array.isArray(val)) {
+                    val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
+                } else if(val) {
+                    el.innerHTML = `<span class="ct-item">${val}</span>`;
+                } else {
+                    el.innerHTML = '-';
+                }
+            };
+
+            makeTags('atu_fase_vida', 'm5-fase');
+            makeTags('atu_investimento', 'm5-invest');
+            makeTags('atu_hobbies', 'm5-hobbies');
+            makeTags('atu_personalidade', 'm5-pers');
+            
+            const tempo = r['atu_tempo'] || 0;
+            document.getElementById('m5-tempo-bar').style.width = tempo + '%';
+            document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
+            document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
+
+            // DOWNLOAD PDF
             const el = document.getElementById('pdf-root');
-            el.style.display = 'block'; // Mostra o HTML do PDF
-            window.scrollTo(0, 0); // Sobe a tela para garantir renderização
+            el.style.display = 'block';
+            window.scrollTo(0, 0); 
 
             setTimeout(async () => {
                 const opt = {
-                    margin: 0, // Margem zero pois controlamos via CSS
+                    margin: 0,
                     filename: `Dossie_${d.cliente}_Completo.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, scrollY: 0, useCORS: true }, // Scale 2 melhora qualidade
+                    html2canvas: { scale: 2, scrollY: 0, useCORS: true }, 
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
-                // Gera o PDF
                 await html2pdf().set(opt).from(el).save();
-                
-                // Restaura o estado do botão
                 el.style.display = 'none';
                 btn.innerText = original; btn.disabled = false;
-            }, 1000); // Espera 1s para garantir que imagens carregaram
+            }, 1000);
         }
 
-        // Inicia o app
         init();
     </script>
 </body>
