@@ -10,35 +10,83 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* RESET */
-        * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+        /* ==========================================================================
+           ESTILOS CSS (A "Maquiagem" da Página)
+           ========================================================================== */
+        
+        /* Reset básico para garantir que todos os navegadores mostrem igual */
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; } /* Garante que cores de fundo saiam na impressão */
         body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
-        .painel { max-width: 1200px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 20px; }
+        
+        /* --- ESTILOS DO PAINEL (TELA DO COMPUTADOR) --- */
+        .painel { 
+            max-width: 1200px; /* Largura máxima para não esticar demais em monitores grandes */
+            margin: 0 auto 30px auto; /* Centraliza na tela */
+            background: white; 
+            padding: 25px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Sombra suave */
+        }
+        
+        .header-painel { 
+            display: flex; /* Flexbox: Coloca itens lado a lado */
+            justify-content: space-between; /* Espalha: um na esquerda, outro na direita */
+            align-items: center; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 20px; 
+            margin-bottom: 20px; 
+        }
+        
         .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
-        .btn-refresh { background: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; font-weight: 700; font-size: 9pt; transition: 0.2s; }
-        .btn-refresh:hover { background: #34495e; }
+        
+        /* Botão de Atualizar */
+        .btn-refresh { 
+            background: #2c3e50; color: white; 
+            padding: 10px 20px; border: none; cursor: pointer; 
+            border-radius: 6px; font-weight: 700; transition: 0.2s; 
+        }
+        .btn-refresh:hover { background: #34495e; } /* Efeito ao passar o mouse */
+        
+        /* Tabela de Clientes */
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
-        tr:hover { background-color: #fafafa; }
+        tr:hover { background-color: #fafafa; } /* Destaca a linha ao passar o mouse */
+        
+        /* Elementos da Tabela */
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
         .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
+        
         .contact-row { display: flex; gap: 8px; }
         .btn-contact { text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
-        .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+        .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; } /* Verde WhatsApp */
+        .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; } /* Azul Email */
+        
+        /* Tags de Status (Pílulas coloridas) */
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         .mod-tag { padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; background: #eee; color: #bbb; border: 1px solid #e0e0e0; }
-        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
+        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; } /* Verde se concluído */
+        
         .btn-pdf { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 8pt; cursor: pointer; }
         .btn-pdf:hover { background: #c0392b; }
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
         
+        /* --- ESTILOS DO RELATÓRIO PDF --- */
+        /* Ocultamos da tela normal (display: none) para aparecer só na geração do PDF */
         #pdf-root { display: none; } 
-        .page { width: 210mm; height: 296mm; background: white; position: relative; overflow: hidden; margin: 0 auto; page-break-after: always; padding: 0; }
-        .page:last-child { page-break-after: avoid; }
         
+        /* Configuração de Página A4 */
+        .page { 
+            width: 210mm; height: 296mm; /* Tamanho exato A4 */
+            background: white; 
+            position: relative; overflow: hidden; 
+            margin: 0 auto; 
+            page-break-after: always; /* Força nova página após cada div .page */
+            padding: 0; 
+        }
+        .page:last-child { page-break-after: avoid; } /* Não cria página em branco no final */
+        
+        /* Layout da Capa */
         .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
@@ -47,43 +95,53 @@
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
+        /* Layout Interno das Páginas */
         .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
-        .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 15px; }
+        
+        /* Cabeçalho de cada Módulo */
+        .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; }
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
         .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
         .mh-meta { text-align: right; }
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 50px; }
-        .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
-        .cc-top { display: flex; justify-content: space-between; align-items: center; }
-        .cc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
-        .cc-val { font-size: 11pt; font-weight: 900; }
-        .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
-        .cc-fill { height: 100%; }
-        
-        .win-box { flex: 1; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 15px; }
+        /* Boxes de Conteúdo (Resultados) */
+        .win-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 20px; }
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
-        .wb-body { display: flex; flex: 1; }
-        .wb-col { flex: 1; padding: 12px; }
-        .wb-div { border-right: 1px dashed #ddd; background: #fdfdfd; }
-        .info-row { margin-bottom: 10px; }
-        .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .iv { font-size: 9pt; font-weight: 600; color: #333; line-height: 1.25; }
-        .lst-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 4px; border-bottom: 1px solid #eee; padding-bottom: 2px; }
-        .lst-ul { padding: 0; margin: 0 0 10px 0; list-style: none; }
-        .lst-li { font-size: 8pt; color: #555; padding-left: 8px; position: relative; margin-bottom: 2px; }
-        .lst-li::before { content: "•"; position: absolute; left: 0; color: #ccc; }
-        .rank-wrap { background: #f8f9fa; border: 1px solid #eee; border-radius: 6px; padding: 10px 15px; margin-bottom: 5px; }
-        .rk-tit { font-size: 8pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; }
-        .rk-item { display: flex; justify-content: space-between; font-size: 8.5pt; border-bottom: 1px dashed #ddd; padding: 3px 0; }
-        .rk-item:last-child { border: none; }
-        .rk-n { font-weight: 700; color: #333; }
-        .rk-d { font-size: 7.5pt; color: #777; font-style: italic; }
-        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
+        .wb-body { padding: 20px; }
+        
+        /* Box de Conclusão Técnica */
+        .box-conclusao { 
+            background: #fdfdfd; 
+            border-left: 4px solid #2c3e50; /* Linha lateral grossa */
+            padding: 15px; 
+            font-size: 9pt; color: #555; line-height: 1.5; 
+            margin-top: auto; /* Empurra para o final da página se usar flexbox */
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+        }
+        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
+        
+        /* Grids Auxiliares */
+        .grid-2 { display: flex; gap: 20px; }
+        .col { flex: 1; }
+        
+        /* Itens de Lista no PDF */
+        .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .il-val { font-size: 9pt; color: #555; }
+        
+        /* Barras de Gráfico Sensorial (CSS puro, sem JS complexo) */
+        .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
+        .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
+        .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+        .sb-fill { height: 100%; background: #2c3e50; }
+        .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
+
+        /* Utilitários de Cor */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
@@ -118,12 +176,9 @@
                 <div class="c-logo">NEUROBRIEFING</div>
                 <div class="c-sub">Diagnóstico Integral & Estratégia</div>
                 <div class="c-info">
-                    <span class="ci-lbl">Cliente Analisado</span>
-                    <span class="ci-val" id="cp-nome">-</span>
-                    <span class="ci-lbl">Arquiteto Responsável</span>
-                    <span class="ci-val" id="cp-arq">-</span>
-                    <span class="ci-lbl">Data do Diagnóstico</span>
-                    <span class="ci-val" id="cp-data">-</span>
+                    <span class="ci-lbl">Cliente Analisado</span><span class="ci-val" id="cp-nome">-</span>
+                    <span class="ci-lbl">Arquiteto Responsável</span><span class="ci-val" id="cp-arq">-</span>
+                    <span class="ci-lbl">Data do Diagnóstico</span><span class="ci-val" id="cp-data">-</span>
                 </div>
                 <div class="c-foot">Documento Confidencial de Uso Profissional</div>
             </div>
@@ -132,64 +187,33 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div>
-                        <div class="mh-tit">IDENTIDADE DO SER</div>
-                        <div class="mh-sub">Mapeamento de Arquétipo & Temperamento</div>
-                    </div>
-                    <div class="mh-meta">
-                        <div class="mh-num">01</div>
-                        <span class="mh-time" id="mh-time">⏱ Tempo: --:--</span>
-                    </div>
+                    <div><div class="mh-tit">IDENTIDADE DO SER</div><div class="mh-sub">Arquétipo & Temperamento</div></div>
+                    <div class="mh-meta"><div class="mh-num">01</div><span class="mh-time" id="t1-time">--:--</span></div>
                 </div>
                 <div class="charts" id="chart-container"></div>
                 <div class="win-box">
-                    <div class="wb-head" id="wb-head">
-                        <div class="wb-tit" id="txt-el">-</div>
-                        <div class="wb-sty" id="txt-tit">-</div>
-                    </div>
-                    <div class="wb-body">
-                        <div class="wb-col wb-div">
-                            <div class="info-row"><span class="il">⚡ Energia</span><span class="iv" id="t-en">-</span></div>
-                            <div class="info-row"><span class="il">👤 Para Quem</span><span class="iv" id="t-qm">-</span></div>
-                            <div style="display:flex; gap:10px;">
-                                <div class="info-row" style="flex:1"><span class="il">📋 Perfil</span><span class="iv" id="t-perf">-</span></div>
-                                <div class="info-row" style="flex:1"><span class="il">🧬 Temp.</span><span class="iv" id="t-temp">-</span></div>
-                            </div>
-                            <div class="info-row"><span class="il">🎭 Arquétipos</span><span class="iv" id="t-arq">-</span></div>
+                    <div class="wb-head" id="wb-head"><div class="wb-tit" id="txt-el">-</div><div class="wb-sty" id="txt-tit">-</div></div>
+                    <div class="wb-body" id="m1-content">
                         </div>
-                        <div class="wb-col">
-                            <div class="lst-tit">🏠 Estilos Incluídos</div>
-                            <ul class="lst-ul" id="l-est"></ul>
-                            <div class="lst-tit">✨ Características</div>
-                            <ul class="lst-ul" id="l-car"></ul>
-                        </div>
-                    </div>
                 </div>
-                <div class="rank-wrap">
-                    <div class="rk-tit">📊 Leitura do Diagnóstico (Ranking)</div>
-                    <div id="rank-list"></div>
+                <div class="box-conclusao">
+                    <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
+                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base" do cliente. 
+                    Para perfis quentes (Fogo/Ar), priorize espaços de conexão, movimento e expressão. 
+                    Para perfis frios (Terra/Água), foque em acolhimento, privacidade e lógica espacial. 
+                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
                 </div>
-                <div class="ft-note">Relatório gerado pela plataforma NeuroBriefing Intelligence</div>
+                <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
         </div>
 
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div>
-                        <div class="mh-tit">IDENTIDADE VISUAL</div>
-                        <div class="mh-sub">Estilo Predominante & Preferências</div>
-                    </div>
-                    <div class="mh-meta">
-                        <div class="mh-num">02</div>
-                        <span class="mh-time" id="vis-time">⏱ Tempo: --:--</span>
-                    </div>
+                    <div><div class="mh-tit">IDENTIDADE VISUAL</div><div class="mh-sub">Estilo & Preferência Estética</div></div>
+                    <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" id="t2-time">--:--</span></div>
                 </div>
-
-                <div id="vis-warning" style="display:none; background:#ffebeb; color:#c0392b; padding:10px; font-size:9pt; font-weight:bold; text-align:center; border:1px solid #e74c3c; margin-bottom:15px; border-radius:4px;">
-                    ⚠️ ATENÇÃO: Tempo de execução muito baixo. Indica respostas sem reflexão.
-                </div>
-
+                
                 <div class="win-box" style="flex:0 auto; margin-bottom:30px;">
                     <div class="wb-head" style="background:#2c3e50;">
                         <div class="wb-tit">ESTILO PREDOMINANTE</div>
@@ -198,67 +222,145 @@
                     <div class="wb-body" style="padding:25px; text-align:center;">
                         <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
                         <p style="font-size:10pt; color:#777; margin-top:10px; font-style:italic;" id="vis-top1-desc">Baseado na maior afinidade demonstrada.</p>
-                        <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">
-                            AFINIDADE: <span id="vis-top1-nota">-</span>%
-                        </div>
+                        <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
                     </div>
                 </div>
 
-                <div class="rank-wrap">
-                    <div class="rk-tit">COMPOSIÇÃO ESTÉTICA (SUBSEQUENTES)</div>
-                    <div id="vis-lista-secundaria">
+                <div id="m2-content">
+                    </div>
+
+                <div class="box-conclusao">
+                    <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
+                    A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro do cliente decodifica com facilidade.
+                    Utilize o estilo predominante como base estrutural (revestimentos, marcenaria) e os estilos secundários para camadas de decoração (objetos, têxteis).
+                    Isso cria um ambiente "legível" para o cérebro, reduzindo a carga cognitiva e aumentando a sensação de pertencimento (Place Attachment).
+                </div>
+                <div class="ft-note">NeuroBriefing Intelligence</div>
+            </div>
+        </div>
+
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Percepção Multissensorial & Biofilia</div></div>
+                    <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="col" id="m3-visual">
+                        </div>
+                    <div class="col" id="m3-outros">
                         </div>
                 </div>
 
-                <div class="ft-note" style="margin-top:auto;">A identidade visual final é uma composição do predominante com nuances dos secundários.</div>
+                <div class="box-conclusao">
+                    <span class="bc-tit">CONCLUSÃO & APLICAÇÃO PRÁTICA (NEUROARQUITETURA SENSORIAL)</span>
+                    Baseado em <strong>Juhani Pallasmaa</strong> ("Os Olhos da Pele") e <strong>Charles Spence</strong> (Gastrofísica), o ambiente deve ser projetado para além da visão.
+                    <br><br>
+                    <strong>1. Regulação Sensorial:</strong> Se o cliente indicou alta sensibilidade auditiva/olfativa, crie "zonas de descompressão" com materiais fonoabsorventes (madeira, tecidos) e ventilação controlada.
+                    <br>
+                    <strong>2. Biofilia Aplicada:</strong> Utilize a preferência de vegetação indicada não apenas como decoração, mas como redutor de cortisol (estresse).
+                    <br>
+                    <strong>3. Tato e Textura:</strong> A "mão quer ver o que os olhos tocam". Use texturas táteis (pedra rugosa, veludo, linho) nas áreas de permanência para ativar a memória tátil e aumentar a sensação de acolhimento.
+                </div>
+                <div class="ft-note">NeuroBriefing Intelligence</div>
+            </div>
+        </div>
+
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Memórias Explícitas & Implícitas</div></div>
+                    <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" id="t4-time">--:--</span></div>
+                </div>
+
+                <div class="win-box">
+                    <div class="wb-head" style="background:#8e44ad;">
+                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
+                        <div class="wb-sty">O QUE O CLIENTE DIZ</div>
+                    </div>
+                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px;">
+                        </div>
+                </div>
+
+                <div class="win-box">
+                    <div class="wb-head" style="background:#2c3e50;">
+                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
+                        <div class="wb-sty">O QUE O CLIENTE SENTE/FAZ</div>
+                    </div>
+                    <div class="wb-body" id="m4-impl">
+                        </div>
+                </div>
+
+                <div class="box-conclusao">
+                    <span class="bc-tit">CONCLUSÃO & APLICAÇÃO PRÁTICA (NEUROARQUITETURA E MEMÓRIA)</span>
+                    Baseado em <strong>Endel Tulving</strong> e <strong>Daniel Kahneman</strong> (Sistemas 1 e 2), a casa deve ser um espelho da biografia do cliente.
+                    <br><br>
+                    <strong>1. Memória Episódica (O Filme):</strong> Crie "altares de memória" para os objetos/histórias citados nas respostas explícitas. Isso ancora a identidade.
+                    <br>
+                    <strong>2. Memória Procedural (O Hábito):</strong> Respeite o fluxo de movimento e a "bagunça funcional" identificada. Não force uma organização que contrarie o "piloto automático" do cliente (Sistema 1).
+                    <br>
+                    <strong>3. Priming (Gatilhos):</strong> Use as cores e materiais citados (ex: madeira, azul) como gatilhos sutis para evocar calma ou energia sem que o cliente precise racionalizar.
+                </div>
+                <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- DADOS E LÓGICA ---
+        // 1. BASE DE CONHECIMENTO (Interpretação dos Dados)
+        // Aqui definimos o que cada resposta "significa" para gerar os textos do relatório.
         const DB = {
-            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Estilos de Ativação', energia:'Ação · Direção · Intensidade', quem:'Pessoas executor-coléricas', perfil:'Executor', temp:'Colérico', arq:'Herói · Governante', estilos:['Contemporâneo', 'Industrial', 'Moderno Urbano'], carac:['Linhas retas', 'Materiais fortes', 'Contraste'] },
-            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Estilos de Expressão', energia:'Expressão · Conexão', quem:'Comunicador-sanguíneo', perfil:'Comunicador', temp:'Sanguíneo', arq:'Amante · Explorador', estilos:['Escandinavo', 'Boho Chic', 'Eclético'], carac:['Luz natural', 'Layout fluido', 'Criatividade'] },
-            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Estilos de Acolhimento', energia:'Sensibilidade · Ritmo', quem:'Planejador-fleumático', perfil:'Planejador', temp:'Fleumático', arq:'Cuidador · Inocente', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], carac:['Texturas suaves', 'Paleta neutra', 'Conforto'] },
-            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Estilos de Estrutura', energia:'Estrutura · Constância', quem:'Analista-melancólico', perfil:'Analista', temp:'Melancólico', arq:'Sábio · Criador', estilos:['Clássico', 'Neoclássico', 'Moderno Elegante'], carac:['Simetria', 'Materiais nobres', 'Sobriedade'] }
+            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Estilos de Ativação', energia:'Ação · Intensidade', quem:'Executor-colérico', perfil:'Executor', estilos:['Contemporâneo', 'Industrial'], carac:['Linhas retas', 'Contraste'] },
+            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Estilos de Expressão', energia:'Expressão · Conexão', quem:'Comunicador-sanguíneo', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético'], carac:['Luz natural', 'Criatividade'] },
+            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Estilos de Acolhimento', energia:'Sensibilidade · Ritmo', quem:'Planejador-fleumático', perfil:'Planejador', estilos:['Japandi', 'Orgânico'], carac:['Texturas suaves', 'Conforto'] },
+            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Estilos de Estrutura', energia:'Estrutura · Constância', quem:'Analista-melancólico', perfil:'Analista', estilos:['Clássico', 'Moderno Elegante'], carac:['Simetria', 'Sobriedade'] }
         };
 
+        // Dicionário para traduzir códigos (est_contemp) em nomes bonitos (Contemporâneo)
         const DB_VISUAL = {
             'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
             'est_scandi': 'Escandinavo', 'est_cont_leve': 'Contemporâneo Leve', 'est_boho': 'Boho Chic', 'est_japandi': 'Japandi', 'est_wabi': 'Wabi-Sabi',
-            'est_organico': 'Orgânico Contemporâneo', 'est_coastal': 'Coastal Sofisticado', 'est_natural': 'Natural Chic',
-            'est_mid': 'Mid-Century Modern', 'est_ecletico': 'Eclético Curado', 'est_classico': 'Clássico Atemporal', 'est_neoclass': 'Neoclássico',
-            'est_trad': 'Tradicional Contemporâneo', 'est_mod_eleg': 'Moderno Elegante', 'est_colonial': 'Colonial Atualizado'
+            'est_organico': 'Orgânico', 'est_coastal': 'Coastal', 'est_natural': 'Natural Chic',
+            'est_mid': 'Mid-Century', 'est_ecletico': 'Eclético', 'est_classico': 'Clássico', 'est_neoclass': 'Neoclássico'
         };
 
         let dadosAPI = [];
 
+        // 2. FUNÇÃO DE INICIALIZAÇÃO
+        // Carrega os dados da API assim que a página abre.
         async function init() {
             try {
+                // Requisição GET para o servidor
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 dadosAPI = await req.json();
+                
+                // Ordena por data (mais recente primeiro)
                 dadosAPI.sort((a, b) => new Date(b.data) - new Date(a.data));
+                
+                // Desenha a tabela
                 renderTable();
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("Erro ao carregar dados:", e); }
         }
 
-        // FUNÇÃO DE VERIFICAÇÃO DE MÓDULOS - CORRIGIDA (STARTSWITH)
-        function checkMod(respostas, keyStart) {
-            if(!respostas) return false;
-            // Verifica se alguma chave começa com o prefixo (evita conflitos de substring)
-            return Object.keys(respostas).some(k => k.startsWith(keyStart));
+        // 3. FUNÇÃO AUXILIAR: Verifica se um módulo foi feito
+        // Procura se existe alguma resposta que começa com o prefixo (ex: 'mem_')
+        function checkMod(r, keyStart) {
+            if(!r) return false;
+            return Object.keys(r).some(k => k.startsWith(keyStart));
         }
 
-        function formatTime(seg) {
-            const s = parseInt(seg);
+        // 4. FUNÇÃO AUXILIAR: Formata Segundos -> MM:SS
+        function formatTime(s) {
+            s = parseInt(s);
             if (isNaN(s)) return "00:00"; 
             const min = Math.floor(s / 60);
-            const sMod = s % 60;
-            return `${min < 10 ? '0'+min : min}:${sMod < 10 ? '0'+sMod : sMod}`;
+            const sec = s % 60;
+            return `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
         }
 
+        // 5. RENDERIZA A TABELA DE CLIENTES
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
@@ -266,174 +368,161 @@
             dadosAPI.forEach((d, i) => {
                 const r = d.respostas || {};
                 const c = d.contato || {};
-
-                // LÓGICA DE DETECÇÃO DE MÓDULOS (USANDO STARTSWITH)
-                const hasHumana = checkMod(r, 'fogo') || checkMod(r, 'ar_') || checkMod(r, 'agua') || checkMod(r, 'terra');
-                const hasVisual = checkMod(r, 'est_'); // Garante que só pegue chaves que COMEÇAM com est_
-                const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_');
-                const hasMemorias = checkMod(r, 'emo_');
-                const hasAtual = checkMod(r, 'cog_');
-
-                const waLink = c.telefone ? `https://wa.me/55${c.telefone.replace(/\D/g,'')}` : '#';
-                const mailLink = c.email ? `mailto:${c.email}` : '#';
+                
+                // Lógica de Detecção dos Módulos (Atualizada com Módulo 4)
+                const hasHumana = checkMod(r, 'fogo') || checkMod(r, 'ar_');
+                const hasVisual = checkMod(r, 'est_');
+                // Módulo 3 inclui visual, auditivo, olfativo, tatil e gustativo
+                const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_') || checkMod(r, 'bio_');
+                // Módulo 4 são as memórias
+                const hasMemorias = checkMod(r, 'mem_');
 
                 t.innerHTML += `
                     <tr>
                         <td style="font-size:9pt; color:#666;">${new Date(d.data).toLocaleDateString()}</td>
-                        <td>
-                            <span class="cli-name">${d.cliente}</span>
-                            <span class="cli-local">📍 ${c.cidade || '-'} / ${c.estado || '-'}</span>
-                            <div class="contact-row">
-                                ${c.telefone ? `<a href="${waLink}" target="_blank" class="btn-contact btn-wa">📱 WhatsApp</a>` : ''}
-                                ${c.email ? `<a href="${mailLink}" class="btn-contact btn-mail">✉️ Email</a>` : ''}
-                            </div>
-                        </td>
-                        <td style="font-weight:600; color:#555;">${c.arquiteto || 'Não informado'}</td>
+                        <td><span class="cli-name">${d.cliente}</span><span class="cli-local">${c.cidade||'-'}</span></td>
+                        <td>${c.arquiteto || '-'}</td>
                         <td>
                             <div class="mod-grid">
-                                <span class="mod-tag ${hasHumana ? 'done' : ''}">Humana</span>
-                                <span class="mod-tag ${hasVisual ? 'done' : ''}">Visual</span>
-                                <span class="mod-tag ${hasSensorial ? 'done' : ''}">Sensorial</span>
-                                <span class="mod-tag ${hasMemorias ? 'done' : ''}">Emoção</span>
-                                <span class="mod-tag ${hasAtual ? 'done' : ''}">Cognição</span>
+                                <span class="mod-tag ${hasHumana?'done':''}">Humana</span>
+                                <span class="mod-tag ${hasVisual?'done':''}">Visual</span>
+                                <span class="mod-tag ${hasSensorial?'done':''}">Sensorial</span>
+                                <span class="mod-tag ${hasMemorias?'done':''}">Memórias</span>
                             </div>
                         </td>
-                        <td style="text-align:right">
-                            <button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button>
-                        </td>
+                        <td style="text-align:right"><button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button></td>
                     </tr>
                 `;
             });
         }
 
+        // 6. FUNÇÃO GERADORA DE PDF (A Mágica!)
         async function makePDF(index, btn) {
             const d = dadosAPI[index];
-            const original = btn.innerText; btn.innerText = "..."; btn.disabled = true;
+            const original = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
+            const r = d.respostas || {};
 
+            // --- PREENCHIMENTO DA CAPA ---
             document.getElementById('cp-nome').innerText = d.cliente;
             document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
             document.getElementById('cp-data').innerText = new Date(d.data).toLocaleDateString();
 
+            // --- MÓDULO 1: CÁLCULO DE TEMPERAMENTO ---
             let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
-            const r = d.respostas || {};
             Object.keys(r).forEach(k => {
                 let v = parseInt(r[k]) || 0;
-                if(k.includes('fogo')) p.FOGO += v;
-                if(k.includes('ar')) p.AR += v;
-                if(k.includes('agua')) p.AGUA += v;
-                if(k.includes('terra')) p.TERRA += v;
+                if(k.startsWith('fogo')) p.FOGO += v;
+                if(k.startsWith('ar_')) p.AR += v;
+                if(k.startsWith('agua')) p.AGUA += v;
+                if(k.startsWith('terra')) p.TERRA += v;
             });
-
-            const t1 = (d.tempos && d.tempos[0] !== undefined) ? d.tempos[0] : (d.duracao || 0);
-            document.getElementById('mh-time').innerText = `⏱ Tempo: ${formatTime(t1)}`;
-
-            const sorted = [
-                { k:'FOGO', ...DB.FOGO, val: p.FOGO },
-                { k:'AR', ...DB.AR, val: p.AR },
-                { k:'AGUA', ...DB.AGUA, val: p.AGUA },
-                { k:'TERRA', ...DB.TERRA, val: p.TERRA }
-            ].sort((a,b) => b.val - a.val);
-
-            const win = sorted[0];
-
-            const chartC = document.getElementById('chart-container');
-            chartC.innerHTML = ''; 
-            sorted.forEach(item => {
-                const pct = Math.min((item.val/25)*100, 100);
-                chartC.innerHTML += `
-                    <div class="cc-box">
-                        <div class="cc-top"><span class="cc-lbl c-${item.class}">${item.id}</span><span class="cc-val c-${item.class}">${item.val}</span></div>
-                        <div class="cc-bar"><div class="cc-fill bg-${item.class}" style="width:${pct}%"></div></div>
-                    </div>
-                `;
-            });
-
-            document.getElementById('wb-head').style.backgroundColor = win.cor;
-            document.getElementById('txt-el').innerText = `ELEMENTO ${win.id}`;
-            document.getElementById('txt-tit').innerText = win.titulo;
-            document.getElementById('t-en').innerText = win.energia;
-            document.getElementById('t-qm').innerText = win.quem;
-            document.getElementById('t-perf').innerText = win.perfil;
-            document.getElementById('t-temp').innerText = win.temp;
-            document.getElementById('t-arq').innerText = win.arq;
-            document.getElementById('l-est').innerHTML = win.estilos.map(i => `<li class="lst-li">${i}</li>`).join('');
-            document.getElementById('l-car').innerHTML = win.carac.map(i => `<li class="lst-li">${i}</li>`).join('');
-
-            const rkList = document.getElementById('rank-list');
-            rkList.innerHTML = '';
-            sorted.forEach((item, i) => {
-                let label = "";
-                if(i===0) label = "Dominante";
-                if(i===1) label = "Secundário";
-                if(i===3) label = "A Desenvolver";
-                rkList.innerHTML += `
-                    <div class="rk-item">
-                        <span class="rk-n">${i+1}º ${item.id} <span style="font-weight:400; color:#555">(${item.val} pts)</span></span>
-                        <span class="rk-d">${label}</span>
-                    </div>
-                `;
-            });
-
-            const t2 = (d.tempos && d.tempos[1] !== undefined) ? d.tempos[1] : 0;
-            document.getElementById('vis-time').innerText = `⏱ Tempo: ${formatTime(t2)}`;
+            // Ordena do maior para o menor
+            const sorted = [{k:'FOGO',...DB.FOGO,v:p.FOGO},{k:'AR',...DB.AR,v:p.AR},{k:'AGUA',...DB.AGUA,v:p.AGUA},{k:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
+            const win = sorted[0]; // Vencedor
             
-            if (t2 > 0 && t2 < 60) {
-                document.getElementById('vis-warning').style.display = 'block';
-            } else {
-                document.getElementById('vis-warning').style.display = 'none';
-            }
+            // Preenche HTML do Mod 1
+            document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
+            let chartHTML = '';
+            sorted.forEach(i => {
+                chartHTML += `<div class="cc-box"><div class="cc-top"><span class="cc-lbl c-${i.class}">${i.id}</span><span class="cc-val">${i.v}</span></div><div class="cc-bar"><div class="cc-fill bg-${i.class}" style="width:${Math.min((i.v/25)*100,100)}%"></div></div></div>`;
+            });
+            document.getElementById('chart-container').innerHTML = chartHTML;
+            document.getElementById('wb-head').style.backgroundColor = win.cor;
+            document.getElementById('txt-el').innerText = win.id;
+            document.getElementById('txt-tit').innerText = win.titulo;
+            document.getElementById('m1-content').innerHTML = `
+                <div class="info-row"><span class="il">Energia</span><span class="iv">${win.energia}</span></div>
+                <div class="info-row"><span class="il">Perfil</span><span class="iv">${win.perfil}</span></div>
+                <div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${win.estilos.join(', ')}</span></div>
+            `;
 
+            // --- MÓDULO 2: ESTILOS VISUAIS ---
+            document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
             let visualScores = [];
             Object.keys(r).forEach(k => {
-                if (k.startsWith('est_')) {
-                    visualScores.push({
-                        id: k,
-                        nome: DB_VISUAL[k] || k,
-                        val: parseInt(r[k]) || 0
-                    });
-                }
+                if(k.startsWith('est_')) visualScores.push({nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0});
             });
-
             visualScores.sort((a,b) => b.val - a.val);
-
-            if (visualScores.length > 0) {
-                const top1 = visualScores[0];
-                document.getElementById('vis-top1-nome').innerText = top1.nome;
-                document.getElementById('vis-top1-nota').innerText = top1.val;
-            } else {
-                document.getElementById('vis-top1-nome').innerText = "Não Avaliado";
-                document.getElementById('vis-top1-nota').innerText = "0";
+            
+            if(visualScores.length > 0) {
+                document.getElementById('vis-top1-nome').innerText = visualScores[0].nome;
+                document.getElementById('vis-top1-nota').innerText = visualScores[0].val;
+                // Lista os 4 próximos estilos
+                document.getElementById('m2-content').innerHTML = visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
             }
 
-            const secContainer = document.getElementById('vis-lista-secundaria');
-            secContainer.innerHTML = '';
-            visualScores.slice(1, 5).forEach((item, i) => {
-                secContainer.innerHTML += `
-                    <div class="rk-item">
-                        <span class="rk-n">${i+2}º ${item.nome}</span>
-                        <span class="rk-d" style="font-weight:bold; color:#333;">${item.val}%</span>
-                    </div>
-                `;
+            // --- MÓDULO 3: SENSORIAL ---
+            document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
+            let m3v = '', m3o = '';
+            
+            // Coluna 1: Visual & Biofilia
+            Object.keys(r).forEach(k => {
+                if((k.startsWith('vis_') || k.startsWith('bio_')) && typeof r[k] === 'number') {
+                    let label = k.replace('vis_', '').replace('bio_', '').replace(/_/g, ' ').toUpperCase();
+                    m3v += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
+                }
             });
+            // Coluna 2: Outros Sentidos (Audio, Olfato, Tato)
+            Object.keys(r).forEach(k => {
+                if((k.startsWith('aud_') || k.startsWith('olf_') || k.startsWith('tat_')) && typeof r[k] === 'number') {
+                    let label = k.replace('aud_', '').replace('olf_', '').replace('tat_', '').replace(/_/g, ' ').toUpperCase();
+                    m3o += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
+                }
+            });
+            document.getElementById('m3-visual').innerHTML = `<span class="il-lbl" style="margin-bottom:15px; border-bottom:1px solid #ddd;">VISUAL & BIOFILIA</span>` + m3v;
+            document.getElementById('m3-outros').innerHTML = `<span class="il-lbl" style="margin-bottom:15px; border-bottom:1px solid #ddd;">OUTROS SENTIDOS</span>` + m3o;
 
+            // --- MÓDULO 4: MEMÓRIAS ---
+            document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
+            let explHTML = '', implHTML = '';
+            
+            // Filtra Memórias
+            Object.keys(r).forEach(k => {
+                // Memórias Explícitas (Episódica e Semântica)
+                if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
+                    if(typeof r[k] === 'string') {
+                        // Se for texto livre
+                        explHTML += `<div style="width:100%; margin-bottom:12px; background:#f9f9f9; padding:8px; border-radius:4px;"><span class="il-lbl" style="color:#8e44ad">${k.replace('mem_epi_','História: ').replace('mem_sem_','Conceito: ').toUpperCase().replace(/_/g,' ')}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
+                    } else {
+                        // Se for escala (barra)
+                        explHTML += `<div style="width:48%; margin-bottom:8px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#8e44ad"></div></div><div style="font-size:7pt; text-align:right; color:#8e44ad; font-weight:bold;">${r[k]}%</div></div>`;
+                    }
+                }
+                // Memórias Implícitas (Procedural, Priming, Condicionamento)
+                if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
+                    if(typeof r[k] === 'string') {
+                        implHTML += `<div style="width:100%; margin-bottom:12px; background:#f9f9f9; padding:8px; border-radius:4px;"><span class="il-lbl" style="color:#2c3e50">${k.replace('mem_proc_','Rotina: ').replace('mem_cond_','Gatilho: ').toUpperCase().replace(/_/g,' ')}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
+                    } else {
+                        implHTML += `<div style="width:48%; margin-bottom:8px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#2c3e50"></div></div><div style="font-size:7pt; text-align:right; color:#2c3e50; font-weight:bold;">${r[k]}%</div></div>`;
+                    }
+                }
+            });
+            document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
+            document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
+
+            // --- FINALIZAÇÃO E DOWNLOAD ---
             const el = document.getElementById('pdf-root');
-            el.style.display = 'block';
-            window.scrollTo(0, 0); 
+            el.style.display = 'block'; // Mostra o HTML do PDF
+            window.scrollTo(0, 0); // Sobe a tela para garantir renderização
 
             setTimeout(async () => {
                 const opt = {
-                    margin: 0,
-                    filename: `Dossie_${d.cliente}.pdf`,
+                    margin: 0, // Margem zero pois controlamos via CSS
+                    filename: `Dossie_${d.cliente}_Completo.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, scrollY: 0, useCORS: true }, 
+                    html2canvas: { scale: 2, scrollY: 0, useCORS: true }, // Scale 2 melhora qualidade
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
+                // Gera o PDF
                 await html2pdf().set(opt).from(el).save();
+                
+                // Restaura o estado do botão
                 el.style.display = 'none';
                 btn.innerText = original; btn.disabled = false;
-            }, 1000);
+            }, 1000); // Espera 1s para garantir que imagens carregaram
         }
 
+        // Inicia o app
         init();
     </script>
 </body>
