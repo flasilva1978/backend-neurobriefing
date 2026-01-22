@@ -3,41 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard NeuroBriefing | Diagnóstico Avançado</title>
+    <title>Dashboard NeuroBriefing | Diagnóstico Integral</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
            1. ESTILOS GERAIS E RESET
            ========================================================================== */
+        
+        /* Garante que o tamanho das caixas inclua as bordas e preenchimentos */
         * { 
             box-sizing: border-box; 
-            -webkit-print-color-adjust: exact; /* Garante que cores de fundo saiam na impressão */
+            -webkit-print-color-adjust: exact; /* Força o navegador a imprimir as cores de fundo */
         }
         
         body { 
             font-family: 'Montserrat', sans-serif; 
-            background: #f0f2f5; 
+            background: #f0f2f5; /* Fundo cinza claro para a tela do painel */
             margin: 0; 
             padding: 20px; 
             color: #333; 
         }
         
         /* ==========================================================================
-           2. ESTILOS DO PAINEL (TELA DO COMPUTADOR)
+           2. ESTILOS DO PAINEL ADMINISTRATIVO (VISÃO TELA)
            ========================================================================== */
+        
+        /* Container principal centralizado */
         .painel { 
             max-width: 1200px; 
             margin: 0 auto 30px auto; 
             background: white; 
             padding: 25px; 
             border-radius: 10px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Sombra suave */
         }
         
+        /* Cabeçalho do Painel com Título e Botão */
         .header-painel { 
             display: flex; 
             justify-content: space-between; 
@@ -47,12 +54,9 @@
             margin-bottom: 20px; 
         }
         
-        .hp-title { 
-            font-size: 18pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-        }
+        .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
         
+        /* Botão de Atualizar (Refresh) */
         .btn-refresh { 
             background: #2c3e50; 
             color: white; 
@@ -66,9 +70,10 @@
         }
         .btn-refresh:hover { background: #34495e; }
         
-        /* TABELA DE CLIENTES */
+        /* --- TABELA DE CLIENTES --- */
         table { width: 100%; border-collapse: collapse; }
         
+        /* Cabeçalho da Tabela */
         th { 
             text-align: left; 
             padding: 15px 10px; 
@@ -80,6 +85,7 @@
             border-bottom: 2px solid #eee; 
         }
         
+        /* Células da Tabela */
         td { 
             padding: 15px 10px; 
             border-bottom: 1px solid #eee; 
@@ -87,11 +93,12 @@
             font-size: 9.5pt; 
         }
         
-        tr:hover { background-color: #fafafa; }
+        tr:hover { background-color: #fafafa; } /* Efeito ao passar o mouse */
         
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
         .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
         
+        /* Botões de contato (WhatsApp/Email) */
         .contact-row { display: flex; gap: 8px; }
         
         .btn-contact { 
@@ -108,7 +115,7 @@
         .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
         .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
         
-        /* TAGS DE STATUS */
+        /* Tags de Status dos Módulos (Visualização rápida) */
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         .mod-tag { 
             padding: 3px 6px; 
@@ -120,8 +127,9 @@
             color: #bbb; 
             border: 1px solid #e0e0e0; 
         }
-        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
+        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; } /* Verde se concluído */
         
+        /* Botão Gerar PDF */
         .btn-pdf { 
             background: #e74c3c; 
             color: white; 
@@ -138,8 +146,11 @@
         /* ==========================================================================
            3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
            ========================================================================== */
+        
+        /* Oculta o PDF da tela normal para não bagunçar o painel */
         #pdf-root { display: none; } 
         
+        /* Configuração da Página A4 */
         .page { 
             width: 210mm; 
             height: 296mm; 
@@ -147,12 +158,12 @@
             position: relative; 
             overflow: hidden; 
             margin: 0 auto; 
-            page-break-after: always; 
+            page-break-after: always; /* Força quebra de página na impressão */
             padding: 0; 
         }
         .page:last-child { page-break-after: avoid; }
         
-        /* CAPA */
+        /* --- ESTILOS DA CAPA --- */
         .capa-box { 
             width: 100%; height: 100%; 
             display: flex; flex-direction: column; 
@@ -174,23 +185,59 @@
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        /* HEADER DO MODULO */
+        /* --- ESTILOS DE CABEÇALHO DOS MÓDULOS --- */
         .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
-        .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; }
+        
+        .m-head { 
+            display: flex; justify-content: space-between; align-items: flex-end; 
+            border-bottom: 4px solid #2c3e50; 
+            padding-bottom: 10px; margin-bottom: 20px; 
+        }
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
         .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
         .mh-meta { text-align: right; }
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        /* BOXES */
-        .win-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 15px; display: flex; flex-direction: column; }
+        /* --- CAIXAS DE CONTEÚDO (WIN BOX) --- */
+        .win-box { 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin-bottom: 15px; 
+            display: flex; flex-direction: column;
+        }
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
         .wb-body { padding: 20px; flex: 1; }
         
-        /* GRÁFICOS */
+        /* --- GRIDS ESTRATÉGICOS (MÓDULO 1) --- */
+        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
+        
+        .st-card { 
+            flex: 1; 
+            background: #fdfdfd; 
+            border: 1px solid #eee; 
+            border-radius: 6px; 
+            padding: 15px; 
+            display: flex; flex-direction: column; 
+        }
+        .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; } /* Azul para Correlação */
+        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; } /* Amarelo para Sombra */
+        
+        .st-head { 
+            font-size: 9pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            padding-bottom: 5px; 
+            border-bottom: 2px solid #eee; 
+        }
+        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
+
+        /* --- GRÁFICOS DE BARRAS --- */
         .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 40px; }
         .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
@@ -199,43 +246,43 @@
         .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
 
-        /* GRID ESTRATÉGICO (MÓDULO 1) */
-        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
-        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
-        .st-card.highlight { border-left: 4px solid #3498db; background: #fdfdfd; } /* Azul para Correlação */
-        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf0; } /* Amarelo para Sombra */
+        /* --- BOX DE CONCLUSÃO TÉCNICA (RODAPÉ) --- */
+        .box-conclusao { 
+            background: #fdfdfd; 
+            border-left: 4px solid #2c3e50; 
+            padding: 15px; 
+            font-size: 9pt; 
+            color: #555; 
+            line-height: 1.5; 
+            margin-top: auto; 
+            margin-bottom: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+        }
+        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
+        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
         
-        .st-head { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
-        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
-        
-        /* GRIDS & LISTAS */
+        /* --- UTILITÁRIOS DE LISTA --- */
         .grid-2 { display: flex; gap: 20px; }
         .col { flex: 1; }
         .info-row { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
         .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
         .iv { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.25; }
-        
         .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
         .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
         .il-val { font-size: 9pt; color: #555; }
         
-        /* BARRAS SENSORIAIS */
+        /* --- BARRAS SENSORIAIS --- */
         .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
         .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
         .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
-        /* TAGS (MOD 5) */
+        /* --- TAGS DE CHECKLIST (MOD 5) --- */
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
 
-        /* BOX CONCLUSÃO */
-        .box-conclusao { background: #fdfdfd; border-left: 4px solid #2c3e50; padding: 15px; font-size: 9pt; color: #555; line-height: 1.5; margin-top: auto; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
-        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
-
-        /* CORES */
+        /* --- CORES POR TEMPERAMENTO --- */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
@@ -255,7 +302,7 @@
                     <th style="width: 100px;">Data</th>
                     <th style="width: 30%;">Cliente</th>
                     <th style="width: 20%;">Responsável</th>
-                    <th>Status dos Módulos</th>
+                    <th>Status</th>
                     <th style="text-align:right;">Ação</th>
                 </tr>
             </thead>
@@ -307,10 +354,10 @@
                     <div class="st-card highlight">
                         <div class="st-head">👑 PERFIL COMBINADO (DOMINANTE + SECUNDÁRIO)</div>
                         <div class="st-text" id="m1-perfil-texto"></div>
-                        <div class="st-text" id="m1-projeto-texto" style="margin-top:10px; font-weight:bold;"></div>
+                        <div class="st-text" id="m1-projeto-texto" style="margin-top:8px; font-weight:bold;"></div>
                     </div>
                     <div class="st-card shadow-card">
-                        <div class="st-head">⚠️ PONTO DE ATENÇÃO (SOMBRA)</div>
+                        <div class="st-head">⚠️ PONTO DE ATENÇÃO (ELEMENTO MENOS ACESSADO)</div>
                         <div class="st-text" id="m1-sombra-texto"></div>
                     </div>
                 </div>
@@ -422,7 +469,10 @@
                 <div class="win-box">
                     <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
                     <div class="wb-body">
-                        <div style="margin-bottom:15px;"><span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span><div class="check-tags" id="m5-pers"></div></div>
+                        <div style="margin-bottom:15px;">
+                            <span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span>
+                            <div class="check-tags" id="m5-pers"></div>
+                        </div>
                         <div>
                             <span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span>
                             <div class="sensory-bar" style="margin-top:5px;">
@@ -449,7 +499,7 @@
     </div>
 
     <script>
-        // 1. BANCO DE DADOS (TEXTOS ORIGINAIS + RESTAURADOS)
+        // 1. BANCO DE DADOS (TEXTOS COMPLETOS RESTAURADOS)
         const DB = {
             FOGO: { 
                 id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
@@ -504,6 +554,7 @@
             'AGUA_TERRA': { perfil: 'O ACOLHEDOR: Família e estabilidade.', projeto: 'Ninho, Farmhouse e cozinha grande.', atendimento: 'Seja previsível e carinhoso.' }
         };
 
+        // 3. ANÁLISE DE SOMBRA (ELEMENTO MENOS ACESSADO)
         const SOMBRAS = {
             'FOGO': 'Falta paciência. O projeto deve ter manutenção zero.',
             'AR': 'Falta foco. Evite excesso de informação visual.',
@@ -513,6 +564,7 @@
 
         let dadosAPI = [];
 
+        // 4. INICIALIZAÇÃO E FETCH
         async function init() {
             try {
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
@@ -522,6 +574,7 @@
             } catch(e) { console.error(e); }
         }
 
+        // Funções Auxiliares
         function checkMod(r, keyStart) {
             if(!r) return false;
             return Object.keys(r).some(k => k.startsWith(keyStart));
@@ -535,6 +588,7 @@
             return `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
         }
 
+        // 5. RENDERIZAÇÃO DA TABELA (TELA)
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
@@ -543,6 +597,7 @@
                 const r = d.respostas || {};
                 const c = d.contato || {};
                 
+                // Verifica quais módulos foram respondidos
                 const hasHumana = checkMod(r, 'fogo') || checkMod(r, 'ar_');
                 const hasVisual = checkMod(r, 'est_');
                 const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_');
@@ -569,144 +624,161 @@
             });
         }
 
+        // 6. GERAÇÃO DO PDF (LÓGICA PRINCIPAL)
         async function makePDF(index, btn) {
-            const d = dadosAPI[index];
-            const original = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
-            const r = d.respostas || {};
+            // Tratamento de Erro (Try/Catch) para não travar o botão
+            try {
+                const d = dadosAPI[index];
+                const original = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
+                const r = d.respostas || {};
 
-            // CAPA
-            document.getElementById('cp-nome').innerText = d.cliente;
-            document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
-            document.getElementById('cp-data').innerText = new Date(d.data).toLocaleDateString();
+                // --- CAPA ---
+                document.getElementById('cp-nome').innerText = d.cliente || '-';
+                document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
+                document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
 
-            // MÓDULO 1: CÁLCULO E CORRELAÇÃO
-            let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
-            Object.keys(r).forEach(k => {
-                let v = parseInt(r[k]) || 0;
-                if(k.startsWith('fogo')) p.FOGO += v;
-                if(k.startsWith('ar_')) p.AR += v;
-                if(k.startsWith('agua')) p.AGUA += v;
-                if(k.startsWith('terra')) p.TERRA += v;
-            });
-            const sorted = [{id:'FOGO',...DB.FOGO,v:p.FOGO},{id:'AR',...DB.AR,v:p.AR},{id:'AGUA',...DB.AGUA,v:p.AGUA},{id:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
-            const dom = sorted[0];
-            const sec = sorted[1];
-            const sombra = sorted[3];
+                // --- MÓDULO 1: CÁLCULO E CORRELAÇÃO ---
+                let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
+                Object.keys(r).forEach(k => {
+                    let v = parseInt(r[k]) || 0;
+                    if(k.startsWith('fogo')) p.FOGO += v;
+                    if(k.startsWith('ar_')) p.AR += v;
+                    if(k.startsWith('agua')) p.AGUA += v;
+                    if(k.startsWith('terra')) p.TERRA += v;
+                });
+                
+                // Ordenação para definir Dominante, Secundário e Sombra
+                const sorted = [{id:'FOGO',...DB.FOGO,v:p.FOGO},{id:'AR',...DB.AR,v:p.AR},{id:'AGUA',...DB.AGUA,v:p.AGUA},{id:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
+                
+                const dom = sorted[0]; // 1º Lugar (Dominante)
+                const sec = sorted[1]; // 2º Lugar (Secundário)
+                const sombra = sorted[3]; // 4º Lugar (Sombra/Menos acessado)
 
-            document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
-            
-            // Gráficos Mod 1
-            let chartHTML = '';
-            sorted.forEach(i => {
-                let pct = Math.min((i.v / 25) * 100, 100);
-                chartHTML += `<div class="cc-box"><div class="cc-top"><span class="cc-lbl c-${i.class}">${i.id}</span><span class="cc-val">${i.v}</span></div><div class="cc-bar"><div class="cc-fill bg-${i.class}" style="width:${pct}%"></div></div></div>`;
-            });
-            document.getElementById('chart-container').innerHTML = chartHTML;
-            
-            // Preenchimento (DOMINANTE RESTAURADO)
-            document.getElementById('wb-head').style.backgroundColor = dom.cor;
-            document.getElementById('txt-el').innerText = dom.id;
-            document.getElementById('txt-tit').innerText = dom.titulo;
-            document.getElementById('m1-content').innerHTML = `
-                <div class="info-row"><span class="il">Energia</span><span class="iv">${dom.energia}</span></div>
-                <div class="info-row"><span class="il">Perfil</span><span class="iv">${dom.quem}</span></div>
-                <div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${dom.estilos.join(', ')}</span></div>
-            `;
-            // Textos Individuais (RESTAURADOS)
-            document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
-            document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
+                document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
+                
+                // Gráficos de Barra do Módulo 1
+                let chartHTML = '';
+                sorted.forEach(i => {
+                    let pct = Math.min((i.v / 25) * 100, 100);
+                    chartHTML += `<div class="cc-box"><div class="cc-top"><span class="cc-lbl c-${i.class}">${i.id}</span><span class="cc-val">${i.v}</span></div><div class="cc-bar"><div class="cc-fill bg-${i.class}" style="width:${pct}%"></div></div></div>`;
+                });
+                document.getElementById('chart-container').innerHTML = chartHTML;
+                
+                // Preenchimento do Card Dominante (RESTAURADO)
+                document.getElementById('wb-head').style.backgroundColor = dom.cor;
+                document.getElementById('txt-el').innerText = dom.id;
+                document.getElementById('txt-tit').innerText = dom.titulo;
+                document.getElementById('m1-content').innerHTML = `
+                    <div class="info-row"><span class="il">Energia Base</span><span class="iv">${dom.energia}</span></div>
+                    <div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${dom.estilos.join(', ')}</span></div>
+                `;
+                
+                // Textos Individuais (RESTAURADOS DO ANEXO)
+                document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
+                document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
 
-            // Correlação (NOVOS)
-            const keyComb = `${dom.id}_${sec.id}`;
-            const dataComb = CORRELACOES[keyComb] || { perfil:'Misto', projeto:'Equilíbrio', atendimento:'Adaptável' };
-            document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
-            document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
-            
-            // Sombra
-            const txtSombra = SOMBRAS[sombra.id] || "Buscar equilíbrio.";
-            document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
-            document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento; // Atendimento da correlação
+                // Correlação (NOVOS TEXTOS)
+                const keyComb = `${dom.id}_${sec.id}`;
+                const dataComb = CORRELACOES[keyComb] || { perfil:'Misto', projeto:'Equilíbrio', atendimento:'Adaptável' };
+                document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
+                document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
+                
+                // Sombra (O que falta)
+                const txtSombra = SOMBRAS[sombra.id] || "Buscar equilíbrio.";
+                document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
+                document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento; // Atendimento da correlação
 
-            // MÓDULO 2
-            document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
-            let visualScores = [];
-            Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0}); });
-            visualScores.sort((a,b) => b.val - a.val);
-            if(visualScores.length > 0) {
-                document.getElementById('vis-top1-nome').innerText = visualScores[0].nome;
-                document.getElementById('vis-top1-nota').innerText = visualScores[0].val;
-                document.getElementById('m2-content').innerHTML = visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
-            }
-
-            // MÓDULO 3
-            document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
-            let m3v = '', m3o = '';
-            Object.keys(r).forEach(k => {
-                if((k.startsWith('vis_') || k.startsWith('bio_')) && typeof r[k] === 'number') {
-                    let label = k.replace('vis_', '').replace('bio_', '').replace(/_/g, ' ').toUpperCase();
-                    m3v += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
+                // --- MÓDULO 2: VISUAL ---
+                document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
+                let visualScores = [];
+                Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0}); });
+                visualScores.sort((a,b) => b.val - a.val);
+                if(visualScores.length > 0) {
+                    document.getElementById('vis-top1-nome').innerText = visualScores[0].nome;
+                    document.getElementById('vis-top1-nota').innerText = visualScores[0].val;
+                    document.getElementById('m2-content').innerHTML = visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
                 }
-                if((k.startsWith('aud_') || k.startsWith('olf_') || k.startsWith('tat_')) && typeof r[k] === 'number') {
-                    let label = k.replace('aud_', '').replace('olf_', '').replace('tat_', '').replace(/_/g, ' ').toUpperCase();
-                    m3o += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
-                }
-            });
-            document.getElementById('m3-visual').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">VISUAL & BIOFILIA</span>` + m3v;
-            document.getElementById('m3-outros').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">OUTROS SENTIDOS</span>` + m3o;
 
-            // MÓDULO 4
-            document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
-            let explHTML = '', implHTML = '';
-            Object.keys(r).forEach(k => {
-                if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
-                    if(typeof r[k] === 'string') explHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#8e44ad">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
-                    else explHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#8e44ad"></div></div></div>`;
-                }
-                if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
-                    if(typeof r[k] === 'string') implHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#2c3e50">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
-                    else implHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#2c3e50"></div></div></div>`;
-                }
-            });
-            document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
-            document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
+                // --- MÓDULO 3: SENSORIAL ---
+                document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
+                let m3v = '', m3o = '';
+                Object.keys(r).forEach(k => {
+                    if((k.startsWith('vis_') || k.startsWith('bio_')) && typeof r[k] === 'number') {
+                        let label = k.replace('vis_', '').replace('bio_', '').replace(/_/g, ' ').toUpperCase();
+                        m3v += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
+                    }
+                    if((k.startsWith('aud_') || k.startsWith('olf_') || k.startsWith('tat_')) && typeof r[k] === 'number') {
+                        let label = k.replace('aud_', '').replace('olf_', '').replace('tat_', '').replace(/_/g, ' ').toUpperCase();
+                        m3o += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
+                    }
+                });
+                document.getElementById('m3-visual').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">VISUAL & BIOFILIA</span>` + m3v;
+                document.getElementById('m3-outros').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">OUTROS SENTIDOS</span>` + m3o;
 
-            // MÓDULO 5
-            document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
-            const makeTags = (key, elId) => {
-                const el = document.getElementById(elId); el.innerHTML = '';
-                const val = r[key];
-                if(Array.isArray(val)) val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
-                else if(val) el.innerHTML = `<span class="ct-item">${val}</span>`;
-                else el.innerHTML = '-';
-            };
-            makeTags('atu_fase_vida', 'm5-fase');
-            makeTags('atu_investimento', 'm5-invest');
-            makeTags('atu_hobbies', 'm5-hobbies');
-            makeTags('atu_personalidade', 'm5-pers');
-            
-            const tempo = r['atu_tempo'] || 0;
-            document.getElementById('m5-tempo-bar').style.width = tempo + '%';
-            document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
-            document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
+                // --- MÓDULO 4: MEMÓRIAS ---
+                document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
+                let explHTML = '', implHTML = '';
+                Object.keys(r).forEach(k => {
+                    if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
+                        if(typeof r[k] === 'string') explHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#8e44ad">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
+                        else explHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#8e44ad"></div></div></div>`;
+                    }
+                    if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
+                        if(typeof r[k] === 'string') implHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#2c3e50">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
+                        else implHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#2c3e50"></div></div></div>`;
+                    }
+                });
+                document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
+                document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
 
-            // DOWNLOAD
-            const el = document.getElementById('pdf-root');
-            el.style.display = 'block';
-            window.scrollTo(0, 0); 
-            setTimeout(async () => {
-                const opt = {
-                    margin: 0,
-                    filename: `Dossie_${d.cliente}_Completo.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, scrollY: 0, useCORS: true }, 
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                // --- MÓDULO 5: IDENTIDADE ATUAL ---
+                document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
+                const makeTags = (key, elId) => {
+                    const el = document.getElementById(elId); if(el) el.innerHTML = '';
+                    const val = r[key];
+                    if(Array.isArray(val)) {
+                        val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
+                    } else if(val) {
+                        el.innerHTML = `<span class="ct-item">${val}</span>`;
+                    } else {
+                        el.innerHTML = '-';
+                    }
                 };
-                await html2pdf().set(opt).from(el).save();
-                el.style.display = 'none';
-                btn.innerText = original; btn.disabled = false;
-            }, 1000);
+                makeTags('atu_fase_vida', 'm5-fase');
+                makeTags('atu_investimento', 'm5-invest');
+                makeTags('atu_hobbies', 'm5-hobbies');
+                makeTags('atu_personalidade', 'm5-pers');
+                
+                const tempo = r['atu_tempo'] || 0;
+                document.getElementById('m5-tempo-bar').style.width = tempo + '%';
+                document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
+                document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
+
+                // --- DOWNLOAD PDF ---
+                const el = document.getElementById('pdf-root');
+                el.style.display = 'block';
+                window.scrollTo(0, 0); 
+                setTimeout(async () => {
+                    const opt = {
+                        margin: 0,
+                        filename: `Dossie_${d.cliente}_Completo.pdf`,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2, scrollY: 0, useCORS: true }, 
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    };
+                    await html2pdf().set(opt).from(el).save();
+                    el.style.display = 'none';
+                    btn.innerText = original; btn.disabled = false;
+                }, 1000);
+
+            } catch (err) {
+                console.error("ERRO AO GERAR PDF:", err);
+                alert("Erro ao gerar PDF: " + err.message);
+                btn.innerText = "Erro"; btn.disabled = false;
+            }
         }
 
+        // Inicia o app ao carregar a página
         init();
     </script>
 </body>
