@@ -11,518 +11,562 @@
     
     <style>
         /* ==========================================================================
-           1. ESTILOS GERAIS
+           1. ESTILOS GERAIS E RESET
            ========================================================================== */
-        * { 
-            box-sizing: border-box; 
-            -webkit-print-color-adjust: exact; 
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
         }
-        
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background: #f0f2f5; 
-            margin: 0; 
-            padding: 20px; 
-            color: #333; 
-        }
-        
-        /* PAINEL */
-        .painel { 
-            max-width: 1200px; 
-            margin: 0 auto 30px auto; 
-            background: white; 
-            padding: 25px; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
-        }
-        
-        .header-painel { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 2px solid #f0f0f0; 
-            padding-bottom: 20px; 
-            margin-bottom: 20px; 
-        }
-        
-        .hp-title { 
-            font-size: 18pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-        }
-        
-        .btn-refresh { 
-            background: #2c3e50; 
-            color: white; 
-            padding: 10px 20px; 
-            border: none; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-weight: 700; 
-            font-size: 9pt; 
-            transition: 0.2s; 
-        }
-        
-        .btn-refresh:hover { 
-            background: #34495e; 
-        }
-        
-        /* TABELA */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-        }
-        
-        th { 
-            text-align: left; 
-            padding: 15px 10px; 
-            background: #f8f9fa; 
-            color: #7f8c8d; 
-            font-weight: 700; 
-            font-size: 8pt; 
-            text-transform: uppercase; 
-            border-bottom: 2px solid #eee; 
-        }
-        
-        td { 
-            padding: 15px 10px; 
-            border-bottom: 1px solid #eee; 
-            vertical-align: top; 
-            font-size: 9.5pt; 
-        }
-        
-        tr:hover { 
-            background-color: #fafafa; 
-        }
-        
-        .cli-name { 
-            font-size: 11pt; 
-            font-weight: 700; 
-            color: #2c3e50; 
-            display: block; 
-            margin-bottom: 4px; 
-        }
-        
-        .cli-local { 
-            font-size: 8pt; 
-            color: #999; 
-            display: block; 
-            margin-bottom: 8px; 
-        }
-        
-        .mod-grid { 
-            display: flex; 
-            gap: 4px; 
-            flex-wrap: wrap; 
-        }
-        
-        .mod-tag { 
-            padding: 3px 6px; 
-            border-radius: 4px; 
-            font-size: 7pt; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            background: #eee; 
-            color: #bbb; 
-            border: 1px solid #e0e0e0; 
-        }
-        
-        .mod-tag.done { 
-            background: #e8f5e9; 
-            color: #27ae60; 
-            border-color: #c8e6c9; 
-        }
-        
-        .btn-pdf { 
-            background: #e74c3c; 
-            color: white; 
-            border: none; 
-            padding: 8px 16px; 
-            border-radius: 4px; 
-            font-weight: 700; 
-            font-size: 8pt; 
-            cursor: pointer; 
-        }
-        
-        .btn-pdf:hover { 
-            background: #c0392b; 
-        }
-        
-        .btn-pdf:disabled { 
-            background: #ccc; 
-            cursor: not-allowed; 
-        }
-        
-        /* ==========================================================================
-           2. ESTILOS DO PDF (A4)
-           ========================================================================== */
-        
-        #pdf-root { 
-            display: none; 
-        } 
-        
-        .page { 
-            width: 210mm; 
-            height: 296mm; 
-            background: white; 
-            position: relative; 
-            overflow: hidden; 
-            margin: 0 auto; 
-            page-break-after: always; 
-            padding: 0; 
-        }
-        
-        .page:last-child { 
-            page-break-after: avoid; 
-        }
-        
-        /* CAPA */
-        .capa-box { 
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            border: 20mm solid #f4f6f8; 
-            text-align: center; 
-        }
-        
-        .c-logo { 
-            font-size: 38pt; 
-            font-weight: 900; 
-            color: #2c3e50; 
-            margin-bottom: 10px; 
-            letter-spacing: -1px; 
-        }
-        
-        .c-sub { 
-            font-size: 10pt; 
-            letter-spacing: 4px; 
-            text-transform: uppercase; 
-            color: #7f8c8d; 
-            margin-bottom: 80px; 
-        }
-        
-        .c-info { 
-            width: 80%; 
-            border-top: 2px solid #2c3e50; 
-            border-bottom: 2px solid #2c3e50; 
-            padding: 40px 0; 
-            margin-bottom: 50px; 
-        }
-        
-        .ci-lbl { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #aaa; 
-            text-transform: uppercase; 
-            margin-bottom: 5px; 
-            display: block; 
-            letter-spacing: 1px; 
-        }
-        
-        .ci-val { 
-            font-size: 16pt; 
-            font-weight: 700; 
-            color: #2c3e50; 
-            margin-bottom: 25px; 
-            display: block; 
-        }
-        
-        .c-foot { 
-            position: absolute; 
-            bottom: 15mm; 
-            font-size: 8pt; 
-            color: #ccc; 
-            text-transform: uppercase; 
-        }
-        
-        /* HEADER */
-        .mod-content { 
-            padding: 15mm 15mm 10mm 15mm; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-        }
-        
-        .m-head { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-end; 
-            border-bottom: 4px solid #2c3e50; 
-            padding-bottom: 10px; 
-            margin-bottom: 20px; 
-        }
-        
-        .mh-tit { 
-            font-size: 22pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            line-height: 1; 
-        }
-        
-        .mh-sub { 
-            font-size: 9pt; 
-            font-weight: 600; 
-            color: #7f8c8d; 
-            text-transform: uppercase; 
-            margin-top: 5px; 
-        }
-        
-        .mh-meta { 
-            text-align: right; 
-        }
-        
-        .mh-num { 
-            font-size: 30pt; 
-            font-weight: 900; 
-            color: #eee; 
-            line-height: 0.8; 
-        }
-        
-        .mh-time { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #e74c3c; 
-            margin-top: 5px; 
-            display: block; 
-        }
-        
-        /* BOXES */
-        .win-box { 
-            border: 1px solid #ccc; 
-            border-radius: 6px; 
-            overflow: hidden; 
-            margin-bottom: 15px; 
-            display: flex; 
-            flex-direction: column; 
-        }
-        
-        .wb-head { 
-            padding: 10px 15px; 
-            color: white; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .wb-tit { 
-            font-size: 14pt; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-        }
-        
-        .wb-sty { 
-            font-size: 8pt; 
-            font-weight: 600; 
-            opacity: 0.95; 
-            text-transform: uppercase; 
-        }
-        
-        .wb-body { 
-            padding: 20px; 
-            flex: 1; 
-        }
-        
-        /* GRIDS ESTRATÉGICOS */
-        .strategy-grid { 
-            display: flex; 
-            gap: 15px; 
-            margin-bottom: 15px; 
-        }
-        
-        .st-card { 
-            flex: 1; 
-            background: #fdfdfd; 
-            border: 1px solid #eee; 
-            border-radius: 6px; 
-            padding: 15px; 
-            display: flex; 
-            flex-direction: column; 
-        }
-        
-        .st-card.highlight { 
-            border-left: 4px solid #3498db; 
-            background: #fbfdff; 
-        }
-        
-        .st-card.shadow-card { 
-            border-left: 4px solid #f1c40f; 
-            background: #fffcf5; 
-        }
-        
-        .st-head { 
-            font-size: 9pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            margin-bottom: 8px; 
-            padding-bottom: 5px; 
-            border-bottom: 2px solid #eee; 
-        }
-        
-        .st-text { 
-            font-size: 8.5pt; 
-            color: #555; 
-            line-height: 1.5; 
-            text-align: justify; 
-        }
-        
-        /* GRÁFICOS */
-        .charts { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 15px; 
-            height: 40px; 
-        }
-        
-        .cc-box { 
-            flex: 1; 
-            border: 1px solid #eee; 
-            border-radius: 4px; 
-            padding: 5px 8px; 
-            background: #fafafa; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-        }
-        
-        .cc-top { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .cc-lbl { 
-            font-size: 8pt; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-        }
-        
-        .cc-val { 
-            font-size: 11pt; 
-            font-weight: 900; 
-        }
-        
-        .cc-bar { 
-            width: 100%; 
-            height: 5px; 
-            background: #ddd; 
-            border-radius: 3px; 
-            overflow: hidden; 
-        }
-        
-        .cc-fill { 
-            height: 100%; 
-        }
-        
-        /* RODAPÉ */
-        .box-conclusao { 
-            background: #fdfdfd; 
-            border-left: 4px solid #2c3e50; 
-            padding: 15px; 
-            font-size: 9pt; 
-            color: #555; 
-            line-height: 1.5; 
-            margin-top: auto; 
-            margin-bottom: 10px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
-        }
-        
-        .bc-tit { 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            margin-bottom: 8px; 
-            font-size: 10pt; 
-            display: block; 
-        }
-        
-        .ft-note { 
-            text-align: center; 
-            font-size: 6pt; 
-            color: #bbb; 
-            padding-top: 5px; 
-        }
-        
-        /* LISTAS */
-        .info-row { 
-            margin-bottom: 8px; 
-            border-bottom: 1px dashed #eee; 
-            padding-bottom: 4px; 
-        }
-        
-        .il { 
-            font-size: 7pt; 
-            font-weight: 700; 
-            color: #999; 
-            text-transform: uppercase; 
-            display: block; 
-            margin-bottom: 2px; 
-        }
-        
-        .iv { 
-            font-size: 10pt; 
-            font-weight: 600; 
-            color: #333; 
-            line-height: 1.25; 
-        }
-        
-        .item-list { 
-            margin-bottom: 8px; 
-            border-bottom: 1px dashed #eee; 
-            padding-bottom: 8px; 
-        }
-        
-        .il-lbl { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            display: block; 
-            margin-bottom: 3px; 
-        }
-        
-        .il-val { 
-            font-size: 9pt; 
-            color: #555; 
-        }
-        
-        .grid-2 { 
-            display: flex; 
-            gap: 20px; 
-        }
-        
-        .col { 
-            flex: 1; 
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
         }
 
         /* ==========================================================================
-           ESTILOS DO MÓDULO 3 (GRID SENSORIAL DETALHADO - 4 POR PÁGINA)
+           2. ESTILOS DO PAINEL (TELA)
            ========================================================================== */
-        
-        .sensory-page-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            grid-template-rows: 1fr 1fr; 
-            gap: 20px; 
-            flex: 1; 
-            margin-bottom: 20px; 
+        .painel {
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
-        
-        .sense-card { 
-            background: #fff; 
-            border: 1px solid #e0e0e0; 
-            border-radius: 8px; 
-            padding: 15px; 
+
+        .header-painel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hp-title {
+            font-size: 18pt;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .btn-refresh {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 9pt;
+            transition: 0.2s;
+        }
+
+        .btn-refresh:hover {
+            background: #34495e;
+        }
+
+        /* TABELA */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 10px;
+            background: #f8f9fa;
+            color: #7f8c8d;
+            font-weight: 700;
+            font-size: 8pt;
+            text-transform: uppercase;
+            border-bottom: 2px solid #eee;
+        }
+
+        td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+            font-size: 9.5pt;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        .cli-name {
+            font-size: 11pt;
+            font-weight: 700;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .cli-local {
+            font-size: 8pt;
+            color: #999;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .mod-grid {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .mod-tag {
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 7pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: #eee;
+            color: #bbb;
+            border: 1px solid #e0e0e0;
+        }
+
+        .mod-tag.done {
+            background: #e8f5e9;
+            color: #27ae60;
+            border-color: #c8e6c9;
+        }
+
+        .btn-pdf {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 8pt;
+            cursor: pointer;
+        }
+
+        .btn-pdf:hover {
+            background: #c0392b;
+        }
+
+        .btn-pdf:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* ==========================================================================
+           3. ESTILOS DO PDF (A4)
+           ========================================================================== */
+        #pdf-root {
+            display: none;
+        }
+
+        .page {
+            width: 210mm;
+            height: 296mm;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            page-break-after: always;
+            padding: 0;
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        /* CAPA */
+        .capa-box {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 20mm solid #f4f6f8;
+            text-align: center;
+        }
+
+        .c-logo {
+            font-size: 38pt;
+            font-weight: 900;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .c-sub {
+            font-size: 10pt;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #7f8c8d;
+            margin-bottom: 80px;
+        }
+
+        .c-info {
+            width: 80%;
+            border-top: 2px solid #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding: 40px 0;
+            margin-bottom: 50px;
+        }
+
+        .ci-lbl {
+            font-size: 8pt;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .ci-val {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .c-foot {
+            position: absolute;
+            bottom: 15mm;
+            font-size: 8pt;
+            color: #ccc;
+            text-transform: uppercase;
+        }
+
+        /* HEADER DO MODULO */
+        .mod-content {
+            padding: 15mm 15mm 10mm 15mm;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .m-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 4px solid #2c3e50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mh-tit {
+            font-size: 22pt;
+            font-weight: 800;
+            color: #2c3e50;
+            line-height: 1;
+        }
+
+        .mh-sub {
+            font-size: 9pt;
+            font-weight: 600;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .mh-meta {
+            text-align: right;
+        }
+
+        .mh-num {
+            font-size: 30pt;
+            font-weight: 900;
+            color: #eee;
+            line-height: 0.8;
+        }
+
+        .mh-time {
+            font-size: 8pt;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* BOXES DE CONTEÚDO */
+        .win-box {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wb-head {
+            padding: 10px 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wb-tit {
+            font-size: 14pt;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .wb-sty {
+            font-size: 8pt;
+            font-weight: 600;
+            opacity: 0.95;
+            text-transform: uppercase;
+        }
+
+        .wb-body {
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* GRIDS ESTRATÉGICOS */
+        .strategy-grid {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .st-card {
+            flex: 1;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .st-card.highlight {
+            border-left: 4px solid #3498db;
+            background: #fbfdff;
+        }
+
+        .st-card.shadow-card {
+            border-left: 4px solid #f1c40f;
+            background: #fffcf5;
+        }
+
+        .st-head {
+            font-size: 9pt;
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .st-text {
+            font-size: 8.5pt;
+            color: #555;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        /* GRÁFICOS */
+        .charts {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            height: 40px;
+        }
+
+        .cc-box {
+            flex: 1;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 5px 8px;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cc-lbl {
+            font-size: 8pt;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .cc-val {
+            font-size: 11pt;
+            font-weight: 900;
+        }
+
+        .cc-bar {
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .cc-fill {
+            height: 100%;
+        }
+
+        /* RODAPÉ */
+        .box-conclusao {
+            background: #fdfdfd;
+            border-left: 4px solid #2c3e50;
+            padding: 15px;
+            font-size: 9pt;
+            color: #555;
+            line-height: 1.5;
+            margin-top: auto;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .bc-tit {
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-size: 10pt;
+            display: block;
+        }
+
+        .ft-note {
+            text-align: center;
+            font-size: 6pt;
+            color: #bbb;
+            padding-top: 5px;
+        }
+
+        /* LISTAS E GRIDS */
+        .info-row {
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 4px;
+        }
+
+        .il {
+            font-size: 7pt;
+            font-weight: 700;
+            color: #999;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .iv {
+            font-size: 10pt;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.25;
+        }
+
+        .item-list {
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 8px;
+        }
+
+        .il-lbl {
+            font-size: 8pt;
+            font-weight: 700;
+            color: #2c3e50;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .il-val {
+            font-size: 9pt;
+            color: #555;
+        }
+
+        .grid-2 {
+            display: flex;
+            gap: 20px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        /* ==========================================================================
+           MÓDULO 2 - PROTOCOLO TÉCNICO (LISTAS)
+           ========================================================================== */
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tech-item {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 6px;
+            font-size: 8.5pt;
+            color: #555;
+            line-height: 1.3;
+        }
+
+        .tech-item::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .tech-item.bad::before {
+            content: '✕';
+            color: #e74c3c;
+        }
+
+        .dna-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .dna-color {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+
+        /* ==========================================================================
+           MÓDULO 3 - GRID SENSORIAL DETALHADO (4 POR PÁGINA)
+           ========================================================================== */
+        .sensory-page-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        .sense-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
             box-shadow: 0 3px 6px rgba(0,0,0,0.03);
-            display: flex; 
+            display: flex;
             flex-direction: column;
             position: relative;
         }
-        
-        /* Cores de Borda por Sentido */
+
+        /* Cores de Borda */
         .sense-card.s-vis { border-top: 5px solid #f39c12; }
         .sense-card.s-aud { border-top: 5px solid #9b59b6; }
         .sense-card.s-olf { border-top: 5px solid #27ae60; }
@@ -532,79 +576,79 @@
         .sense-card.s-emo { border-top: 5px solid #8e44ad; }
         .sense-card.s-cog { border-top: 5px solid #2980b9; }
 
-        .sense-head { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 12px; 
-            border-bottom: 1px solid #eee; 
+        .sense-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
             padding-bottom: 8px;
         }
-        
-        .sense-title { 
-            font-size: 10pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
+
+        .sense-title {
+            font-size: 10pt;
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .sense-icon { 
-            font-size: 14pt; 
+
+        .sense-icon {
+            font-size: 14pt;
         }
-        
-        .sense-bar-container { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 15px; 
+
+        .sense-bar-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        
-        .sense-bar-bg { 
-            flex: 1; 
-            height: 8px; 
-            background: #f0f0f0; 
-            border-radius: 4px; 
-            overflow: hidden; 
+
+        .sense-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
         }
-        
-        .sense-bar-fill { 
-            height: 100%; 
-            border-radius: 4px; 
+
+        .sense-bar-fill {
+            height: 100%;
+            border-radius: 4px;
         }
-        
-        .sense-val { 
-            font-size: 11pt; 
-            font-weight: 800; 
-            width: 40px; 
-            text-align: right; 
-            margin-left: 10px; 
+
+        .sense-val {
+            font-size: 11pt;
+            font-weight: 800;
+            width: 40px;
+            text-align: right;
+            margin-left: 10px;
         }
-        
-        /* BLOCOS DE TEXTO (3 NÍVEIS) */
-        .sense-section { 
-            margin-bottom: 10px; 
+
+        /* BLOCOS DE TEXTO (DIAGNÓSTICO/AÇÃO/NEURO) */
+        .sense-section {
+            margin-bottom: 10px;
         }
-        
-        .sense-lbl { 
-            font-size: 7.5pt; 
-            font-weight: 700; 
-            color: #95a5a6; 
-            text-transform: uppercase; 
-            display: block; 
-            margin-bottom: 3px; 
+
+        .sense-lbl {
+            font-size: 7.5pt;
+            font-weight: 700;
+            color: #95a5a6;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 3px;
         }
-        
-        .sense-txt { 
-            font-size: 8.5pt; 
-            color: #444; 
-            line-height: 1.4; 
-            text-align: justify; 
+
+        .sense-txt {
+            font-size: 8.5pt;
+            color: #444;
+            line-height: 1.4;
+            text-align: justify;
         }
 
         /* ==========================================================================
-           ESTILOS MÓDULO 4 (MEMÓRIAS - GRÁFICOS E TEXTOS SEPARADOS)
+           MÓDULO 4 - MEMÓRIAS (ESTILO CORRIGIDO)
            ========================================================================== */
         
         .mem-grid {
@@ -616,107 +660,186 @@
         }
 
         /* CARD DE GRÁFICO (BARRA) */
-        .mem-container { 
-            width: 48%; 
-            margin-bottom: 12px; 
-            page-break-inside: avoid; 
+        .mem-container {
+            width: 48%;
+            margin-bottom: 15px;
+            page-break-inside: avoid;
         }
-        
-        .mem-label-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 4px; 
+
+        .mem-label-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
         }
-        
-        .mem-title { 
-            font-size: 7.5pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
+
+        .mem-title {
+            font-size: 7.5pt;
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
         }
-        
-        .mem-val { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #555; 
+
+        .mem-val {
+            font-size: 8pt;
+            font-weight: 700;
+            color: #555;
         }
-        
-        .mem-track { 
-            height: 10px; 
-            background: #eee; 
-            border-radius: 5px; 
-            overflow: hidden; 
-            margin-bottom: 2px; 
+
+        .mem-track {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 2px;
         }
-        
-        .mem-fill { 
-            height: 100%; 
-            border-radius: 5px; 
+
+        .mem-fill {
+            height: 100%;
+            border-radius: 5px;
         }
-        
-        .mem-scale { 
-            display: flex; 
-            justify-content: space-between; 
-            font-size: 6pt; 
-            color: #aaa; 
-            padding: 0 2px; 
-            font-family: monospace; 
+
+        .mem-scale {
+            display: flex;
+            justify-content: space-between;
+            font-size: 6pt;
+            color: #aaa;
+            padding: 0 2px;
+            font-family: monospace;
         }
-        
+
         .mem-epi .mem-fill { background: #8e44ad; }
         .mem-imp .mem-fill { background: #2c3e50; }
 
-        /* COMENTÁRIO ESTRATÉGICO NO MÓDULO 4 */
-        .mem-comment {
-            font-size: 7pt; 
-            color: #7f8c8d; 
-            font-style: italic; 
+        /* COMENTÁRIO DE AÇÃO (ABAIXO DA BARRA) */
+        .mem-action-comment {
+            font-size: 7pt;
+            color: #e67e22;
+            font-weight: 600;
+            font-style: italic;
             margin-top: 4px;
-            padding-top: 2px; 
+            padding-top: 2px;
             border-top: 1px dotted #ccc;
             line-height: 1.2;
         }
 
-        /* CARD DE TEXTO (RELATOS) - PÁGINA SEGUINTE */
+        /* CARD DE TEXTO (RELATOS - PÁGINA SEGUINTE) */
         .mem-text-box {
             width: 100%;
             margin-bottom: 12px;
             background: #fdfdfd;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
-            border-left: 4px solid #bdc3c7;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .mem-text-label { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            display: block; 
-            margin-bottom: 5px; 
-        }
-        .mem-text-val { 
-            font-size: 9pt; 
-            font-style: italic; 
-            color: #555; 
-            line-height: 1.4;
+            border-left: 4px solid #2c3e50;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* TAGS E BARRAS MOD 5 */
-        .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
-        .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
-        .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
-        .sb-fill { height: 100%; background: #2c3e50; }
-        .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
+        .mem-text-label {
+            font-size: 8pt;
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
 
-        .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-        .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
-        .ct-item.highlight { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
+        .mem-text-val {
+            font-size: 9.5pt;
+            font-style: italic;
+            color: #555;
+            line-height: 1.5;
+        }
 
-        /* Matriz Mod 5 */
-        .matrix-box { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; margin-bottom: 15px; }
-        .matrix-title { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
-        .matrix-content { font-size: 9pt; color: #555; line-height: 1.5; }
+        /* ==========================================================================
+           MÓDULO 5 - ATUAL (ESTILO ENRIQUECIDO)
+           ========================================================================== */
+        
+        .sensory-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .sb-lbl {
+            width: 100px;
+            font-size: 8pt;
+            font-weight: 700;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .sb-track {
+            flex: 1;
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .sb-fill {
+            height: 100%;
+            background: #2c3e50;
+        }
+
+        .sb-val {
+            width: 30px;
+            font-size: 8pt;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        .check-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .ct-item {
+            background: #f0f2f5;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+
+        /* INSIGHT BOX (ABAIXO DOS GRIDS) */
+        .insight-box {
+            background: #eafaf1;
+            border: 1px solid #d5f5e3;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 8.5pt;
+            color: #27ae60;
+            font-style: italic;
+            line-height: 1.3;
+        }
+
+        /* MATRIZ */
+        .matrix-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .matrix-title {
+            font-size: 9pt;
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 4px;
+        }
+
+        .matrix-content {
+            font-size: 9pt;
+            color: #555;
+            line-height: 1.5;
+        }
 
         /* CORES UTILITÁRIAS */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -724,14 +847,14 @@
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
         
-        .s-vis { color: #f39c12; } .bg-vis { background: #f39c12; }
-        .s-aud { color: #9b59b6; } .bg-aud { background: #9b59b6; }
-        .s-olf { color: #27ae60; } .bg-olf { background: #27ae60; }
-        .s-tat { color: #e67e22; } .bg-tat { background: #e67e22; }
-        .s-prop { color: #c0392b; } .bg-prop { background: #c0392b; }
-        .s-gus { color: #e84393; } .bg-gus { background: #e84393; }
-        .s-emo { color: #8e44ad; } .bg-emo { background: #8e44ad; }
-        .s-cog { color: #2980b9; } .bg-cog { background: #2980b9; }
+        .s-vis { color: #f39c12; } .bg-vis { background: #f39c12; border-color: #f39c12; }
+        .s-aud { color: #9b59b6; } .bg-aud { background: #9b59b6; border-color: #9b59b6; }
+        .s-olf { color: #27ae60; } .bg-olf { background: #27ae60; border-color: #27ae60; }
+        .s-tat { color: #e67e22; } .bg-tat { background: #e67e22; border-color: #e67e22; }
+        .s-prop { color: #c0392b; } .bg-prop { background: #c0392b; border-color: #c0392b; }
+        .s-gus { color: #e84393; } .bg-gus { background: #e84393; border-color: #e84393; }
+        .s-emo { color: #8e44ad; } .bg-emo { background: #8e44ad; border-color: #8e44ad; }
+        .s-cog { color: #2980b9; } .bg-cog { background: #2980b9; border-color: #2980b9; }
     </style>
 </head>
 <body>
@@ -791,8 +914,7 @@
                 </div>
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
-                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base" do cliente. 
-                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
+                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base". A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -801,22 +923,51 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE VISUAL</div><div class="mh-sub">Estilo & Preferência Estética</div></div>
+                    <div><div class="mh-tit">IDENTIDADE VISUAL</div><div class="mh-sub">Parte A: Estilo & DNA Visual</div></div>
                     <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" id="t2-time">--:--</span></div>
                 </div>
                 <div class="win-box" style="flex:0 auto; margin-bottom:20px;">
-                    <div class="wb-head" style="background:#2c3e50;"><div class="wb-tit">ESTILO PREDOMINANTE</div><div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div></div>
+                    <div class="wb-head" style="background:#2c3e50;">
+                        <div class="wb-tit">ESTILO PREDOMINANTE</div>
+                        <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
+                    </div>
                     <div class="wb-body" style="padding:20px; text-align:center;">
                         <h2 style="margin:0; font-size:24pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
                         <div style="margin-top:10px; font-size:12pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
                     </div>
                 </div>
                 <div id="m2-content"></div>
+                <div class="win-box">
+                    <div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">DNA VISUAL</div></div>
+                    <div class="wb-body" id="m2-dna-content"></div>
+                </div>
+                <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
+            </div>
+        </div>
+
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE VISUAL</div><div class="mh-sub">Parte B: Protocolo Técnico</div></div>
+                    <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
+                </div>
+                <div class="grid-2">
+                    <div class="win-box col">
+                        <div class="wb-head" style="background:#27ae60;"><div class="wb-tit">MANDATÓRIOS (DO's)</div></div>
+                        <div class="wb-body" id="m2-mandatory"></div>
+                    </div>
+                    <div class="win-box col">
+                        <div class="wb-head" style="background:#e74c3c;"><div class="wb-tit">EVITAR (DON'Ts)</div></div>
+                        <div class="wb-body" id="m2-avoid"></div>
+                    </div>
+                </div>
+                <div class="win-box">
+                    <div class="wb-head" style="background:#f39c12;"><div class="wb-tit">ILUMINAÇÃO & ATMOSFERA</div></div>
+                    <div class="wb-body" id="m2-lighting"></div>
+                </div>
                 <div class="box-conclusao">
-                    <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
-                    <span id="m2-conclusao-dinamica">
-                        A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
-                    </span>
+                    <span class="bc-tit">CONCLUSÃO TÉCNICA (VISUAL)</span>
+                    <span id="m2-conclusao-dinamica">Siga os mandatórios para garantir a coerência estilística.</span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -828,14 +979,11 @@
                     <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Parte A: Sentidos Físicos & Ambientais</div></div>
                     <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
                 </div>
-                
                 <div class="sensory-page-grid" id="m3-grid-part-a">
                     </div>
-
                 <div class="box-conclusao">
                     <span class="bc-tit">ESTRATÉGIA DE CONFORTO AMBIENTAL</span>
-                    Estes sentidos (Visual, Auditivo, Olfativo, Tátil) formam a base biológica do bem-estar.
-                    Se houver pontuação extrema (0-20 ou 80-100), a intervenção técnica (isolamento, iluminação) é obrigatória.
+                    Estes sentidos (Visual, Auditivo, Olfativo, Tátil) formam a base biológica do bem-estar. Se houver pontuação extrema (0-20 ou 80-100), a intervenção técnica (isolamento, iluminação) é obrigatória.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
             </div>
@@ -847,14 +995,11 @@
                     <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Parte B: Sentidos Complexos & Cognição</div></div>
                     <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
                 </div>
-                
                 <div class="sensory-page-grid" id="m3-grid-part-b">
                     </div>
-
                 <div class="box-conclusao">
                     <span class="bc-tit">ESTRATÉGIA DE EXPERIÊNCIA DO USUÁRIO</span>
-                    Estes sentidos definem a usabilidade e a conexão emocional.
-                    O Proprioceptivo define a escala; o Emocional dita as "âncoras" afetivas; o Cognitivo orienta o layout de foco.
+                    Estes sentidos definem a usabilidade e a conexão emocional. O Proprioceptivo define a escala; o Emocional dita as "âncoras" afetivas.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -866,27 +1011,14 @@
                     <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Parte A: Mapeamento de Memórias</div></div>
                     <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" id="t4-time">--:--</span></div>
                 </div>
-                
                 <div class="win-box">
-                    <div class="wb-head" style="background:#8e44ad;">
-                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
-                        <div class="wb-sty">O QUE ELE DIZ</div>
-                    </div>
-                    <div class="wb-body">
-                        <div id="m4-expl-graficos" class="mem-grid"></div>
-                    </div>
+                    <div class="wb-head" style="background:#8e44ad;"><div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div><div class="wb-sty">O QUE ELE DIZ</div></div>
+                    <div class="wb-body" id="m4-expl-graficos" class="mem-grid"></div>
                 </div>
-
                 <div class="win-box">
-                    <div class="wb-head" style="background:#2c3e50;">
-                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
-                        <div class="wb-sty">O QUE ELE SENTE/FAZ</div>
-                    </div>
-                    <div class="wb-body">
-                        <div id="m4-impl-graficos" class="mem-grid"></div>
-                    </div>
+                    <div class="wb-head" style="background:#2c3e50;"><div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div><div class="wb-sty">O QUE ELE SENTE/FAZ</div></div>
+                    <div class="wb-body" id="m4-impl-graficos" class="mem-grid"></div>
                 </div>
-                
                 <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
             </div>
         </div>
@@ -897,24 +1029,13 @@
                     <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Parte B: Relatos & Estratégia</div></div>
                     <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
                 </div>
-                
                 <div class="win-box" style="margin-bottom:20px;">
-                    <div class="wb-head" style="background:#7f8c8d;">
-                        <div class="wb-tit">RELATOS IMPORTANTES</div>
-                    </div>
-                    <div class="wb-body" id="m4-textos">
-                        </div>
+                    <div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">RELATOS IMPORTANTES</div></div>
+                    <div class="wb-body" id="m4-textos"></div>
                 </div>
-
                 <div class="strategy-grid">
-                    <div class="st-card">
-                        <div class="st-head">⏳ VÍNCULO TEMPORAL</div>
-                        <div class="st-text" id="m4-vinculo">...</div>
-                    </div>
-                    <div class="st-card highlight">
-                        <div class="st-head">🔑 ESTRATÉGIA DE ANCORAGEM</div>
-                        <div class="st-text" id="m4-ancoragem">...</div>
-                    </div>
+                    <div class="st-card"><div class="st-head">⏳ VÍNCULO TEMPORAL</div><div class="st-text" id="m4-vinculo">...</div></div>
+                    <div class="st-card highlight"><div class="st-head">🔑 ESTRATÉGIA DE ANCORAGEM</div><div class="st-text" id="m4-ancoragem">...</div></div>
                 </div>
                 <div class="box-conclusao" style="margin-top:auto;">
                     <span class="bc-tit">CONCLUSÃO ESTRATÉGICA</span>
@@ -927,22 +1048,30 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Parte A: Estilo de Vida</div></div>
+                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Parte A: Estilo de Vida & Implicações</div></div>
                     <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" id="t5-time">--:--</span></div>
                 </div>
                 <div class="grid-2">
                     <div class="win-box col">
                         <div class="wb-head" style="background:#2980b9;"><div class="wb-tit">FASE DE VIDA</div></div>
-                        <div class="wb-body"><div class="check-tags" id="m5-fase"></div></div>
+                        <div class="wb-body">
+                            <div class="check-tags" id="m5-fase"></div>
+                            <div class="insight-box" id="m5-fase-insight"></div>
+                        </div>
                     </div>
                     <div class="win-box col">
                         <div class="wb-head" style="background:#27ae60;"><div class="wb-tit">INVESTIMENTO</div></div>
-                        <div class="wb-body"><div class="check-tags" id="m5-invest"></div></div>
+                        <div class="wb-body">
+                            <div class="check-tags" id="m5-invest"></div>
+                            <div class="insight-box" id="m5-invest-insight"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="win-box">
                     <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & RITUAIS</div></div>
-                    <div class="wb-body"><div class="check-tags" id="m5-hobbies"></div></div>
+                    <div class="wb-body">
+                        <div class="check-tags" id="m5-hobbies"></div>
+                    </div>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
             </div>
@@ -954,42 +1083,16 @@
                     <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Parte B: Matriz de Decisão</div></div>
                     <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
                 </div>
-                <div class="win-box">
-                    <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
-                    <div class="wb-body">
-                        <div style="margin-bottom:15px;">
-                            <span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span>
-                            <div class="check-tags" id="m5-pers"></div>
-                        </div>
-                        <div>
-                            <span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span>
-                            <div class="sensory-bar" style="margin-top:5px;">
-                                <span class="sb-lbl" style="width:auto; margin-right:10px;">Provisório</span>
-                                <div class="sb-track" style="margin:0 10px;"><div class="sb-fill" id="m5-tempo-bar" style="width:50%; background:#e67e22;"></div></div>
-                                <span class="sb-val" style="width:auto; margin-left:10px;">Eterno</span>
-                            </div>
-                            <div style="text-align:center; font-size:9pt; font-weight:bold; color:#e67e22;" id="m5-tempo-val">50%</div>
-                        </div>
-                    </div>
-                </div>
+                <div class="win-box"><div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div><div class="wb-body">
+                    <div style="margin-bottom:15px;"><span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span><div class="check-tags" id="m5-pers"></div></div>
+                    <div><span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span><div class="sensory-bar" style="margin-top:5px;"><span class="sb-lbl" style="width:auto; margin-right:10px;">Provisório</span><div class="sb-track" style="margin:0 10px;"><div class="sb-fill" id="m5-tempo-bar" style="width:50%; background:#e67e22;"></div></div><span class="sb-val" style="width:auto; margin-left:10px;">Eterno</span></div><div style="text-align:center; font-size:9pt; font-weight:bold; color:#e67e22;" id="m5-tempo-val">50%</div></div>
+                </div></div>
                 <div class="strategy-grid">
-                    <div class="st-card shadow-card">
-                        <div class="st-head">💰 MATRIZ DE INVESTIMENTO INTELIGENTE</div>
-                        <div class="st-text" id="m5-invest-matrix">...</div>
-                    </div>
-                    <div class="st-card">
-                        <div class="st-head">🔄 DESIGN DE RITUAIS</div>
-                        <div class="st-text" id="m5-ritual-tips" style="font-size:8.5pt;"></div>
-                    </div>
+                    <div class="st-card shadow-card"><div class="st-head">💰 MATRIZ DE INVESTIMENTO INTELIGENTE</div><div class="st-text" id="m5-invest-matrix">...</div></div>
+                    <div class="st-card"><div class="st-head">🔄 PLANO DE AÇÃO (HOBBIES)</div><div class="st-text" id="m5-ritual-tips" style="font-size:8.5pt;"></div></div>
                 </div>
-                <div class="win-box">
-                    <div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">OBSERVAÇÕES GERAIS</div></div>
-                    <div class="wb-body" style="font-style:italic; color:#555;" id="m5-obs">-</div>
-                </div>
-                <div class="box-conclusao">
-                    <span class="bc-tit">CONCLUSÃO FINAL</span>
-                    Baseado em Roger Barker, o design deve sustentar os comportamentos. O alinhamento do budget com a expectativa de tempo define a materialidade.
-                </div>
+                <div class="win-box"><div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">OBSERVAÇÕES GERAIS</div></div><div class="wb-body" style="font-style:italic; color:#555;" id="m5-obs">-</div></div>
+                <div class="box-conclusao"><span class="bc-tit">CONCLUSÃO FINAL</span>Baseado em Roger Barker, o design deve sustentar os comportamentos. O alinhamento do budget com a expectativa de tempo define a materialidade.</div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
         </div>
@@ -997,12 +1100,36 @@
     </div>
 
     <script>
-        // 1. DADOS MOD 1 e 2 (MANTIDOS)
+        // 1. DADOS MOD 1 e 2
         const DB = {
-            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.' },
-            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis e visuais.', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], neuro: 'Busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' },
-            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', energia:'Acolhimento · Calma', quem:'Pessoas diplomáticas.', perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], neuro: 'Busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.' },
-            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', energia:'Estrutura · Ordem', quem:'Pessoas metódicas.', perfil:'Analista', estilos:['Clássico', 'Minimalismo'], neuro: 'Busca <strong>previsibilidade</strong>. Simetria e armários fechados.', comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.' }
+            FOGO: { 
+                id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
+                energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', 
+                perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], 
+                neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', 
+                comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.' 
+            },
+            AR: { 
+                id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', 
+                energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis e visuais.', 
+                perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], 
+                neuro: 'Busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', 
+                comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' 
+            },
+            AGUA: { 
+                id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', 
+                energia:'Acolhimento · Calma', quem:'Pessoas diplomáticas.', 
+                perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], 
+                neuro: 'Busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', 
+                comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.' 
+            },
+            TERRA: { 
+                id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', 
+                energia:'Estrutura · Ordem', quem:'Pessoas metódicas.', 
+                perfil:'Analista', estilos:['Clássico', 'Minimalismo'], 
+                neuro: 'Busca <strong>previsibilidade</strong>. Simetria e armários fechados.', 
+                comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.' 
+            }
         };
         const DB_VISUAL = {
             'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
@@ -1058,6 +1185,28 @@
             'economico': "Priorize o <strong>Custo-Benefício</strong>. Use pintura criativa e iluminação para dar efeito sem gastar em revestimentos caros.",
             'luxo': "Priorize a <strong>Exclusividade</strong>. Materiais naturais e peças assinadas são obrigatórios.",
             'default': "Equilíbrio entre função e estética."
+        };
+
+        // --- DADOS EXPERT MÓDULO 2B (V58) ---
+        const DB_VISUAL_EXTENDED = {
+            'est_contemp': {
+                dna: { cores: ['#D3D3D3', '#FFFFFF', '#333333'], formas: 'Linhas retas e puras', texturas: 'Lisos e foscos' },
+                mandatorios: ['Iluminação natural abundante', 'Mobiliário de design assinado', 'Paleta neutra com pontos de cor'],
+                evitar: ['Excesso de ornamentos', 'Estampas florais antigas', 'Móveis rococó'],
+                luz: 'Luz geral difusa (4000K) + Pontos de destaque (3000K). Evite luz fria no estar.'
+            },
+            'est_ind': {
+                dna: { cores: ['#808080', '#000000', '#8B4513'], formas: 'Estruturais e brutas', texturas: 'Concreto, Tijolo, Metal' },
+                mandatorios: ['Tubulação aparente', 'Materiais crus (sem acabamento)', 'Pé direito alto se possível'],
+                evitar: ['Acabamentos muito polidos', 'Cores pastel', 'Cortinas de renda'],
+                luz: 'Trilhos de spots pretos. Lâmpadas de filamento (2200K) são essenciais.'
+            },
+            'default': {
+                dna: { cores: ['#EEE', '#CCC', '#999'], formas: 'Variadas', texturas: 'Mistas' },
+                mandatorios: ['Coerência visual', 'Ergonomia', 'Proporção'],
+                evitar: ['Excesso de informação', 'Fluxos bloqueados'],
+                luz: 'Luz quente para conforto (2700-3000K).'
+            }
         };
 
         // --- DADOS EXPERT MÓDULO 3 (EXPANDIDO PARA 8 SENSORES) ---
@@ -1120,27 +1269,7 @@
             }
         };
 
-        // --- DICIONÁRIO PARA TRADUÇÃO DE SIGLAS TÉCNICAS (V52) ---
-        const DB_LABELS = {
-            'TEC': 'Tecnologia/Automação',
-            'AZUL': 'Tons Frios (Azul)',
-            'MADEIRA': 'Madeira Natural',
-            'METAL': 'Metal/Industrial',
-            'BAGUNCA': 'Tolerância a Bagunça',
-            'FLUXO': 'Fluxo/Circulação',
-            'ACONCHEGO': 'Aconchego/Ninho',
-            'LAR': 'Valorização do Lar',
-            'INFANCIA': 'Memória de Infância',
-            'VIAGEM': 'Memória de Viagem',
-            'DIAADIA': 'Rotina Diária',
-            'OBJETO': 'Objeto Afetivo',
-            'RELATO': 'Relato Pessoal',
-            'INSPIRACAO': 'Inspiração',
-            'RUIDO': 'Sensibilidade a Ruído',
-            'POS': 'Pós-Ocupação'
-        };
-
-        // --- DICIONÁRIO DE COMENTÁRIOS E AÇÕES PARA O MÓDULO 4 (NOVO V55) ---
+        // --- COMENTÁRIOS E AÇÕES PARA O MÓDULO 4 (V55) ---
         const DB_MEM_ACTIONS = {
             'INFANCIA': { high: "Evocar segurança emocional. Use materiais quentes e layout acolhedor.", low: "Foco no presente. Design moderno e desapegado do passado." },
             'VIAGEM': { high: "Espaço para memórias. Estantes para souvenirs e mapas.", low: "Decoração local e enraizada." },
@@ -1154,6 +1283,23 @@
             'TEC': { high: "Automação total (luz, som, cortinas).", low: "Sistemas manuais e simples." },
             'default': { high: "Alta relevância para o projeto.", low: "Baixa relevância para o projeto." }
         };
+
+        // --- INSIGHTS PARA O MÓDULO 5A (V58) ---
+        const DB_PHASE_INSIGHTS = {
+            'Crianças': "<strong>Insight Arquitetônico:</strong> Priorize segurança (cantos arredondados, proteção de tomadas) e materiais laváveis. Crie zonas de 'bagunça controlada'.",
+            'Adolescentes': "<strong>Insight Arquitetônico:</strong> Foco em privacidade e identidade. Preveja isolamento acústico reforçado e espaços personalizáveis.",
+            'Idosos': "<strong>Insight Arquitetônico:</strong> Acessibilidade universal (barras de apoio discretas, piso antiderrapante, iluminação de balizamento).",
+            'Casal': "<strong>Insight Arquitetônico:</strong> Equilíbrio entre intimidade e convivência. Banheiros setorizados e isolamento acústico na suíte.",
+            'Solteiro': "<strong>Insight Arquitetônico:</strong> Otimização e praticidade. Integração total para ampliar a sensação de espaço."
+        };
+        
+        const DB_INVEST_INSIGHTS = {
+            'Econômico': "<strong>Estratégia:</strong> Foque em pintura criativa e iluminação cênica. Use móveis soltos que podem ser reaproveitados.",
+            'Médio': "<strong>Estratégia:</strong> Invista em marcenaria fixa nas áreas molhadas e piso de alta qualidade nas áreas sociais.",
+            'Alto': "<strong>Estratégia:</strong> Automação completa, materiais nobres (pedras naturais) e design assinado. Exclusividade é a chave."
+        };
+
+        const DB_LABELS = { 'TEC': 'Tecnologia/Automação', 'AZUL': 'Tons Frios (Azul)', 'MADEIRA': 'Madeira Natural', 'METAL': 'Metal/Industrial', 'BAGUNCA': 'Tolerância a Bagunça', 'FLUXO': 'Fluxo/Circulação', 'ACONCHEGO': 'Aconchego/Ninho', 'LAR': 'Valorização do Lar', 'INFANCIA': 'Memória de Infância', 'VIAGEM': 'Memória de Viagem', 'DIAADIA': 'Rotina Diária', 'OBJETO': 'Objeto Afetivo', 'RELATO': 'Relato Pessoal', 'INSPIRACAO': 'Inspiração', 'RUIDO': 'Sensibilidade a Ruído', 'POS': 'Pós-Ocupação' };
 
         let dadosAPI = [];
 
@@ -1234,21 +1380,32 @@
                 visualScores.sort((a,b)=>b.val-a.val);
                 if(visualScores.length > 0) {
                     const top = visualScores[0];
+                    const det = DB_VISUAL_DETAILS[top.id] || DB_VISUAL_DETAILS['default'];
+                    // Parte A
                     if(document.getElementById('vis-top1-nome')) document.getElementById('vis-top1-nome').innerText = top.nome;
                     if(document.getElementById('vis-top1-nota')) document.getElementById('vis-top1-nota').innerText = top.val;
-                    const det = DB_VISUAL_DETAILS[top.id] || DB_VISUAL_DETAILS['default'];
                     let richHTML = `<div class="strategy-grid"><div class="st-card highlight"><div class="st-head">🗝️ CONCEITO</div><div class="st-text">${det.conceito}</div></div><div class="st-card"><div class="st-head">🧠 NEURO DICA</div><div class="st-text">${det.neuro}</div></div></div>`;
                     richHTML += `<div class="strategy-grid"><div class="st-card"><div class="st-head">🧱 MATERIAIS</div><div class="st-text">${det.materiais}</div></div><div class="st-card"><div class="st-head">💡 ILUMINAÇÃO</div><div class="st-text">${det.luz}</div></div><div class="st-card"><div class="st-head">🪑 MOBILIÁRIO</div><div class="st-text">${det.mobiliario}</div></div></div>`;
                     richHTML += `<div style="margin-top:15px; font-size:9pt; font-weight:700; color:#999;">AFINIDADES SECUNDÁRIAS:</div>`;
                     richHTML += visualScores.slice(1,5).map(i=>`<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}%</span></div>`).join('');
                     if(document.getElementById('m2-content')) document.getElementById('m2-content').innerHTML = richHTML;
-                    if(document.getElementById('m2-conclusao-dinamica')) document.getElementById('m2-conclusao-dinamica').innerText = `Perfil ${top.nome}: Foco em ${det.conceito}`;
+
+                    // Módulo 2B - Protocolo (V58)
+                    const extended = DB_VISUAL_EXTENDED[top.id] || DB_VISUAL_EXTENDED['default'];
+                    let dnaHTML = `<div class="dna-box">${extended.dna.cores.map(c=>`<div class="dna-color" style="background:${c}"></div>`).join('')}</div><div><strong>Formas:</strong> ${extended.dna.formas}</div><div><strong>Texturas:</strong> ${extended.dna.texturas}</div>`;
+                    if(document.getElementById('m2-dna-content')) document.getElementById('m2-dna-content').innerHTML = dnaHTML;
+
+                    let mandHTML = `<ul class="tech-list">${extended.mandatorios.map(m=>`<li class="tech-item">${m}</li>`).join('')}</ul>`;
+                    let avoidHTML = `<ul class="tech-list">${extended.evitar.map(m=>`<li class="tech-item bad">${m}</li>`).join('')}</ul>`;
+                    if(document.getElementById('m2-mandatory')) document.getElementById('m2-mandatory').innerHTML = mandHTML;
+                    if(document.getElementById('m2-avoid')) document.getElementById('m2-avoid').innerHTML = avoidHTML;
+                    if(document.getElementById('m2-lighting')) document.getElementById('m2-lighting').innerText = extended.luz;
+                    if(document.getElementById('m2-conclusao-dinamica')) document.getElementById('m2-conclusao-dinamica').innerText = `Perfil ${top.nome}: Siga os mandatórios para garantir a coerência estilística.`;
                 }
 
-                // --- MOD 3 (AGORA EM 2 PÁGINAS COM CONTEÚDO DETALHADO) ---
+                // --- MOD 3 (2 PÁGINAS C/ DETALHES) ---
                 if(document.getElementById('t3-time')) document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
                 
-                // Mapeia valores
                 const sVals = {
                     vis: r['vis_complex'] !== undefined ? parseInt(r['vis_complex']) : 50,
                     aud: r['aud_eco'] !== undefined ? parseInt(r['aud_eco']) : 50,
@@ -1260,50 +1417,47 @@
                     cog: r['cog_prod'] !== undefined ? parseInt(r['cog_prod']) : 50
                 };
 
-                // Função Geradora de HTML para Cards
-                const genCard = (k) => {
+                const genCardA = (k) => {
                     const info = DB_SENSORY_EXPERT[k];
                     const val = sVals[k];
                     const stratHTML = info.getStrat(val);
-                    return `
-                        <div class="sense-card ${info.color}">
-                            <div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div>
-                            <div class="sense-bar-container"><div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div><span class="sense-val ${info.color}">${val}%</span></div>
-                            <div class="sense-strategy">${stratHTML}</div>
-                        </div>
-                    `;
+                    return `<div class="sense-card ${info.color}"><div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div><div class="sense-bar-container"><div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div><span class="sense-val ${info.color}">${val}%</span></div><div class="sense-strategy">${stratHTML}</div></div>`;
+                };
+                
+                const genCardB = (k) => {
+                    const info = DB_SENSORY_EXPERT[k];
+                    const val = sVals[k];
+                    const stratHTML = info.getStrat(val);
+                    return `<div class="sense-card ${info.color}"><div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div><div class="sense-bar-container"><div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div><span class="sense-val ${info.color}">${val}%</span></div><div class="sense-strategy">${stratHTML}</div></div>`;
                 };
 
-                // Parte A (Pag 4)
+                // GRID A (4)
                 const keysA = ['vis','aud','olf','tat'];
-                let htmlA = ''; keysA.forEach(k => htmlA += genCard(k));
+                let htmlA = ''; keysA.forEach(k => htmlA += genCardA(k));
                 if(document.getElementById('m3-grid-part-a')) document.getElementById('m3-grid-part-a').innerHTML = htmlA;
 
-                // Parte B (Pag 5)
+                // GRID B (4)
                 const keysB = ['prop','gus','emo','cog'];
-                let htmlB = ''; keysB.forEach(k => htmlB += genCard(k));
+                let htmlB = ''; keysB.forEach(k => htmlB += genCardB(k));
                 if(document.getElementById('m3-grid-part-b')) document.getElementById('m3-grid-part-b').innerHTML = htmlB;
 
 
-                // --- MOD 4 (PÁGINA 6 E 7 - COM COMENTÁRIOS E TEXTOS) ---
+                // --- MOD 4 (PÁGINA 7 e 8) ---
                 if(document.getElementById('t4-time')) document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
                 
                 let explHTML = '', implHTML = '', txtHTML = '';
                 let highestMem = { key: 'default', val: 0 }; 
 
-                // SEPARAÇÃO RIGOROSA: NÚMEROS -> GRÁFICOS | TEXTOS -> CAIXAS DE TEXTO
+                // SEPARAÇÃO RIGOROSA
                 Object.keys(r).forEach(k => {
                     if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
                         let rawLabel = k.split('_')[2].toUpperCase();
                         let label = DB_LABELS[rawLabel] || rawLabel; 
                         let val = r[k];
-                        
                         if(typeof val === 'number') {
                             if(val > highestMem.val) highestMem = { key: k, val: val };
-                            // Busca comentário de ação
                             let actionComment = DB_MEM_ACTIONS[rawLabel] ? (val > 50 ? DB_MEM_ACTIONS[rawLabel].high : DB_MEM_ACTIONS[rawLabel].low) : "";
-                            
-                            explHTML += `<div class="mem-container mem-epi"><div class="mem-label-row"><span class="mem-title">${label}</span><span class="mem-val">${val}%</span></div><div class="mem-track"><div class="mem-fill" style="width:${val}%"></div></div><div class="mem-scale"><span>0</span><span>50</span><span>100</span></div><div class="mem-comment">${actionComment}</div></div>`;
+                            explHTML += `<div class="mem-container mem-epi"><div class="mem-label-row"><span class="mem-title">${label}</span><span class="mem-val">${val}%</span></div><div class="mem-track"><div class="mem-fill" style="width:${val}%"></div></div><div class="mem-scale"><span>0</span><span>50</span><span>100</span></div><div class="mem-action-comment">${actionComment}</div></div>`;
                         } else if (typeof val === 'string' && val.length > 2) {
                              txtHTML += `<div class="mem-text-box"><span class="mem-text-label">${label}</span><div class="mem-text-val">"${val}"</div></div>`;
                         }
@@ -1313,10 +1467,8 @@
                         let label = DB_LABELS[rawLabel] || rawLabel; 
                         let val = r[k];
                         if(typeof val === 'number') {
-                            // Busca comentário de ação
                             let actionComment = DB_MEM_ACTIONS[rawLabel] ? (val > 50 ? DB_MEM_ACTIONS[rawLabel].high : DB_MEM_ACTIONS[rawLabel].low) : "";
-
-                            implHTML += `<div class="mem-container mem-imp"><div class="mem-label-row"><span class="mem-title">${label}</span><span class="mem-val">${val}%</span></div><div class="mem-track"><div class="mem-fill" style="width:${val}%"></div></div><div class="mem-scale"><span>0</span><span>50</span><span>100</span></div><div class="mem-comment">${actionComment}</div></div>`;
+                            implHTML += `<div class="mem-container mem-imp"><div class="mem-label-row"><span class="mem-title">${label}</span><span class="mem-val">${val}%</span></div><div class="mem-track"><div class="mem-fill" style="width:${val}%"></div></div><div class="mem-scale"><span>0</span><span>50</span><span>100</span></div><div class="mem-action-comment">${actionComment}</div></div>`;
                         } else if (typeof val === 'string' && val.length > 2) {
                             txtHTML += `<div class="mem-text-box"><span class="mem-text-label">${label}</span><div class="mem-text-val">"${val}"</div></div>`;
                         }
@@ -1344,17 +1496,55 @@
                 if(document.getElementById('m4-ancoragem')) document.getElementById('m4-ancoragem').innerHTML = strategyText;
                 if(document.getElementById('m4-conclusao-dinamica')) document.getElementById('m4-conclusao-dinamica').innerHTML = strategyText;
 
-                // --- MOD 5 ---
+                // --- MOD 5 (ENRIQUECIDO COM INSIGHTS) ---
                 if(document.getElementById('t5-time')) document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
-                const makeTags = (key, elId) => {
+                
+                // Helper de Insights
+                const getPhaseInsight = (arr) => {
+                    if (!arr) return "";
+                    let insight = "";
+                    if (arr.toString().includes("Crianças")) insight = DB_PHASE_INSIGHTS['Crianças'];
+                    else if (arr.toString().includes("Adolescentes")) insight = DB_PHASE_INSIGHTS['Adolescentes'];
+                    else if (arr.toString().includes("Idosos")) insight = DB_PHASE_INSIGHTS['Idosos'];
+                    else if (arr.toString().includes("Casal")) insight = DB_PHASE_INSIGHTS['Casal'];
+                    else if (arr.toString().includes("Solteiro")) insight = DB_PHASE_INSIGHTS['Solteiro'];
+                    return insight;
+                };
+                
+                const getInvestInsight = (arr) => {
+                    if (!arr) return "";
+                    let insight = "";
+                    if (arr.toString().includes("Econômico")) insight = DB_INVEST_INSIGHTS['Econômico'];
+                    else if (arr.toString().includes("Médio")) insight = DB_INVEST_INSIGHTS['Médio'];
+                    else if (arr.toString().includes("Alto")) insight = DB_INVEST_INSIGHTS['Alto'];
+                    return insight;
+                };
+
+                const makeTags = (key, elId, insightId, type) => {
                     const el = document.getElementById(elId); if(el) el.innerHTML = '';
                     const val = r[key];
-                    if(Array.isArray(val)) val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
-                    else if(val) el.innerHTML = `<span class="ct-item">${val}</span>`;
+                    if(Array.isArray(val)) {
+                        val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
+                        if(insightId) {
+                            let text = (type === 'phase') ? getPhaseInsight(val) : (type === 'invest') ? getInvestInsight(val) : "";
+                            if(text) document.getElementById(insightId).innerHTML = text;
+                        }
+                    }
+                    else if(val) {
+                         el.innerHTML = `<span class="ct-item">${val}</span>`;
+                         if(insightId) {
+                             let text = (type === 'invest') ? getInvestInsight(val) : "";
+                             if(text) document.getElementById(insightId).innerHTML = text;
+                         }
+                    }
                     else el.innerHTML = '-';
                 };
-                makeTags('atu_fase_vida', 'm5-fase'); makeTags('atu_investimento', 'm5-invest');
-                makeTags('atu_hobbies', 'm5-hobbies'); makeTags('atu_personalidade', 'm5-pers');
+
+                makeTags('atu_fase_vida', 'm5-fase', 'm5-fase-insight', 'phase'); 
+                makeTags('atu_investimento', 'm5-invest', 'm5-invest-insight', 'invest');
+                makeTags('atu_hobbies', 'm5-hobbies'); 
+                makeTags('atu_personalidade', 'm5-pers');
+                
                 const tempo = r['atu_tempo'] || 0;
                 if(document.getElementById('m5-tempo-bar')) document.getElementById('m5-tempo-bar').style.width = tempo + '%';
                 if(document.getElementById('m5-tempo-val')) document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
@@ -1365,7 +1555,11 @@
                 else if(tempo > 70) investStrat = DB_LIFESTYLE['longo_prazo'];
                 
                 if(document.getElementById('m5-invest-matrix')) document.getElementById('m5-invest-matrix').innerHTML = investStrat;
-                if(document.getElementById('m5-ritual-tips')) document.getElementById('m5-ritual-tips').innerText = "Cada hobby listado acima deve ter um 'Behavior Setting' (cenário) dedicado no projeto.";
+                
+                let hobbyAction = "Cada hobby listado requer um cenário.";
+                if (r['atu_hobbies'] && r['atu_hobbies'].toString().includes("Cozinhar")) hobbyAction = "Cozinhar: Requer triângulo de trabalho eficiente e exaustão forçada.";
+                if (r['atu_hobbies'] && r['atu_hobbies'].toString().includes("Filmes")) hobbyAction = "Filmes: Prever blackout total e sofá retrátil.";
+                if(document.getElementById('m5-ritual-tips')) document.getElementById('m5-ritual-tips').innerText = hobbyAction;
 
                 // DOWNLOAD
                 const el = document.getElementById('pdf-root');
