@@ -6,16 +6,19 @@
     <title>Dashboard NeuroBriefing | Diagnóstico Integral</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
-           1. ESTILOS GERAIS
+           1. ESTILOS GERAIS E RESET
            ========================================================================== */
+        
         * { 
             box-sizing: border-box; 
-            -webkit-print-color-adjust: exact; 
+            -webkit-print-color-adjust: exact; /* Força impressão de cores de fundo */
         }
         
         body { 
@@ -27,8 +30,9 @@
         }
         
         /* ==========================================================================
-           2. PAINEL DE CONTROLE (TELA)
+           2. ESTILOS DO PAINEL (VISÃO TELA)
            ========================================================================== */
+        
         .painel { 
             max-width: 1200px; 
             margin: 0 auto 30px auto; 
@@ -47,41 +51,121 @@
             margin-bottom: 20px; 
         }
         
-        .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
+        .hp-title { 
+            font-size: 18pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+        }
         
         .btn-refresh { 
-            background: #2c3e50; color: white; 
-            padding: 10px 20px; border: none; cursor: pointer; 
-            border-radius: 6px; font-weight: 700; transition: 0.2s; 
+            background: #2c3e50; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            font-size: 9pt; 
+            transition: 0.2s; 
         }
-        .btn-refresh:hover { background: #34495e; }
         
-        /* TABELA */
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
-        td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
-        tr:hover { background-color: #fafafa; }
+        .btn-refresh:hover { 
+            background: #34495e; 
+        }
         
-        .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
-        .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
+        /* TABELA DE CLIENTES */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
         
-        .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
-        .mod-tag { padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; background: #eee; color: #bbb; border: 1px solid #e0e0e0; }
-        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
+        th { 
+            text-align: left; 
+            padding: 15px 10px; 
+            background: #f8f9fa; 
+            color: #7f8c8d; 
+            font-weight: 700; 
+            font-size: 8pt; 
+            text-transform: uppercase; 
+            border-bottom: 2px solid #eee; 
+        }
         
-        .btn-pdf { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 8pt; cursor: pointer; }
+        td { 
+            padding: 15px 10px; 
+            border-bottom: 1px solid #eee; 
+            vertical-align: top; 
+            font-size: 9.5pt; 
+        }
+        
+        tr:hover { 
+            background-color: #fafafa; 
+        }
+        
+        .cli-name { 
+            font-size: 11pt; 
+            font-weight: 700; 
+            color: #2c3e50; 
+            display: block; 
+            margin-bottom: 4px; 
+        }
+        
+        .cli-local { 
+            font-size: 8pt; 
+            color: #999; 
+            display: block; 
+            margin-bottom: 8px; 
+        }
+        
+        /* STATUS TAGS */
+        .mod-grid { 
+            display: flex; 
+            gap: 4px; 
+            flex-wrap: wrap; 
+        }
+        
+        .mod-tag { 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            font-size: 7pt; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            background: #eee; 
+            color: #bbb; 
+            border: 1px solid #e0e0e0; 
+        }
+        
+        .mod-tag.done { 
+            background: #e8f5e9; 
+            color: #27ae60; 
+            border-color: #c8e6c9; 
+        }
+        
+        .btn-pdf { 
+            background: #e74c3c; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            font-weight: 700; 
+            font-size: 8pt; 
+            cursor: pointer; 
+        }
+        
         .btn-pdf:hover { background: #c0392b; }
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
-        
+
         /* ==========================================================================
-           3. ESTILOS DO PDF (A4)
+           3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
            ========================================================================== */
+        
         #pdf-root { display: none; } 
         
         .page { 
-            width: 210mm; height: 296mm; 
+            width: 210mm; 
+            height: 296mm; 
             background: white; 
-            position: relative; overflow: hidden; 
+            position: relative; 
+            overflow: hidden; 
             margin: 0 auto; 
             page-break-after: always; 
             padding: 0; 
@@ -89,31 +173,83 @@
         .page:last-child { page-break-after: avoid; }
         
         /* CAPA */
-        .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
+        .capa-box { 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            border: 20mm solid #f4f6f8; 
+            text-align: center; 
+        }
+        
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
-        .c-info { width: 80%; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 40px 0; margin-bottom: 50px; }
+        
+        .c-info { 
+            width: 80%; 
+            border-top: 2px solid #2c3e50; 
+            border-bottom: 2px solid #2c3e50; 
+            padding: 40px 0; 
+            margin-bottom: 50px; 
+        }
+        
         .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        /* HEADER */
-        .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
-        .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; }
+        /* HEADER DO MODULO */
+        .mod-content { 
+            padding: 15mm 15mm 10mm 15mm; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        .m-head { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            border-bottom: 4px solid #2c3e50; 
+            padding-bottom: 10px; 
+            margin-bottom: 20px; 
+        }
+        
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
         .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
         .mh-meta { text-align: right; }
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        /* BOXES */
-        .win-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 15px; display: flex; flex-direction: column; }
+        /* BOXES DE CONTEÚDO */
+        .win-box { 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin-bottom: 15px; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
         .wb-body { padding: 20px; flex: 1; }
         
-        /* GRÁFICOS */
+        /* GRIDS ESTRATÉGICOS (MÓDULO 1) */
+        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
+        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
+        .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; }
+        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; }
+        
+        .st-head { 
+            font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
+            margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; 
+        }
+        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
+
+        /* GRÁFICOS DE BARRAS (MOD 1) */
         .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 40px; }
         .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
@@ -122,16 +258,19 @@
         .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
 
-        /* GRID ESTRATÉGICO */
-        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
-        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
-        .st-card.highlight { border-left: 4px solid #3498db; background: #fdfdfd; }
-        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fdfdfd; }
+        /* BOX DE CONCLUSÃO TÉCNICA (RODAPÉ) */
+        .box-conclusao { 
+            background: #fdfdfd; 
+            border-left: 4px solid #2c3e50; 
+            padding: 15px; 
+            font-size: 9pt; color: #555; line-height: 1.5; 
+            margin-top: auto; 
+            margin-bottom: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+        }
+        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
         
-        .st-head { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
-        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
-        
-        /* GRIDS & LISTAS */
+        /* GRIDS & LISTAS (GERAL) */
         .grid-2 { display: flex; gap: 20px; }
         .col { flex: 1; }
         .info-row { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
@@ -141,27 +280,70 @@
         .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
         .il-val { font-size: 9pt; color: #555; }
         
-        /* BARRAS SENSORIAIS */
+        /* --- ESTILOS DO MÓDULO 3 (SENSORIAL - 8 CARDS) --- */
+        .sensory-grid-8 { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            grid-template-rows: repeat(4, auto); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        
+        .sense-card { 
+            background: #fff; 
+            border: 1px solid #eee; 
+            border-radius: 6px; 
+            padding: 12px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            display: flex; flex-direction: column;
+        }
+        
+        .sense-head { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; 
+        }
+        .sense-title { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .sense-icon { font-size: 12pt; }
+        
+        .sense-bar-container { display: flex; align-items: center; margin-bottom: 8px; }
+        .sense-bar-bg { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+        .sense-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+        .sense-val { font-size: 8pt; font-weight: 700; width: 30px; text-align: right; margin-left: 8px; }
+        
+        .sense-strategy { 
+            font-size: 8pt; color: #555; font-style: italic; line-height: 1.4; 
+            background: #fdfdfd; padding: 6px; border-radius: 4px; border-left: 3px solid #ddd; 
+        }
+
+        /* --- BARRAS SIMPLES (OUTROS MÓDULOS) --- */
         .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
         .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
         .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
-        /* TAGS (MOD 5) */
+        /* --- TAGS DE CHECKLIST (MOD 5) --- */
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
+        .ct-item.highlight { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
 
-        /* BOX CONCLUSÃO */
-        .box-conclusao { background: #fdfdfd; border-left: 4px solid #2c3e50; padding: 15px; font-size: 9pt; color: #555; line-height: 1.5; margin-top: auto; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
-        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
-
-        /* CORES */
+        /* --- CORES UTILITÁRIAS --- */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
+        
+        /* Cores Sensoriais (Mod 3) */
+        .s-vis { color: #f39c12; } .bg-vis { background: #f39c12; border-color: #f39c12; }
+        .s-aud { color: #9b59b6; } .bg-aud { background: #9b59b6; border-color: #9b59b6; }
+        .s-olf { color: #27ae60; } .bg-olf { background: #27ae60; border-color: #27ae60; }
+        .s-tat { color: #e67e22; } .bg-tat { background: #e67e22; border-color: #e67e22; }
+        .s-prop { color: #c0392b; } .bg-prop { background: #c0392b; border-color: #c0392b; }
+        .s-gus { color: #e84393; } .bg-gus { background: #e84393; border-color: #e84393; }
+        .s-emo { color: #8e44ad; } .bg-emo { background: #8e44ad; border-color: #8e44ad; }
+        .s-cog { color: #2980b9; } .bg-cog { background: #2980b9; border-color: #2980b9; }
+
+        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
     </style>
 </head>
 <body>
@@ -206,11 +388,14 @@
                     <div><div class="mh-tit">IDENTIDADE DO SER</div><div class="mh-sub">Arquétipo & Temperamento</div></div>
                     <div class="mh-meta"><div class="mh-num">01</div><span class="mh-time" id="t1-time">--:--</span></div>
                 </div>
+                
                 <div class="charts" id="chart-container"></div>
+                
                 <div class="win-box">
                     <div class="wb-head" id="wb-head"><div class="wb-tit" id="txt-el">-</div><div class="wb-sty" id="txt-tit">-</div></div>
                     <div class="wb-body" id="m1-content"></div>
                 </div>
+
                 <div class="strategy-grid">
                     <div class="st-card">
                         <div class="st-head">🧠 NEUROARQUITETURA (BASE)</div>
@@ -221,6 +406,7 @@
                         <div class="st-text" id="m1-comunicacao-individual"></div>
                     </div>
                 </div>
+
                 <div class="strategy-grid">
                     <div class="st-card highlight">
                         <div class="st-head">👑 PERFIL COMBINADO (DOMINANTE + SECUNDÁRIO)</div>
@@ -233,10 +419,11 @@
                         <div class="st-text" id="m1-comunicacao-texto" style="margin-top:8px; font-style:italic;"></div>
                     </div>
                 </div>
+
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
                     O perfil identificado exige uma estratégia de design que respeite a "Energia Base". 
-                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
+                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta (Dopamina vs Ocitocina), equilibrando o temperamento dominante com o secundário e compensando a sombra.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -249,14 +436,14 @@
                     <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" id="t2-time">--:--</span></div>
                 </div>
                 
-                <div class="win-box" style="flex:0 auto; margin-bottom:30px;">
+                <div class="win-box" style="flex:0 auto; margin-bottom:20px;">
                     <div class="wb-head" style="background:#2c3e50;">
                         <div class="wb-tit">ESTILO PREDOMINANTE</div>
                         <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
                     </div>
-                    <div class="wb-body" style="padding:25px; text-align:center;">
-                        <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
-                        <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
+                    <div class="wb-body" style="padding:20px; text-align:center;">
+                        <h2 style="margin:0; font-size:24pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
+                        <div style="margin-top:10px; font-size:12pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
                     </div>
                 </div>
 
@@ -266,6 +453,7 @@
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
                     <span id="m2-conclusao-dinamica">
                         A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
+                        Utilize o estilo predominante como base estrutural e os secundários para camadas de decoração.
                     </span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
@@ -275,19 +463,19 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Percepção Multissensorial & Biofilia</div></div>
+                    <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Os 8 Sentidos & Neuroarquitetura</div></div>
                     <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
                 </div>
-                <div class="grid-2">
-                    <div class="col" id="m3-visual"></div>
-                    <div class="col" id="m3-outros"></div>
-                </div>
+                
+                <div class="sensory-grid-8" id="m3-grid-container"></div>
+
                 <div class="box-conclusao">
-                    <span class="bc-tit">APLICAÇÃO PRÁTICA (SENSORIAL)</span>
-                    Baseado em <strong>Juhani Pallasmaa</strong>:
-                    <br>1. Regulação: Se houver sensibilidade, crie zonas de descompressão.
-                    <br>2. Biofilia: Use a vegetação como redutor fisiológico de estresse.
-                    <br>3. Tato: Invista em texturas táteis nas áreas de permanência.
+                    <span class="bc-tit">CONCLUSÃO TÉCNICA (SISTEMA SENSORIAL)</span>
+                    A arquitetura multissensorial ativa o sistema límbico (emoções).
+                    <strong>Prioridade:</strong> Identifique os pontos com pontuação extrema (0 ou 100).
+                    <br>• Se <strong>Visual</strong> > 80: Cuidado com excesso de informação (Complexidade Visual).
+                    <br>• Se <strong>Auditivo</strong> < 30: O cliente precisa de isolamento acústico superior.
+                    <br>• Se <strong>Proprioceptivo</strong> > 70: Crie fluxos largos e pé direito alto.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -341,10 +529,7 @@
                 <div class="win-box">
                     <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
                     <div class="wb-body">
-                        <div style="margin-bottom:15px;">
-                            <span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span>
-                            <div class="check-tags" id="m5-pers"></div>
-                        </div>
+                        <div style="margin-bottom:15px;"><span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span><div class="check-tags" id="m5-pers"></div></div>
                         <div>
                             <span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span>
                             <div class="sensory-bar" style="margin-top:5px;">
@@ -373,10 +558,10 @@
     <script>
         // 1. BANCO DE DADOS TEMPERAMENTOS (MÓDULO 1)
         const DB = {
-            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos e soluções.' },
-            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis, criativas e visuais.', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], neuro: 'Este cérebro busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' },
-            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', energia:'Acolhimento · Calma · Empatia', quem:'Pessoas diplomáticas e sensíveis.', perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], neuro: 'Este cérebro busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', comunicacao: 'Seja <strong>paciente e ouvinte</strong>. Transmita segurança.' },
-            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', energia:'Estrutura · Ordem · Detalhe', quem:'Pessoas metódicas e perfeccionistas.', perfil:'Analista', estilos:['Clássico', 'Moderno Elegante', 'Minimalismo'], neuro: 'Este cérebro busca <strong>previsibilidade e ordem</strong>. Precisa de simetria e armários fechados.', comunicacao: 'Seja <strong>detalhista e técnico</strong>. Mostre cronogramas e especificações.' }
+            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados.', perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos e soluções.' },
+            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', energia:'Expressão · Conexão', quem:'Pessoas sociáveis e visuais.', perfil:'Comunicador', estilos:['Boho', 'Eclético', 'Maximalismo'], neuro: 'Busca <strong>estímulos</strong>. Áreas de convivência e flexibilidade.', comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' },
+            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', energia:'Acolhimento · Calma', quem:'Pessoas diplomáticas.', perfil:'Planejador', estilos:['Japandi', 'Orgânico'], neuro: 'Busca <strong>segurança e ocitocina</strong>. Acústica e texturas.', comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.' },
+            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', energia:'Estrutura · Ordem', quem:'Pessoas metódicas.', perfil:'Analista', estilos:['Clássico', 'Minimalismo'], neuro: 'Busca <strong>previsibilidade</strong>. Simetria e armários fechados.', comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.' }
         };
 
         // 2. BANCO DE DADOS VISUAL: NOMES (MÓDULO 2)
@@ -390,43 +575,72 @@
 
         // 3. BANCO DE DADOS VISUAL: DETALHES TÉCNICOS (MÓDULO 2 - EXPANDIDO)
         const DB_VISUAL_DETAILS = {
-            'est_tech': { conceito: 'Futurismo, automação e linhas puras.', materiais: 'Vidro, Aço Inox, Superfícies High-Gloss.', luz: 'Linear, RGB, Fria (foco) e Indireta.', mobiliario: 'Design ergonômico, peças assinadas.', neuro: 'Reduz a carga cognitiva pela limpeza visual. A automação gera sensação de controle (Dopamina).' },
-            'est_scandi': { conceito: 'Hygge: Conforto, luz e simplicidade.', materiais: 'Madeira clara (Carvalho), Lã, Algodão.', luz: 'Ampla, Natural maximizada, Luz quente (2700K).', mobiliario: 'Pés palito, sofás cinza/bege, mantas.', neuro: 'Promove calma. A madeira clara reduz a pressão arterial.' },
-            'est_ind': { conceito: 'Estrutura aparente e autenticidade urbana.', materiais: 'Tijolo aparente, Concreto, Metal Preto, Couro.', luz: 'Trilhos, Pendentes metálicos, Filamento.', mobiliario: 'Sofás de couro, estantes de ferro.', neuro: 'Estimula a criatividade e a sensação de liberdade.' },
-            'est_contemp': { conceito: 'O "agora". Conforto atual e linhas suaves.', materiais: 'Mix de texturas, pedras naturais, metais.', luz: 'Versátil. Sancas de gesso, spots.', mobiliario: 'Peças baixas, linhas horizontais.', neuro: 'Equilíbrio. O cérebro lê como um ambiente atualizado e seguro.' },
-            'est_trad': { conceito: 'Conforto familiar e herança atualizada.', materiais: 'Madeira escura, tecidos encorpados, tapetes.', luz: 'Abajures, luz quente e difusa.', mobiliario: 'Peças robustas, simetria.', neuro: 'Evoca memórias afetivas e sensação de estabilidade (Raiz).' },
+            'est_tech': { conceito: 'Futurismo e automação.', materiais: 'Vidro, Aço, High-Gloss.', luz: 'Linear, RGB, Fria.', mobiliario: 'Design ergonômico.', neuro: 'Reduz carga cognitiva pela limpeza. Automação gera controle.' },
+            'est_scandi': { conceito: 'Hygge: Conforto e luz.', materiais: 'Madeira clara, Lã.', luz: 'Ampla, Natural, Quente.', mobiliario: 'Pés palito, sofás cinza.', neuro: 'Promove calma. Madeira clara reduz pressão arterial.' },
+            'est_ind': { conceito: 'Estrutura aparente.', materiais: 'Tijolo, Concreto, Metal.', luz: 'Trilhos, Filamento.', mobiliario: 'Couro, ferro.', neuro: 'Estimula criatividade e liberdade.' },
+            'est_contemp': { conceito: 'O "agora". Conforto atual.', materiais: 'Mix de texturas.', luz: 'Versátil, sancas.', mobiliario: 'Linhas horizontais.', neuro: 'Equilíbrio e atualização.' },
+            'est_trad': { conceito: 'Conforto familiar.', materiais: 'Madeira escura, tecidos.', luz: 'Abajures, quente.', mobiliario: 'Peças robustas.', neuro: 'Evoca memórias afetivas (Raiz).' },
             'est_classico': { conceito: 'Simetria, proporção e elegância atemporal.', materiais: 'Mármore, Boiserie, Veludo, Dourado.', luz: 'Lustres de cristal, arandelas.', mobiliario: 'Antiguidades, peças torneadas.', neuro: 'A simetria reduz o esforço cognitivo e gera prazer estético.' },
             'est_japandi': { conceito: 'Funcionalidade escandinava + Rusticidade japonesa.', materiais: 'Bambu, Cerâmica, Madeira crua.', luz: 'Baixa, sombras intencionais (Yugen).', mobiliario: 'Baixo, linhas retas e simples.', neuro: 'Redução drástica de ruído visual para foco e paz.' },
             'est_boho': { conceito: 'Alma livre, viagens e natureza.', materiais: 'Macramê, Rattan, Plantas, Tapetes étnicos.', luz: 'Cordão de luzes, velas, quente.', mobiliario: 'Garimpo, peças artesanais.', neuro: 'Estimula a curiosidade e a conexão emocional.' },
             'est_luxo': { conceito: 'Sofisticação, brilho e exclusividade.', materiais: 'Metais nobres, Mármores exóticos, Espelhos.', luz: 'Cênica, pendentes de design.', mobiliario: 'Design italiano, couro nobre.', neuro: 'Validação de status e conquista (Serotonina).' },
-            'default': { conceito: 'Estilo personalizado com foco na identidade.', materiais: 'Equilíbrio entre texturas naturais e acabamentos.', luz: 'Foco em camadas: Geral, Tarefa e Sotaque.', mobiliario: 'Prioridade para ergonomia.', neuro: 'O ambiente deve refletir a autoimagem do cliente.' }
+            'est_organico': { conceito: 'Fluidez e formas da natureza.', materiais: 'Madeira curva, pedra bruta, linho.', luz: 'Difusa e envolvente.', mobiliario: 'Sofás curvos, mesas ovais.', neuro: 'Reduz o estresse visual. Formas curvas são percebidas como seguras.' },
+            'default': { conceito: 'Estilo personalizado.', materiais: 'Equilíbrio de texturas.', luz: 'Foco em camadas.', mobiliario: 'Prioridade para ergonomia.', neuro: 'Reflete a autoimagem do cliente.' }
         };
 
         // 4. CORRELAÇÕES COMBINADAS (MOD 1)
         const CORRELACOES = {
-            'FOGO_TERRA': { perfil: 'O CONSTRUTOR: Pragmático e ambicioso.', projeto: 'Solidez e Status. Materiais nobres e simetria.', atendimento: 'Seja técnico, pontual e mostre competência.' },
-            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau") e Automação.', atendimento: 'Seja ágil, visual e venda a novidade.' },
-            'FOGO_AGUA': { perfil: 'O PROTETOR: Intenso e emotivo.', projeto: 'Refúgio Seguro e robusto para a família.', atendimento: 'Crie vínculo emocional, mas resolva rápido.' },
-            'AR_FOGO': { perfil: 'O CRIATIVO: Mente acelerada.', projeto: 'Liberdade, cor e ambientes flexíveis.', atendimento: 'Brainstorming e ritmo acelerado.' },
-            'AR_TERRA': { perfil: 'O DESIGNER: Bom gosto racional.', projeto: 'Estética Funcional (Escandinavo).', atendimento: 'Explique o porquê estético de cada escolha.' },
-            'AR_AGUA': { perfil: 'O ANFITRIÃO: Social e empático.', projeto: 'Experiência Sensorial e varanda gourmet.', atendimento: 'Foque no bem-estar e na experiência.' },
-            'TERRA_FOGO': { perfil: 'O ESTRATEGISTA: Controlador e eficiente.', projeto: 'Eficiência Máxima e cozinha técnica.', atendimento: 'Entregue cronogramas e mostre controle.' },
-            'TERRA_AR': { perfil: 'O CURADOR: Culto e detalhista.', projeto: 'Galeria Habitável e espaços para arte.', atendimento: 'Demonstre cultura e conhecimento.' },
-            'TERRA_AGUA': { perfil: 'O GUARDIÃO: Conservador e seguro.', projeto: 'Tradição e conforto clássico.', atendimento: 'Transmita segurança. Evite modismos.' },
-            'AGUA_FOGO': { perfil: 'O INTUITIVO: Guiado pelo "feeling".', projeto: 'Personalidade e elementos com história.', atendimento: 'Conecte-se com a pessoa primeiro.' },
-            'AGUA_AR': { perfil: 'O SONHADOR: Sensível e imaginativo.', projeto: 'Leveza, tons pastéis e biofilia.', atendimento: 'Seja delicado e ajude a realizar sonhos.' },
-            'AGUA_TERRA': { perfil: 'O ACOLHEDOR: Família e estabilidade.', projeto: 'Ninho, Farmhouse e cozinha grande.', atendimento: 'Seja previsível e carinhoso.' }
+            'FOGO_TERRA': { perfil: 'O CONSTRUTOR: Pragmático e ambicioso.', projeto: 'Solidez e Status. Materiais nobres.', atendimento: 'Seja técnico e pontual.' },
+            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau").', atendimento: 'Seja ágil e visual.' },
+            'FOGO_AGUA': { perfil: 'O PROTETOR: Intenso e emotivo.', projeto: 'Refúgio Seguro e robusto.', atendimento: 'Vínculo emocional rápido.' },
+            'AR_FOGO': { perfil: 'O CRIATIVO: Mente acelerada.', projeto: 'Liberdade e Cor.', atendimento: 'Brainstorming e ritmo.' },
+            'AR_TERRA': { perfil: 'O DESIGNER: Bom gosto racional.', projeto: 'Estética Funcional.', atendimento: 'Explique o porquê estético.' },
+            'AR_AGUA': { perfil: 'O ANFITRIÃO: Social e empático.', projeto: 'Experiência Sensorial.', atendimento: 'Foque no bem-estar.' },
+            'TERRA_FOGO': { perfil: 'O ESTRATEGISTA: Controlador.', projeto: 'Eficiência Máxima.', atendimento: 'Mostre controle total.' },
+            'TERRA_AR': { perfil: 'O CURADOR: Culto e detalhista.', projeto: 'Galeria Habitável.', atendimento: 'Demonstre cultura.' },
+            'TERRA_AGUA': { perfil: 'O GUARDIÃO: Conservador.', projeto: 'Tradição e conforto.', atendimento: 'Transmita segurança.' },
+            'AGUA_FOGO': { perfil: 'O INTUITIVO: Guiado pelo feeling.', projeto: 'Personalidade e alma.', atendimento: 'Conecte-se primeiro.' },
+            'AGUA_AR': { perfil: 'O SONHADOR: Sensível.', projeto: 'Leveza e tons pastéis.', atendimento: 'Seja delicado.' },
+            'AGUA_TERRA': { perfil: 'O ACOLHEDOR: Família.', projeto: 'Ninho e cozinha grande.', atendimento: 'Seja previsível.' }
         };
 
         const SOMBRAS = {
-            'FOGO': 'Falta paciência. O projeto deve ter manutenção zero.',
-            'AR': 'Falta foco. Evite excesso de informação visual.',
-            'TERRA': 'Falta flexibilidade. O projeto deve prover a ordem.',
-            'AGUA': 'Falta praticidade. Priorize a ergonomia e o uso.'
+            'FOGO': 'Falta paciência. Manutenção zero.',
+            'AR': 'Falta foco. Evite excesso visual.',
+            'TERRA': 'Falta flexibilidade. Prove a ordem.',
+            'AGUA': 'Falta praticidade. Priorize uso.'
         };
 
-        let dadosAPI = [];
+        // 5. NOVA BASE DE DADOS SENSORIAL (MÓDULO 3)
+        const DB_SENSORY_STRATEGIES = {
+            'vis': { title: 'VISUAL', icon: '👁️', color: 's-vis', border: 'bg-vis',
+                getStrat: (val) => val > 75 ? "Alta demanda visual. Use iluminação em camadas e evite poluição." : "Preferência por simplicidade visual." 
+            },
+            'aud': { title: 'AUDITIVO', icon: '👂', color: 's-aud', border: 'bg-aud',
+                getStrat: (val) => val < 30 ? "Alta sensibilidade. Requer isolamento acústico e tecidos." : "Tolera ruídos. Pode integrar ambientes."
+            },
+            'olf': { title: 'OLFATIVO', icon: '👃', color: 's-olf', border: 'bg-olf',
+                getStrat: (val) => val > 70 ? "Scent Design vital. Preveja difusores e ventilação." : "Olfato neutro. Foco na ventilação."
+            },
+            'tat': { title: 'TÁTIL', icon: '✋', color: 's-tat', border: 'bg-tat',
+                getStrat: (val) => val > 60 ? "Necessidade de toque. Use madeira, veludo e linho." : "Prefere superfícies lisas e frias (limpeza)."
+            },
+            'prop': { title: 'ESPACIAL', icon: '🧭', color: 's-prop', border: 'bg-prop',
+                getStrat: (val) => val > 50 ? "Gosta de amplitude e pé direito alto." : "Prefere 'Toca' (ambientes acolhedores)."
+            },
+            'gus': { title: 'GUSTATIVO', icon: '🍽️', color: 's-gus', border: 'bg-gus',
+                getStrat: (val) => val > 50 ? "Cozinha social. Ilha gourmet e luz quente." : "Cozinha funcional. Praticidade."
+            },
+            'emo': { title: 'EMOCIONAL', icon: '❤️', color: 's-emo', border: 'bg-emo',
+                getStrat: (val) => "Incorpore objetos de memória afetiva e refúgio."
+            },
+            'cog': { title: 'COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog',
+                getStrat: (val) => "Minimize distrações. Use simetria e cores neutras."
+            }
+        };
 
+        // 6. INICIALIZAÇÃO
+        let dadosAPI = [];
         async function init() {
             try {
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
@@ -437,27 +651,23 @@
         }
 
         function checkMod(r, k){ return r && Object.keys(r).some(x=>x.startsWith(k)); }
-        function formatTime(s) {
-            s = parseInt(s); if (isNaN(s)) return "00:00"; 
-            const min = Math.floor(s / 60); const sec = s % 60;
-            return `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
-        }
+        function formatTime(s) { s = parseInt(s); if(isNaN(s)) return "00:00"; return `${Math.floor(s/60)}:${s%60 < 10 ? '0'+(s%60) : s%60}`; }
 
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
             dadosAPI.forEach((d, i) => {
                 const r = d.respostas || {};
-                const c = d.contato || {};
                 const hasHumana = checkMod(r, 'fogo') || checkMod(r, 'ar_');
                 const hasVisual = checkMod(r, 'est_');
                 const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_');
                 const hasMemorias = checkMod(r, 'mem_');
                 const hasAtual = checkMod(r, 'atu_');
-                t.innerHTML += `<tr><td style="font-size:9pt; color:#666;">${new Date(d.data).toLocaleDateString()}</td><td><span class="cli-name">${d.cliente}</span><span class="cli-local">${c.cidade||'-'}</span></td><td>${c.arquiteto || '-'}</td><td><div class="mod-grid"><span class="mod-tag ${hasHumana?'done':''}">Humana</span><span class="mod-tag ${hasVisual?'done':''}">Visual</span><span class="mod-tag ${hasSensorial?'done':''}">Sensorial</span><span class="mod-tag ${hasMemorias?'done':''}">Memórias</span><span class="mod-tag ${hasAtual?'done':''}">Atual</span></div></td><td style="text-align:right"><button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button></td></tr>`;
+                t.innerHTML += `<tr><td>${new Date(d.data).toLocaleDateString()}</td><td><span class="cli-name">${d.cliente}</span></td><td>${d.contato?.arquiteto||'-'}</td><td><div class="mod-grid"><span class="mod-tag ${hasHumana?'done':''}">Humana</span><span class="mod-tag ${hasVisual?'done':''}">Visual</span><span class="mod-tag ${hasSensorial?'done':''}">Sensorial</span><span class="mod-tag ${hasMemorias?'done':''}">Memórias</span><span class="mod-tag ${hasAtual?'done':''}">Atual</span></div></td><td style="text-align:right"><button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button></td></tr>`;
             });
         }
 
+        // 7. GERAÇÃO DO PDF (PROCESSAMENTO)
         async function makePDF(index, btn) {
             try {
                 const d = dadosAPI[index];
@@ -465,11 +675,11 @@
                 const r = d.respostas || {};
 
                 // CAPA
-                document.getElementById('cp-nome').innerText = d.cliente || '-';
-                document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
-                document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
+                if(document.getElementById('cp-nome')) document.getElementById('cp-nome').innerText = d.cliente || '-';
+                if(document.getElementById('cp-arq')) document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
+                if(document.getElementById('cp-data')) document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
 
-                // --- MÓDULO 1 ---
+                // --- MOD 1 ---
                 let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
                 Object.keys(r).forEach(k => {
                     let v = parseInt(r[k]) || 0;
@@ -479,142 +689,121 @@
                 const sorted = [{id:'FOGO',...DB.FOGO,v:p.FOGO},{id:'AR',...DB.AR,v:p.AR},{id:'AGUA',...DB.AGUA,v:p.AGUA},{id:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
                 const dom = sorted[0]; const sec = sorted[1]; const sombra = sorted[3];
 
-                document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
+                if(document.getElementById('t1-time')) document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
                 let chartHTML = '';
                 sorted.forEach(i => {
                     let pct = Math.min((i.v / 25) * 100, 100);
                     chartHTML += `<div class="cc-box"><div class="cc-top"><span class="cc-lbl c-${i.class}">${i.id}</span><span class="cc-val">${i.v}</span></div><div class="cc-bar"><div class="cc-fill bg-${i.class}" style="width:${pct}%"></div></div></div>`;
                 });
-                document.getElementById('chart-container').innerHTML = chartHTML;
-                document.getElementById('wb-head').style.backgroundColor = dom.cor;
-                document.getElementById('txt-el').innerText = dom.id;
-                document.getElementById('txt-tit').innerText = dom.titulo;
-                document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia Base</span><span class="iv">${dom.energia}</span></div><div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${dom.estilos.join(', ')}</span></div>`;
+                if(document.getElementById('chart-container')) document.getElementById('chart-container').innerHTML = chartHTML;
+                if(document.getElementById('wb-head')) document.getElementById('wb-head').style.backgroundColor = dom.cor;
+                if(document.getElementById('txt-el')) document.getElementById('txt-el').innerText = dom.id;
+                if(document.getElementById('txt-tit')) document.getElementById('txt-tit').innerText = dom.titulo;
+                if(document.getElementById('m1-content')) document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia</span><span class="iv">${dom.energia}</span></div><div class="info-row"><span class="il">Perfil</span><span class="iv">${dom.quem}</span></div><div class="info-row"><span class="il">Estilos</span><span class="iv">${dom.estilos.join(', ')}</span></div>`;
                 
-                document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
-                document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
+                if(document.getElementById('m1-neuro-individual')) document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
+                if(document.getElementById('m1-comunicacao-individual')) document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
 
                 const keyComb = `${dom.id}_${sec.id}`;
                 const dataComb = CORRELACOES[keyComb] || { perfil:'Misto', projeto:'Equilíbrio', atendimento:'Adaptável' };
-                document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
-                document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
+                if(document.getElementById('m1-perfil-texto')) document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
+                if(document.getElementById('m1-projeto-texto')) document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
                 const txtSombra = SOMBRAS[sombra.id] || "Buscar equilíbrio.";
-                document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
-                document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento;
+                if(document.getElementById('m1-sombra-texto')) document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
+                if(document.getElementById('m1-comunicacao-texto')) document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento;
 
-                // --- MÓDULO 2 (CORREÇÃO V34) ---
-                document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
+                // --- MOD 2 ---
+                if(document.getElementById('t2-time')) document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
                 let visualScores = [];
-                Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({id: k, nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0}); });
-                visualScores.sort((a,b) => b.val - a.val);
-                
+                Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({id:k, nome:DB_VISUAL[k]||k, val:parseInt(r[k])||0}); });
+                visualScores.sort((a,b)=>b.val-a.val);
                 if(visualScores.length > 0) {
-                    const topStyle = visualScores[0];
-                    document.getElementById('vis-top1-nome').innerText = topStyle.nome;
-                    document.getElementById('vis-top1-nota').innerText = topStyle.val;
-                    
-                    // LÓGICA DE DETALHAMENTO DO ESTILO
-                    const details = DB_VISUAL_DETAILS[topStyle.id] || DB_VISUAL_DETAILS['default'];
-                    let richHTML = `
-                        <div class="strategy-grid">
-                            <div class="st-card highlight">
-                                <div class="st-head">🗝️ CONCEITO CHAVE</div>
-                                <div class="st-text">${details.conceito}</div>
-                            </div>
-                            <div class="st-card">
-                                <div class="st-head">🧠 NEURO DICA</div>
-                                <div class="st-text">${details.neuro}</div>
-                            </div>
-                        </div>
-                        <div class="strategy-grid">
-                            <div class="st-card">
-                                <div class="st-head">🧱 MATERIAIS</div>
-                                <div class="st-text">${details.materiais}</div>
-                            </div>
-                            <div class="st-card">
-                                <div class="st-head">💡 ILUMINAÇÃO</div>
-                                <div class="st-text">${details.luz}</div>
-                            </div>
-                            <div class="st-card">
-                                <div class="st-head">🪑 MOBILIÁRIO</div>
-                                <div class="st-text">${details.mobiliario}</div>
-                            </div>
-                        </div>
-                        <div style="margin-top:20px; font-size:10pt; font-weight:700; color:#999; text-transform:uppercase;">Outros estilos com afinidade:</div>
-                    `;
-                    
-                    richHTML += visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
-                    document.getElementById('m2-content').innerHTML = richHTML;
-                    document.getElementById('m2-conclusao-dinamica').innerText = `Para um perfil ${topStyle.nome}, o ambiente deve focar em ${details.conceito}. A neuroarquitetura sugere ${details.neuro}`;
+                    const top = visualScores[0];
+                    if(document.getElementById('vis-top1-nome')) document.getElementById('vis-top1-nome').innerText = top.nome;
+                    if(document.getElementById('vis-top1-nota')) document.getElementById('vis-top1-nota').innerText = top.val;
+                    const det = DB_VISUAL_DETAILS[top.id] || DB_VISUAL_DETAILS['default'];
+                    let richHTML = `<div class="strategy-grid"><div class="st-card highlight"><div class="st-head">🗝️ CONCEITO</div><div class="st-text">${det.conceito}</div></div><div class="st-card"><div class="st-head">🧠 NEURO DICA</div><div class="st-text">${det.neuro}</div></div></div>`;
+                    richHTML += `<div class="strategy-grid"><div class="st-card"><div class="st-head">🧱 MATERIAIS</div><div class="st-text">${det.materiais}</div></div><div class="st-card"><div class="st-head">💡 ILUMINAÇÃO</div><div class="st-text">${det.luz}</div></div><div class="st-card"><div class="st-head">🪑 MOBILIÁRIO</div><div class="st-text">${det.mobiliario}</div></div></div>`;
+                    richHTML += `<div style="margin-top:15px; font-size:9pt; font-weight:700; color:#999;">AFINIDADES SECUNDÁRIAS:</div>`;
+                    richHTML += visualScores.slice(1,5).map(i=>`<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}%</span></div>`).join('');
+                    if(document.getElementById('m2-content')) document.getElementById('m2-content').innerHTML = richHTML;
+                    if(document.getElementById('m2-conclusao-dinamica')) document.getElementById('m2-conclusao-dinamica').innerText = `Perfil ${top.nome}: Foco em ${det.conceito}`;
                 }
 
-                // --- MÓDULO 3 ---
-                document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
-                let m3v = '', m3o = '';
-                Object.keys(r).forEach(k => {
-                    if((k.startsWith('vis_') || k.startsWith('bio_')) && typeof r[k] === 'number') {
-                        let label = k.replace('vis_', '').replace('bio_', '').replace(/_/g, ' ').toUpperCase();
-                        m3v += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
-                    }
-                    if((k.startsWith('aud_') || k.startsWith('olf_') || k.startsWith('tat_')) && typeof r[k] === 'number') {
-                        let label = k.replace('aud_', '').replace('olf_', '').replace('tat_', '').replace(/_/g, ' ').toUpperCase();
-                        m3o += `<div class="sensory-bar"><span class="sb-lbl">${label}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%"></div></div><span class="sb-val">${r[k]}</span></div>`;
-                    }
-                });
-                document.getElementById('m3-visual').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">VISUAL & BIOFILIA</span>` + m3v;
-                document.getElementById('m3-outros').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">OUTROS SENTIDOS</span>` + m3o;
+                // --- MOD 3 (SENSORIAL) ---
+                if(document.getElementById('t3-time')) document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
+                const senseKeys = ['vis','aud','olf','tat','prop','gus','emo','cog'];
+                let senseHTML = '';
+                
+                const sVals = {
+                    vis: r['vis_complex'] || 50,
+                    aud: r['aud_eco'] || 0,
+                    olf: r['olf_sens'] || 50,
+                    tat: r['tat_tex_macia'] || 50,
+                    prop: r['prop_pe_dir'] || 50,
+                    gus: r['gus_social'] || 50,
+                    emo: 100, 
+                    cog: r['cog_prod'] || 50
+                };
 
-                // --- MÓDULO 4 ---
-                document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
+                senseKeys.forEach(k => {
+                    const info = DB_SENSORY_STRATEGIES[k];
+                    const val = sVals[k] || 50; 
+                    const strat = info.getStrat(val);
+                    
+                    senseHTML += `
+                        <div class="sense-card">
+                            <div class="sense-head">
+                                <span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span>
+                            </div>
+                            <div class="sense-bar-container">
+                                <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
+                                <span class="sense-val ${info.color}">${val}%</span>
+                            </div>
+                            <div class="sense-strategy">${strat}</div>
+                        </div>
+                    `;
+                });
+                if(document.getElementById('m3-grid-container')) document.getElementById('m3-grid-container').innerHTML = senseHTML;
+
+                // --- MOD 4 ---
+                if(document.getElementById('t4-time')) document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
                 let explHTML = '', implHTML = '';
                 Object.keys(r).forEach(k => {
                     if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
-                        if(typeof r[k] === 'string') explHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#8e44ad">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
+                        if(typeof r[k] === 'string') explHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#8e44ad">${k.split('_')[2].toUpperCase()}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
                         else explHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#8e44ad"></div></div></div>`;
                     }
                     if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
-                        if(typeof r[k] === 'string') implHTML += `<div style="width:100%; margin-bottom:10px; background:#f9f9f9; padding:5px;"><span class="il-lbl" style="color:#2c3e50">${k.split('_')[2].toUpperCase()}</span><span class="il-val">"${r[k]}"</span></div>`;
+                        if(typeof r[k] === 'string') implHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#2c3e50">${k.split('_')[2].toUpperCase()}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
                         else implHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#2c3e50"></div></div></div>`;
                     }
                 });
-                document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
-                document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
+                if(document.getElementById('m4-expl')) document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
+                if(document.getElementById('m4-impl')) document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
 
-                // --- MÓDULO 5 ---
-                document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
+                // --- MOD 5 ---
+                if(document.getElementById('t5-time')) document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
                 const makeTags = (key, elId) => {
                     const el = document.getElementById(elId); if(el) el.innerHTML = '';
                     const val = r[key];
-                    if(Array.isArray(val)) {
-                        val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
-                    } else if(val) {
-                        el.innerHTML = `<span class="ct-item">${val}</span>`;
-                    } else {
-                        el.innerHTML = '-';
-                    }
+                    if(Array.isArray(val)) val.forEach(item => el.innerHTML += `<span class="ct-item">${item}</span>`);
+                    else if(val) el.innerHTML = `<span class="ct-item">${val}</span>`;
+                    else el.innerHTML = '-';
                 };
-                makeTags('atu_fase_vida', 'm5-fase');
-                makeTags('atu_investimento', 'm5-invest');
-                makeTags('atu_hobbies', 'm5-hobbies');
-                makeTags('atu_personalidade', 'm5-pers');
-                
+                makeTags('atu_fase_vida', 'm5-fase'); makeTags('atu_investimento', 'm5-invest');
+                makeTags('atu_hobbies', 'm5-hobbies'); makeTags('atu_personalidade', 'm5-pers');
                 const tempo = r['atu_tempo'] || 0;
-                document.getElementById('m5-tempo-bar').style.width = tempo + '%';
-                document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
-                document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
+                if(document.getElementById('m5-tempo-bar')) document.getElementById('m5-tempo-bar').style.width = tempo + '%';
+                if(document.getElementById('m5-tempo-val')) document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
+                if(document.getElementById('m5-obs')) document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
 
                 // DOWNLOAD
                 const el = document.getElementById('pdf-root');
                 el.style.display = 'block';
                 window.scrollTo(0, 0); 
                 setTimeout(async () => {
-                    const opt = {
-                        margin: 0,
-                        filename: `Dossie_${d.cliente}_Completo.pdf`,
-                        image: { type: 'jpeg', quality: 0.98 },
-                        html2canvas: { scale: 2, scrollY: 0, useCORS: true }, 
-                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                    };
+                    const opt = { margin: 0, filename: `Dossie_${d.cliente}_Completo.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, scrollY: 0, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
                     await html2pdf().set(opt).from(el).save();
                     el.style.display = 'none';
                     btn.innerText = original; btn.disabled = false;
