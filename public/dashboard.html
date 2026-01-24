@@ -893,29 +893,77 @@
             </div>
         </div>
 
+        <!-- PÁGINA 2: MÓDULO 1 - BIOTIPO & NEUROARQUITETURA -->
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE DO SER</div><div class="mh-sub">Arquétipo & Temperamento</div></div>
-                    <div class="mh-meta"><div class="mh-num">01</div><span class="mh-time" id="t1-time">--:--</span></div>
+                    <div>
+                        <div class="mh-tit">IDENTIDADE DO SER</div>
+                        <div class="mh-sub">Biotipo & Neuroarquitetura</div>
+                    </div>
+                    <div class="mh-meta">
+                        <div class="mh-num">01</div>
+                        <span class="mh-time" id="t1-time">--:--</span>
+                    </div>
                 </div>
+                
                 <div class="charts" id="chart-container"></div>
+                
                 <div class="win-box">
-                    <div class="wb-head" id="wb-head"><div class="wb-tit" id="txt-el">-</div><div class="wb-sty" id="txt-tit">-</div></div>
+                    <div class="wb-head" id="wb-head">
+                        <div class="wb-tit" id="txt-el">-</div>
+                        <div class="wb-sty" id="txt-tit">-</div>
+                    </div>
                     <div class="wb-body" id="m1-content"></div>
                 </div>
+                
                 <div class="strategy-grid">
-                    <div class="st-card"><div class="st-head">🧠 NEUROARQUITETURA (BASE)</div><div class="st-text" id="m1-neuro-individual"></div></div>
-                    <div class="st-card"><div class="st-head">🗣️ ATENDIMENTO (BASE)</div><div class="st-text" id="m1-comunicacao-individual"></div></div>
+                    <div class="st-card">
+                        <div class="st-head">🧠 NEUROARQUITETURA (BIOTIPO)</div>
+                        <div class="st-text" id="m1-neuro-individual"></div>
+                    </div>
+                    <div class="st-card">
+                        <div class="st-head">⚡ ENERGIA & ESTILO BASE</div>
+                        <div class="st-text" id="m1-energia-base"></div>
+                    </div>
                 </div>
+                
+                <div class="ft-note">NeuroBriefing Intelligence</div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 3: MÓDULO 1 - ATENDIMENTO & GESTÃO -->
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div>
+                        <div class="mh-tit">IDENTIDADE DO SER</div>
+                        <div class="mh-sub">Estratégia de Atendimento & Gestão do Cliente</div>
+                    </div>
+                    <div class="mh-meta">
+                        <div class="mh-num">01</div>
+                    </div>
+                </div>
+                
+                <div class="win-box">
+                    <div class="wb-head" style="background:#2c3e50;">
+                        <div class="wb-tit">PROTOCOLO DE ATENDIMENTO</div>
+                    </div>
+                    <div class="wb-body" id="m1-atendimento-deep"></div>
+                </div>
+                
                 <div class="strategy-grid">
-                    <div class="st-card highlight"><div class="st-head">👑 PERFIL COMBINADO (DOM + SEC)</div><div class="st-text" id="m1-perfil-texto"></div><div class="st-text" id="m1-projeto-texto" style="margin-top:8px; font-weight:bold;"></div></div>
-                    <div class="st-card shadow-card"><div class="st-head">⚠️ PONTO DE ATENÇÃO (SOMBRA)</div><div class="st-text" id="m1-sombra-texto"></div><div class="st-text" id="m1-comunicacao-texto" style="margin-top:8px; font-style:italic;"></div></div>
+                    <div class="st-card" style="border-left:5px solid #e74c3c;">
+                        <div class="st-head">⚠️ PONTO DE ATENÇÃO (SOMBRA)</div>
+                        <div class="st-text" id="m1-sombra-texto"></div>
+                    </div>
+                    <div class="st-card" style="border-left:5px solid #27ae60;">
+                        <div class="st-head">✅ DIRETRIZES DE PROJETO</div>
+                        <div class="st-text" id="m1-projeto-texto"></div>
+                    </div>
                 </div>
-                <div class="box-conclusao">
-                    <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
-                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base". A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
-                </div>
+                
+                <div class="box-conclusao" id="m1-fechamento"></div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
         </div>
@@ -1101,34 +1149,66 @@
 
     <script>
         // 1. DADOS MOD 1 e 2
-        const DB = {
+                const DB = {
+            TERRA: { 
+                id: 'TERRA', 
+                cor:'#27ae60', 
+                class:'terra', 
+                titulo:'Analista (Melancólico)', 
+                energia:'Estrutura, Rigor e Profundidade.',
+                quem:'Pessoas metódicas que valorizam previsibilidade e qualidade.',
+                perfil:'Analista', 
+                estilos:['Clássico', 'Minimalismo', 'Neoclássico'],
+                neuro: 'O cérebro melancólico busca previsibilidade. Ambientes com <strong>simetria axial</strong> e armários fechados reduzem o ruído cognitivo. Evite layouts abertos demais que gerem sensação de vulnerabilidade.',
+                comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.',
+                atendimento: 'Apresente dados técnicos, amostras físicas e cronogramas rígidos. Não mude planos de última hora. Ganhe a confiança através da precisão e do respeito ao silêncio.',
+                projeto: 'Foco em Minimalismo Purista e Clássico. Materiais naturais estáveis como pedra e madeira maciça.',
+                sombra: 'Tendência ao perfeccionismo paralisante. Irritação com desorganização visual ou atrasos inexplicados.'
+            },
             FOGO: { 
-                id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
-                energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', 
-                perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], 
-                neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', 
-                comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.' 
+                id: 'FOGO', 
+                cor:'#e74c3c', 
+                class:'fogo', 
+                titulo:'Executor (Colérico)', 
+                energia:'Ação, Dominância e Intensidade.',
+                quem:'Pessoas focadas em resultados, agilidade e controle.',
+                perfil:'Executor', 
+                estilos:['Contemporâneo', 'Industrial', 'High Tech'],
+                neuro: 'Busca dopaminérgica por recompensa e controle. O espaço deve ter <strong>fluxos desimpedidos</strong> e materiais que transmitam solidez. Áreas de comando (visão da entrada) são essenciais.',
+                comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.',
+                atendimento: 'Seja direto, objetivo e valorize o tempo dele. Apresente soluções prontas ("Isso resolve seu problema"). Não dê opções demais; dê a melhor.',
+                projeto: 'Industrial Moderno ou Contemporâneo Brutalista. Automação robusta e tecnologia de ponta.',
+                sombra: 'Impaciência extrema. Pode se tornar agressivo se sentir que o projeto está "lento" ou burocrático.'
             },
             AR: { 
-                id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', 
-                energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis e visuais.', 
-                perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], 
-                neuro: 'Busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', 
-                comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' 
+                id: 'AR', 
+                cor:'#3498db', 
+                class:'ar', 
+                titulo:'Comunicador (Sanguíneo)', 
+                energia:'Conexão, Variedade e Criatividade.',
+                quem:'Pessoas sociáveis, visuais e criativas.',
+                perfil:'Comunicador', 
+                estilos:['Boho Chic', 'Eclético', 'Maximalismo'],
+                neuro: 'Necessidade de estímulos variados para manter o interesse. <strong>Ambientes multiuso</strong> e layouts que favoreçam a conversa. Cores quentes em pontos focais ativam o sistema límbico.',
+                comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.',
+                atendimento: 'Use apresentações visuais impactantes (VR, 3D). Seja entusiasta e valide as ideias criativas dele. Mantenha o clima leve e social.',
+                projeto: 'Eclético, Boho Chic ou Maximalismo Curado. Espaços "instagramáveis" e de convívio social.',
+                sombra: 'Falta de foco e tédio rápido. Pode abandonar decisões técnicas se o processo for maçante.'
             },
             AGUA: { 
-                id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', 
-                energia:'Acolhimento · Calma', quem:'Pessoas diplomáticas.', 
-                perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], 
-                neuro: 'Busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', 
-                comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.' 
-            },
-            TERRA: { 
-                id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', 
-                energia:'Estrutura · Ordem', quem:'Pessoas metódicas.', 
-                perfil:'Analista', estilos:['Clássico', 'Minimalismo'], 
-                neuro: 'Busca <strong>previsibilidade</strong>. Simetria e armários fechados.', 
-                comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.' 
+                id: 'ÁGUA', 
+                cor:'#2980b9', 
+                class:'agua', 
+                titulo:'Planejador (Fleumático)', 
+                energia:'Harmonia, Acolhimento e Estabilidade.',
+                quem:'Pessoas diplomáticas que buscam paz e segurança.',
+                perfil:'Planejador', 
+                estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'],
+                neuro: 'Sistema límbico sensível ao estresse. Priorizar <strong>conforto acústico e texturas hápicas</strong>. Iluminação circadiana (2700K) para relaxamento parassimpático.',
+                comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.',
+                atendimento: 'Seja paciente e gentil. Ele precisa de tempo para decidir e geralmente consulta a família. Transmita paz e segurança no processo.',
+                projeto: 'Japandi, Orgânico ou Wabi-Sabi. Cantos de refúgio ("tocas") e biofilia abundante.',
+                sombra: 'Resistência passiva a mudanças bruscas. Dificuldade em dizer "não" para algo que não gostou.'
             }
         };
         const DB_VISUAL = {
@@ -1365,12 +1445,21 @@
                 if(document.getElementById('m1-neuro-individual')) document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
                 if(document.getElementById('m1-comunicacao-individual')) document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
 
+                // PÁGINA 2 - Campos novos
+                if(document.getElementById('m1-energia-base')) document.getElementById('m1-energia-base').innerHTML = dom.energia;
+
+                // PÁGINA 3 - Atendimento profundo e conclusão
+                if(document.getElementById('m1-atendimento-deep')) document.getElementById('m1-atendimento-deep').innerHTML = dom.atendimento;
+                if(document.getElementById('m1-sombra-texto')) document.getElementById('m1-sombra-texto').innerHTML = dom.sombra;
+                if(document.getElementById('m1-projeto-texto')) document.getElementById('m1-projeto-texto').innerHTML = dom.projeto;
+                if(document.getElementById('m1-fechamento')) {
+                    document.getElementById('m1-fechamento').innerHTML = `<span class="bc-tit">CONCLUSÃO DO MÓDULO 1:</span> O DNA comportamental aponta para um projeto que prioriza ${dom.energia.toLowerCase()}. A estratégia de atendimento deve focar em ${dom.comunicacao.toLowerCase()}.`;
+                }
+
                 const keyComb = `${dom.id}_${sec.id}`;
                 const dataComb = CORRELACOES[keyComb] || { perfil:'Misto', projeto:'Equilíbrio', atendimento:'Adaptável' };
                 if(document.getElementById('m1-perfil-texto')) document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
-                if(document.getElementById('m1-projeto-texto')) document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
                 const txtSombra = SOMBRAS[sombra.id] || "Buscar equilíbrio.";
-                if(document.getElementById('m1-sombra-texto')) document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
                 if(document.getElementById('m1-comunicacao-texto')) document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento;
 
                 // --- MOD 2 ---
