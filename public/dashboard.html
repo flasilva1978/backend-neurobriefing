@@ -1154,6 +1154,45 @@
     </div>
 
     <script>
+        // ============================================================================
+        // DADOS MOCK PARA TESTE LOCAL (Ative USE_MOCK = true para testar)
+        // ============================================================================
+        const USE_MOCK = false; // Altere para true se quiser testar sem API
+        
+        const MOCK_DATA = [{
+            "_id": "mock001",
+            "cliente": "Maria Silva",
+            "contato": {
+                "nome": "Maria Silva",
+                "telefone": "(11) 98765-4321",
+                "email": "maria@exemplo.com",
+                "cidade": "São Paulo",
+                "estado": "SP",
+                "arquiteto": "Ana Designer"
+            },
+            "data": "2024-01-20T10:00:00.000Z",
+            "respostas": {
+                "fogo_1": 4, "fogo_2": 5, "fogo_3": 4, "fogo_4": 3, "fogo_5": 5,
+                "ar_1": 3, "ar_2": 2, "ar_3": 3, "ar_4": 2, "ar_5": 2,
+                "agua_1": 2, "agua_2": 3, "agua_3": 2, "agua_4": 2, "agua_5": 2,
+                "terra_1": 4, "terra_2": 4, "terra_3": 5, "terra_4": 4, "terra_5": 5,
+                "est_contemp": 85, "est_tech": 75, "est_scandi": 60, "est_ind": 45,
+                "vis_complex": 70, "aud_eco": 40, "olf_sens": 60, "tat_tex_macia": 65,
+                "prop_pe_dir": 75, "gus_social": 80, "emo_nostalgia": 55, "cog_prod": 70,
+                "mem_epi_infancia": 60, "mem_epi_viagem": 70, "mem_sem_aconchego": 75,
+                "atu_fase_vida": ["👫 Casal sem filhos"],
+                "atu_hobbies": ["🍳 Cozinhar", "📚 Leitura/Estudos", "💻 Trabalhar em Casa (Home Office)"],
+                "atu_personalidade": ["💡 Idealismo", "📋 Organização", "🎯 Foco"],
+                "atu_investimento": ["💎 Design Assinado/Luxo"],
+                "atu_tempo": 75,
+                "atu_obs_geral": "Cliente busca projeto sofisticado e funcional para permanência longa."
+            },
+            "tempos": [180, 240, 300, 200, 150],
+            "modulosConcluidos": [0, 1, 2, 3, 4],
+            "modulosCompletos": true,
+            "duracao": 1070
+        }];
+
         // 1. DADOS MOD 1 e 2
                 const DB = {
             TERRA: { 
@@ -1659,23 +1698,69 @@
             }
         };
 
-        const DB_INVEST_INSIGHTS = {
-            'Econômico': "<strong>Estratégia:</strong> Foque em pintura criativa e iluminação cênica. Use móveis soltos que podem ser reaproveitados.",
-            'Médio': "<strong>Estratégia:</strong> Invista em marcenaria fixa nas áreas molhadas e piso de alta qualidade nas áreas sociais.",
-            'Alto': "<strong>Estratégia:</strong> Automação completa, materiais nobres (pedras naturais) e design assinado. Exclusividade é a chave."
-        };
-
         const DB_LABELS = { 'TEC': 'Tecnologia/Automação', 'AZUL': 'Tons Frios (Azul)', 'MADEIRA': 'Madeira Natural', 'METAL': 'Metal/Industrial', 'BAGUNCA': 'Tolerância a Bagunça', 'FLUXO': 'Fluxo/Circulação', 'ACONCHEGO': 'Aconchego/Ninho', 'LAR': 'Valorização do Lar', 'INFANCIA': 'Memória de Infância', 'VIAGEM': 'Memória de Viagem', 'DIAADIA': 'Rotina Diária', 'OBJETO': 'Objeto Afetivo', 'RELATO': 'Relato Pessoal', 'INSPIRACAO': 'Inspiração', 'RUIDO': 'Sensibilidade a Ruído', 'POS': 'Pós-Ocupação' };
 
         let dadosAPI = [];
 
         async function init() {
-            try {
-                const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
-                dadosAPI = await req.json();
+            // Se USE_MOCK estiver true, usar dados locais
+            if (USE_MOCK) {
+                console.log('🧪 Modo MOCK ativado - usando dados de teste locais');
+                dadosAPI = MOCK_DATA;
                 dadosAPI.sort((a, b) => new Date(b.data) - new Date(a.data));
                 renderTable();
-            } catch(e) { console.error(e); }
+                return;
+            }
+
+            // Tentar buscar da API
+            try {
+                console.log('🌐 Buscando dados da API...');
+                const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
+                console.log('📡 Status da requisição:', req.status);
+                
+                if (!req.ok) {
+                    throw new Error(`HTTP error! status: ${req.status}`);
+                }
+                
+                dadosAPI = await req.json();
+                console.log('✅ Dados recebidos:', dadosAPI.length, 'registros');
+                
+                // Se não houver dados, usar mock
+                if (!dadosAPI || dadosAPI.length === 0) {
+                    console.warn('⚠️ API retornou dados vazios, usando MOCK');
+                    dadosAPI = MOCK_DATA;
+                }
+                
+                dadosAPI.sort((a, b) => new Date(b.data) - new Date(a.data));
+                renderTable();
+                
+            } catch(e) { 
+                console.error('❌ Erro ao carregar dados da API:', e);
+                console.log('🔄 Fallback: usando dados MOCK');
+                
+                // Usar dados mock como fallback
+                dadosAPI = MOCK_DATA;
+                dadosAPI.sort((a, b) => new Date(b.data) - new Date(a.data));
+                renderTable();
+                
+                // Mostrar aviso ao usuário
+                const alert = document.createElement('div');
+                alert.style.cssText = 'position:fixed; top:20px; right:20px; background:#fff3cd; border:2px solid #ffc107; padding:15px 20px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:9999; max-width:400px;';
+                alert.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:24px;">⚠️</span>
+                        <div>
+                            <strong style="display:block; margin-bottom:5px;">Modo Offline</strong>
+                            <small style="color:#856404;">Não foi possível conectar ao servidor. Mostrando dados de exemplo para teste.</small>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; font-size:20px; cursor:pointer; margin-left:auto;">×</button>
+                    </div>
+                `;
+                document.body.appendChild(alert);
+                
+                // Remover alerta automaticamente após 10 segundos
+                setTimeout(() => alert.remove(), 10000);
+            }
         }
 
         function checkMod(r, k){ return r && Object.keys(r).some(x=>x.startsWith(k)); }
