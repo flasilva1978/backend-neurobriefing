@@ -11,31 +11,59 @@
     
     <style>
         /* ==========================================================================
-           1. ESTILOS GERAIS E RESET
+           1. ESTILOS GERAIS
            ========================================================================== */
-        * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
-        body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-print-color-adjust: exact; 
+        }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: #f0f2f5; 
+            margin: 0; 
+            padding: 20px; 
+            color: #333; 
+        }
         
         /* ==========================================================================
-           2. ESTILOS DO PAINEL (TELA DO COMPUTADOR)
+           2. PAINEL DE CONTROLE (TELA)
            ========================================================================== */
-        .painel { max-width: 1200px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 20px; }
+        .painel { 
+            max-width: 1200px; 
+            margin: 0 auto 30px auto; 
+            background: white; 
+            padding: 25px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+        }
+        
+        .header-painel { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 20px; 
+            margin-bottom: 20px; 
+        }
+        
         .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
-        .btn-refresh { background: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; font-weight: 700; font-size: 9pt; transition: 0.2s; }
+        
+        .btn-refresh { 
+            background: #2c3e50; color: white; 
+            padding: 10px 20px; border: none; cursor: pointer; 
+            border-radius: 6px; font-weight: 700; transition: 0.2s; 
+        }
         .btn-refresh:hover { background: #34495e; }
         
-        /* TABELA DE CLIENTES */
+        /* TABELA */
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
         tr:hover { background-color: #fafafa; }
+        
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
         .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
-        .contact-row { display: flex; gap: 8px; }
-        .btn-contact { text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
-        .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
         
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         .mod-tag { padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; background: #eee; color: #bbb; border: 1px solid #e0e0e0; }
@@ -46,13 +74,21 @@
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
         
         /* ==========================================================================
-           3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
+           3. ESTILOS DO PDF (A4)
            ========================================================================== */
         #pdf-root { display: none; } 
-        .page { width: 210mm; height: 296mm; background: white; position: relative; overflow: hidden; margin: 0 auto; page-break-after: always; padding: 0; }
+        
+        .page { 
+            width: 210mm; height: 296mm; 
+            background: white; 
+            position: relative; overflow: hidden; 
+            margin: 0 auto; 
+            page-break-after: always; 
+            padding: 0; 
+        }
         .page:last-child { page-break-after: avoid; }
         
-        /* CAPA & HEADER */
+        /* CAPA */
         .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
@@ -61,7 +97,7 @@
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        /* HEADER DOS MÓDULOS */
+        /* HEADER */
         .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
         .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; }
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
@@ -70,23 +106,14 @@
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        /* BOXES DE CONTEÚDO */
+        /* BOXES */
         .win-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 15px; display: flex; flex-direction: column; }
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
         .wb-body { padding: 20px; flex: 1; }
         
-        /* GRIDS & LAYOUTS ESPECÍFICOS */
-        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
-        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
-        .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; }
-        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; }
-        
-        .st-head { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
-        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
-
-        /* GRÁFICOS (CSS PURO) */
+        /* GRÁFICOS */
         .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 40px; }
         .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
@@ -95,10 +122,14 @@
         .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
 
-        /* RODAPÉ E CONCLUSÃO */
-        .box-conclusao { background: #fdfdfd; border-left: 4px solid #2c3e50; padding: 15px; font-size: 9pt; color: #555; line-height: 1.5; margin-top: auto; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
-        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
+        /* GRID ESTRATÉGICO */
+        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
+        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
+        .st-card.highlight { border-left: 4px solid #3498db; background: #fdfdfd; }
+        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fdfdfd; }
+        
+        .st-head { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
+        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
         
         /* GRIDS & LISTAS */
         .grid-2 { display: flex; gap: 20px; }
@@ -106,7 +137,6 @@
         .info-row { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
         .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
         .iv { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.25; }
-        
         .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
         .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
         .il-val { font-size: 9pt; color: #555; }
@@ -118,9 +148,14 @@
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
-        /* TAGS (MÓDULO 5) */
+        /* TAGS (MOD 5) */
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
+
+        /* BOX CONCLUSÃO */
+        .box-conclusao { background: #fdfdfd; border-left: 4px solid #2c3e50; padding: 15px; font-size: 9pt; color: #555; line-height: 1.5; margin-top: auto; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
+        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
 
         /* CORES */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -171,14 +206,11 @@
                     <div><div class="mh-tit">IDENTIDADE DO SER</div><div class="mh-sub">Arquétipo & Temperamento</div></div>
                     <div class="mh-meta"><div class="mh-num">01</div><span class="mh-time" id="t1-time">--:--</span></div>
                 </div>
-                
                 <div class="charts" id="chart-container"></div>
-                
                 <div class="win-box">
                     <div class="wb-head" id="wb-head"><div class="wb-tit" id="txt-el">-</div><div class="wb-sty" id="txt-tit">-</div></div>
                     <div class="wb-body" id="m1-content"></div>
                 </div>
-
                 <div class="strategy-grid">
                     <div class="st-card">
                         <div class="st-head">🧠 NEUROARQUITETURA (BASE)</div>
@@ -189,7 +221,6 @@
                         <div class="st-text" id="m1-comunicacao-individual"></div>
                     </div>
                 </div>
-
                 <div class="strategy-grid">
                     <div class="st-card highlight">
                         <div class="st-head">👑 PERFIL COMBINADO (DOMINANTE + SECUNDÁRIO)</div>
@@ -202,11 +233,10 @@
                         <div class="st-text" id="m1-comunicacao-texto" style="margin-top:8px; font-style:italic;"></div>
                     </div>
                 </div>
-
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
                     O perfil identificado exige uma estratégia de design que respeite a "Energia Base". 
-                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta (Dopamina vs Ocitocina), equilibrando o temperamento dominante com o secundário e compensando a sombra.
+                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -219,25 +249,23 @@
                     <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" id="t2-time">--:--</span></div>
                 </div>
                 
-                <div class="win-box" style="flex:0 auto; margin-bottom:20px;">
+                <div class="win-box" style="flex:0 auto; margin-bottom:30px;">
                     <div class="wb-head" style="background:#2c3e50;">
                         <div class="wb-tit">ESTILO PREDOMINANTE</div>
                         <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
                     </div>
-                    <div class="wb-body" style="padding:20px; text-align:center;">
-                        <h2 style="margin:0; font-size:24pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
-                        <div style="margin-top:10px; font-size:12pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
+                    <div class="wb-body" style="padding:25px; text-align:center;">
+                        <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
+                        <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
                     </div>
                 </div>
 
-                <div id="m2-content">
-                    </div>
+                <div id="m2-content"></div>
 
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
                     <span id="m2-conclusao-dinamica">
                         A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
-                        Utilize o estilo predominante como base estrutural e os secundários para camadas de decoração.
                     </span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
@@ -257,7 +285,7 @@
                 <div class="box-conclusao">
                     <span class="bc-tit">APLICAÇÃO PRÁTICA (SENSORIAL)</span>
                     Baseado em <strong>Juhani Pallasmaa</strong>:
-                    <br>1. Regulação: Se houver sensibilidade, crie zonas de descompressão acústica/visual.
+                    <br>1. Regulação: Se houver sensibilidade, crie zonas de descompressão.
                     <br>2. Biofilia: Use a vegetação como redutor fisiológico de estresse.
                     <br>3. Tato: Invista em texturas táteis nas áreas de permanência.
                 </div>
@@ -343,86 +371,38 @@
     </div>
 
     <script>
-        // 1. BANCO DE DADOS (TEXTOS COMPLETOS RESTAURADOS - MOD 1)
+        // 1. BANCO DE DADOS TEMPERAMENTOS (MÓDULO 1)
         const DB = {
-            FOGO: { 
-                id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
-                energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', 
-                perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'],
-                neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente. Evite excessos visuais.',
-                comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.'
-            },
-            AR: { 
-                id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', 
-                energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis, criativas e visuais.', 
-                perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'],
-                neuro: 'Este cérebro busca <strong>estímulos variados</strong>. O projeto precisa de <strong>áreas de convivência integradas</strong>, elementos "instagramáveis" e flexibilidade. Luz natural é vital.',
-                comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências. Foque na experiência social.'
-            },
-            AGUA: { 
-                id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', 
-                energia:'Acolhimento · Calma · Empatia', quem:'Pessoas diplomáticas, constantes e sensíveis.', 
-                perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'],
-                neuro: 'Este cérebro busca <strong>segurança e ocitocina</strong> (afeto). O projeto deve ser um <strong>refúgio (casulo)</strong>. Priorize acústica, texturas táteis macias e cantos de leitura.',
-                comunicacao: 'Seja <strong>paciente e ouvinte</strong>. Dê tempo para ele pensar. Transmita segurança nas decisões.'
-            },
-            TERRA: { 
-                id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', 
-                energia:'Estrutura · Ordem · Detalhe', quem:'Pessoas metódicas, profundas e perfeccionistas.', 
-                perfil:'Analista', estilos:['Clássico', 'Moderno Elegante', 'Minimalismo'],
-                neuro: 'Este cérebro busca <strong>previsibilidade e ordem</strong>. O projeto precisa de <strong>simetria</strong>, armários fechados (menos ruído visual) e acabamentos impecáveis.',
-                comunicacao: 'Seja <strong>detalhista e técnico</strong>. Mostre cronogramas, orçamentos detalhados e especificações.'
-            }
+            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos e soluções.' },
+            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis, criativas e visuais.', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], neuro: 'Este cérebro busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' },
+            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', energia:'Acolhimento · Calma · Empatia', quem:'Pessoas diplomáticas e sensíveis.', perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], neuro: 'Este cérebro busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', comunicacao: 'Seja <strong>paciente e ouvinte</strong>. Transmita segurança.' },
+            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', energia:'Estrutura · Ordem · Detalhe', quem:'Pessoas metódicas e perfeccionistas.', perfil:'Analista', estilos:['Clássico', 'Moderno Elegante', 'Minimalismo'], neuro: 'Este cérebro busca <strong>previsibilidade e ordem</strong>. Precisa de simetria e armários fechados.', comunicacao: 'Seja <strong>detalhista e técnico</strong>. Mostre cronogramas e especificações.' }
         };
 
-        // 2. BASE DE CONHECIMENTO VISUAL (NOVA E DETALHADA - MÓDULO 2)
-        const DB_VISUAL_DETAILS = {
-            'est_tech': {
-                conceito: 'Futurismo, automação e linhas puras.',
-                materiais: 'Vidro, Aço Inox, Superfícies High-Gloss.',
-                luz: 'Linear, RGB (cenas), Fria (foco) e Indireta (LEDs em marcenaria).',
-                mobiliario: 'Design ergonômico, peças assinadas, cadeiras de escritório premium.',
-                neuro: 'Reduz a carga cognitiva pela limpeza visual. A automação gera sensação de controle e eficiência (Dopamina).'
-            },
-            'est_scandi': {
-                conceito: 'Hygge: Conforto, luz e simplicidade.',
-                materiais: 'Madeira clara (Carvalho), Lã, Algodão, Paredes Brancas.',
-                luz: 'Ampla, Natural maximizada, Pendentes baixos com luz quente (2700K).',
-                mobiliario: 'Pés palito, sofás cinza/bege, mantas, poucos objetos mas com significado.',
-                neuro: 'Promove calma e clareza mental. A madeira clara reduz a pressão arterial e aumenta a sensação de acolhimento.'
-            },
-            'est_ind': {
-                conceito: 'Estrutura aparente e autenticidade urbana.',
-                materiais: 'Tijolo aparente, Concreto, Metal Preto, Couro.',
-                luz: 'Trilhos, Pendentes metálicos, Filamento de carbono (quente).',
-                mobiliario: 'Sofás de couro, estantes de ferro, mesas de madeira bruta.',
-                neuro: 'Estimula a criatividade e a sensação de liberdade (pé direito alto). Cuidado com a acústica.'
-            },
-            'est_contemp': {
-                conceito: 'O "agora". Conforto atual e linhas suaves.',
-                materiais: 'Mix de texturas, pedras naturais, metais dourados ou pretos.',
-                luz: 'Versátil. Sancas de gesso, spots direcionáveis.',
-                mobiliario: 'Peças baixas, linhas horizontais, design brasileiro atual.',
-                neuro: 'Equilíbrio. O cérebro lê como um ambiente atualizado e seguro, validando o status social.'
-            },
-            // Fallback para outros estilos (Genérico Inteligente)
-            'default': {
-                conceito: 'Estilo personalizado com foco na identidade do cliente.',
-                materiais: 'Equilíbrio entre texturas naturais e acabamentos refinados.',
-                luz: 'Foco em camadas: Geral, Tarefa e Sotaque.',
-                mobiliario: 'Prioridade para ergonomia e fluxo de circulação.',
-                neuro: 'O ambiente deve refletir a autoimagem do cliente para gerar pertencimento (Place Attachment).'
-            }
-        };
-
+        // 2. BANCO DE DADOS VISUAL: NOMES (MÓDULO 2)
         const DB_VISUAL = {
             'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
             'est_scandi': 'Escandinavo', 'est_cont_leve': 'Contemporâneo Leve', 'est_boho': 'Boho Chic', 'est_japandi': 'Japandi', 'est_wabi': 'Wabi-Sabi',
             'est_organico': 'Orgânico', 'est_coastal': 'Coastal', 'est_natural': 'Natural Chic',
-            'est_mid': 'Mid-Century', 'est_ecletico': 'Eclético', 'est_classico': 'Clássico', 'est_neoclass': 'Neoclássico'
+            'est_mid': 'Mid-Century', 'est_ecletico': 'Eclético', 'est_classico': 'Clássico', 'est_neoclass': 'Neoclássico',
+            'est_trad': 'Tradicional Contemporâneo', 'est_mod_eleg': 'Moderno Elegante', 'est_colonial': 'Colonial Atualizado'
         };
 
-        // 3. MATRIZ DE CORRELAÇÃO (12 COMBINAÇÕES)
+        // 3. BANCO DE DADOS VISUAL: DETALHES TÉCNICOS (MÓDULO 2 - EXPANDIDO)
+        const DB_VISUAL_DETAILS = {
+            'est_tech': { conceito: 'Futurismo, automação e linhas puras.', materiais: 'Vidro, Aço Inox, Superfícies High-Gloss.', luz: 'Linear, RGB, Fria (foco) e Indireta.', mobiliario: 'Design ergonômico, peças assinadas.', neuro: 'Reduz a carga cognitiva pela limpeza visual. A automação gera sensação de controle (Dopamina).' },
+            'est_scandi': { conceito: 'Hygge: Conforto, luz e simplicidade.', materiais: 'Madeira clara (Carvalho), Lã, Algodão.', luz: 'Ampla, Natural maximizada, Luz quente (2700K).', mobiliario: 'Pés palito, sofás cinza/bege, mantas.', neuro: 'Promove calma. A madeira clara reduz a pressão arterial.' },
+            'est_ind': { conceito: 'Estrutura aparente e autenticidade urbana.', materiais: 'Tijolo aparente, Concreto, Metal Preto, Couro.', luz: 'Trilhos, Pendentes metálicos, Filamento.', mobiliario: 'Sofás de couro, estantes de ferro.', neuro: 'Estimula a criatividade e a sensação de liberdade.' },
+            'est_contemp': { conceito: 'O "agora". Conforto atual e linhas suaves.', materiais: 'Mix de texturas, pedras naturais, metais.', luz: 'Versátil. Sancas de gesso, spots.', mobiliario: 'Peças baixas, linhas horizontais.', neuro: 'Equilíbrio. O cérebro lê como um ambiente atualizado e seguro.' },
+            'est_trad': { conceito: 'Conforto familiar e herança atualizada.', materiais: 'Madeira escura, tecidos encorpados, tapetes.', luz: 'Abajures, luz quente e difusa.', mobiliario: 'Peças robustas, simetria.', neuro: 'Evoca memórias afetivas e sensação de estabilidade (Raiz).' },
+            'est_classico': { conceito: 'Simetria, proporção e elegância atemporal.', materiais: 'Mármore, Boiserie, Veludo, Dourado.', luz: 'Lustres de cristal, arandelas.', mobiliario: 'Antiguidades, peças torneadas.', neuro: 'A simetria reduz o esforço cognitivo e gera prazer estético.' },
+            'est_japandi': { conceito: 'Funcionalidade escandinava + Rusticidade japonesa.', materiais: 'Bambu, Cerâmica, Madeira crua.', luz: 'Baixa, sombras intencionais (Yugen).', mobiliario: 'Baixo, linhas retas e simples.', neuro: 'Redução drástica de ruído visual para foco e paz.' },
+            'est_boho': { conceito: 'Alma livre, viagens e natureza.', materiais: 'Macramê, Rattan, Plantas, Tapetes étnicos.', luz: 'Cordão de luzes, velas, quente.', mobiliario: 'Garimpo, peças artesanais.', neuro: 'Estimula a curiosidade e a conexão emocional.' },
+            'est_luxo': { conceito: 'Sofisticação, brilho e exclusividade.', materiais: 'Metais nobres, Mármores exóticos, Espelhos.', luz: 'Cênica, pendentes de design.', mobiliario: 'Design italiano, couro nobre.', neuro: 'Validação de status e conquista (Serotonina).' },
+            'default': { conceito: 'Estilo personalizado com foco na identidade.', materiais: 'Equilíbrio entre texturas naturais e acabamentos.', luz: 'Foco em camadas: Geral, Tarefa e Sotaque.', mobiliario: 'Prioridade para ergonomia.', neuro: 'O ambiente deve refletir a autoimagem do cliente.' }
+        };
+
+        // 4. CORRELAÇÕES COMBINADAS (MOD 1)
         const CORRELACOES = {
             'FOGO_TERRA': { perfil: 'O CONSTRUTOR: Pragmático e ambicioso.', projeto: 'Solidez e Status. Materiais nobres e simetria.', atendimento: 'Seja técnico, pontual e mostre competência.' },
             'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau") e Automação.', atendimento: 'Seja ágil, visual e venda a novidade.' },
@@ -438,7 +418,6 @@
             'AGUA_TERRA': { perfil: 'O ACOLHEDOR: Família e estabilidade.', projeto: 'Ninho, Farmhouse e cozinha grande.', atendimento: 'Seja previsível e carinhoso.' }
         };
 
-        // 4. SOMBRA (O QUE FALTA)
         const SOMBRAS = {
             'FOGO': 'Falta paciência. O projeto deve ter manutenção zero.',
             'AR': 'Falta foco. Evite excesso de informação visual.',
@@ -457,117 +436,73 @@
             } catch(e) { console.error(e); }
         }
 
-        function checkMod(r, keyStart) {
-            if(!r) return false;
-            return Object.keys(r).some(k => k.startsWith(keyStart));
-        }
-
+        function checkMod(r, k){ return r && Object.keys(r).some(x=>x.startsWith(k)); }
         function formatTime(s) {
-            s = parseInt(s);
-            if (isNaN(s)) return "00:00"; 
-            const min = Math.floor(s / 60);
-            const sec = s % 60;
+            s = parseInt(s); if (isNaN(s)) return "00:00"; 
+            const min = Math.floor(s / 60); const sec = s % 60;
             return `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
         }
 
         function renderTable() {
             const t = document.getElementById('lista'); t.innerHTML = '';
             if(dadosAPI.length === 0) { t.innerHTML = '<tr><td colspan="5">Nenhum dossiê encontrado.</td></tr>'; return; }
-
             dadosAPI.forEach((d, i) => {
                 const r = d.respostas || {};
                 const c = d.contato || {};
-                
                 const hasHumana = checkMod(r, 'fogo') || checkMod(r, 'ar_');
                 const hasVisual = checkMod(r, 'est_');
                 const hasSensorial = checkMod(r, 'vis_') || checkMod(r, 'aud_');
                 const hasMemorias = checkMod(r, 'mem_');
                 const hasAtual = checkMod(r, 'atu_');
-
-                t.innerHTML += `
-                    <tr>
-                        <td style="font-size:9pt; color:#666;">${new Date(d.data).toLocaleDateString()}</td>
-                        <td><span class="cli-name">${d.cliente}</span><span class="cli-local">${c.cidade||'-'}</span></td>
-                        <td>${c.arquiteto || '-'}</td>
-                        <td>
-                            <div class="mod-grid">
-                                <span class="mod-tag ${hasHumana?'done':''}">Humana</span>
-                                <span class="mod-tag ${hasVisual?'done':''}">Visual</span>
-                                <span class="mod-tag ${hasSensorial?'done':''}">Sensorial</span>
-                                <span class="mod-tag ${hasMemorias?'done':''}">Memórias</span>
-                                <span class="mod-tag ${hasAtual?'done':''}">Atual</span>
-                            </div>
-                        </td>
-                        <td style="text-align:right"><button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button></td>
-                    </tr>
-                `;
+                t.innerHTML += `<tr><td style="font-size:9pt; color:#666;">${new Date(d.data).toLocaleDateString()}</td><td><span class="cli-name">${d.cliente}</span><span class="cli-local">${c.cidade||'-'}</span></td><td>${c.arquiteto || '-'}</td><td><div class="mod-grid"><span class="mod-tag ${hasHumana?'done':''}">Humana</span><span class="mod-tag ${hasVisual?'done':''}">Visual</span><span class="mod-tag ${hasSensorial?'done':''}">Sensorial</span><span class="mod-tag ${hasMemorias?'done':''}">Memórias</span><span class="mod-tag ${hasAtual?'done':''}">Atual</span></div></td><td style="text-align:right"><button class="btn-pdf" onclick="makePDF(${i}, this)">Gerar PDF</button></td></tr>`;
             });
         }
 
         async function makePDF(index, btn) {
-            // PROTEÇÃO TRY/CATCH PARA NÃO TRAVAR O BOTÃO
             try {
                 const d = dadosAPI[index];
                 const original = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
                 const r = d.respostas || {};
 
-                // --- CAPA ---
+                // CAPA
                 document.getElementById('cp-nome').innerText = d.cliente || '-';
                 document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
                 document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
 
-                // --- MÓDULO 1: LÓGICA COMPLETA ---
+                // --- MÓDULO 1 ---
                 let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
                 Object.keys(r).forEach(k => {
                     let v = parseInt(r[k]) || 0;
-                    if(k.startsWith('fogo')) p.FOGO += v;
-                    if(k.startsWith('ar_')) p.AR += v;
-                    if(k.startsWith('agua')) p.AGUA += v;
-                    if(k.startsWith('terra')) p.TERRA += v;
+                    if(k.startsWith('fogo')) p.FOGO += v; if(k.startsWith('ar_')) p.AR += v;
+                    if(k.startsWith('agua')) p.AGUA += v; if(k.startsWith('terra')) p.TERRA += v;
                 });
                 const sorted = [{id:'FOGO',...DB.FOGO,v:p.FOGO},{id:'AR',...DB.AR,v:p.AR},{id:'AGUA',...DB.AGUA,v:p.AGUA},{id:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
-                
-                const dom = sorted[0]; // Dominante
-                const sec = sorted[1]; // Secundário
-                const sombra = sorted[3]; // Sombra
+                const dom = sorted[0]; const sec = sorted[1]; const sombra = sorted[3];
 
                 document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
-                
-                // Gráficos Mod 1
                 let chartHTML = '';
                 sorted.forEach(i => {
                     let pct = Math.min((i.v / 25) * 100, 100);
                     chartHTML += `<div class="cc-box"><div class="cc-top"><span class="cc-lbl c-${i.class}">${i.id}</span><span class="cc-val">${i.v}</span></div><div class="cc-bar"><div class="cc-fill bg-${i.class}" style="width:${pct}%"></div></div></div>`;
                 });
                 document.getElementById('chart-container').innerHTML = chartHTML;
-                
-                // Card Dominante (Textos Originais)
                 document.getElementById('wb-head').style.backgroundColor = dom.cor;
                 document.getElementById('txt-el').innerText = dom.id;
                 document.getElementById('txt-tit').innerText = dom.titulo;
-                document.getElementById('m1-content').innerHTML = `
-                    <div class="info-row"><span class="il">Energia Base</span><span class="iv">${dom.energia}</span></div>
-                    <div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${dom.estilos.join(', ')}</span></div>
-                `;
+                document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia Base</span><span class="iv">${dom.energia}</span></div><div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${dom.estilos.join(', ')}</span></div>`;
                 
-                // Card Estratégia Individual (Restaurado)
-                const elNeuro = document.getElementById('m1-neuro-individual');
-                if(elNeuro) elNeuro.innerHTML = dom.neuro;
-                const elCom = document.getElementById('m1-comunicacao-individual');
-                if(elCom) elCom.innerHTML = dom.comunicacao;
+                document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
+                document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
 
-                // Card Correlação (Novo)
                 const keyComb = `${dom.id}_${sec.id}`;
                 const dataComb = CORRELACOES[keyComb] || { perfil:'Misto', projeto:'Equilíbrio', atendimento:'Adaptável' };
                 document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
                 document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
-                
-                // Card Sombra (Novo)
                 const txtSombra = SOMBRAS[sombra.id] || "Buscar equilíbrio.";
                 document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
                 document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento;
 
-                // --- MÓDULO 2: VISUAL ENRIQUECIDO ---
+                // --- MÓDULO 2 (CORREÇÃO V34) ---
                 document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
                 let visualScores = [];
                 Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({id: k, nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0}); });
@@ -578,7 +513,7 @@
                     document.getElementById('vis-top1-nome').innerText = topStyle.nome;
                     document.getElementById('vis-top1-nota').innerText = topStyle.val;
                     
-                    // Geração do Conteúdo Rico (Mod 2)
+                    // LÓGICA DE DETALHAMENTO DO ESTILO
                     const details = DB_VISUAL_DETAILS[topStyle.id] || DB_VISUAL_DETAILS['default'];
                     let richHTML = `
                         <div class="strategy-grid">
@@ -608,16 +543,12 @@
                         <div style="margin-top:20px; font-size:10pt; font-weight:700; color:#999; text-transform:uppercase;">Outros estilos com afinidade:</div>
                     `;
                     
-                    // Lista os próximos estilos
                     richHTML += visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
-                    
                     document.getElementById('m2-content').innerHTML = richHTML;
-                    
-                    // Atualiza conclusão do Módulo 2
                     document.getElementById('m2-conclusao-dinamica').innerText = `Para um perfil ${topStyle.nome}, o ambiente deve focar em ${details.conceito}. A neuroarquitetura sugere ${details.neuro}`;
                 }
 
-                // --- MÓDULO 3: SENSORIAL ---
+                // --- MÓDULO 3 ---
                 document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
                 let m3v = '', m3o = '';
                 Object.keys(r).forEach(k => {
@@ -633,7 +564,7 @@
                 document.getElementById('m3-visual').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">VISUAL & BIOFILIA</span>` + m3v;
                 document.getElementById('m3-outros').innerHTML = `<span class="il-lbl" style="margin-bottom:10px;">OUTROS SENTIDOS</span>` + m3o;
 
-                // --- MÓDULO 4: MEMÓRIAS ---
+                // --- MÓDULO 4 ---
                 document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
                 let explHTML = '', implHTML = '';
                 Object.keys(r).forEach(k => {
@@ -649,7 +580,7 @@
                 document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
                 document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
 
-                // --- MÓDULO 5: IDENTIDADE ATUAL ---
+                // --- MÓDULO 5 ---
                 document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
                 const makeTags = (key, elId) => {
                     const el = document.getElementById(elId); if(el) el.innerHTML = '';
@@ -672,7 +603,7 @@
                 document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
                 document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
 
-                // --- DOWNLOAD PDF ---
+                // DOWNLOAD
                 const el = document.getElementById('pdf-root');
                 el.style.display = 'block';
                 window.scrollTo(0, 0); 
@@ -696,7 +627,6 @@
             }
         }
 
-        // Inicia o sistema
         init();
     </script>
 </body>
