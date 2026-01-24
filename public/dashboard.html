@@ -6,13 +6,16 @@
     <title>Dashboard NeuroBriefing | Diagnóstico Integral</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
            1. ESTILOS GERAIS E RESET
            ========================================================================== */
+        
         * { 
             box-sizing: border-box; 
             -webkit-print-color-adjust: exact; 
@@ -27,8 +30,9 @@
         }
         
         /* ==========================================================================
-           2. ESTILOS DO PAINEL (TELA)
+           2. ESTILOS DO PAINEL (TELA DO COMPUTADOR)
            ========================================================================== */
+        
         .painel { 
             max-width: 1200px; 
             margin: 0 auto 30px auto; 
@@ -61,12 +65,19 @@
             cursor: pointer; 
             border-radius: 6px; 
             font-weight: 700; 
+            font-size: 9pt; 
             transition: 0.2s; 
         }
-        .btn-refresh:hover { background: #34495e; }
         
-        /* TABELA */
-        table { width: 100%; border-collapse: collapse; }
+        .btn-refresh:hover { 
+            background: #34495e; 
+        }
+        
+        /* TABELA DE CLIENTES */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
         
         th { 
             text-align: left; 
@@ -86,12 +97,31 @@
             font-size: 9.5pt; 
         }
         
-        tr:hover { background-color: #fafafa; }
+        tr:hover { 
+            background-color: #fafafa; 
+        }
         
-        .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
-        .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
+        .cli-name { 
+            font-size: 11pt; 
+            font-weight: 700; 
+            color: #2c3e50; 
+            display: block; 
+            margin-bottom: 4px; 
+        }
         
-        .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
+        .cli-local { 
+            font-size: 8pt; 
+            color: #999; 
+            display: block; 
+            margin-bottom: 8px; 
+        }
+        
+        /* STATUS TAGS */
+        .mod-grid { 
+            display: flex; 
+            gap: 4px; 
+            flex-wrap: wrap; 
+        }
         
         .mod-tag { 
             padding: 3px 6px; 
@@ -103,7 +133,12 @@
             color: #bbb; 
             border: 1px solid #e0e0e0; 
         }
-        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
+        
+        .mod-tag.done { 
+            background: #e8f5e9; 
+            color: #27ae60; 
+            border-color: #c8e6c9; 
+        }
         
         .btn-pdf { 
             background: #e74c3c; 
@@ -115,13 +150,23 @@
             font-size: 8pt; 
             cursor: pointer; 
         }
-        .btn-pdf:hover { background: #c0392b; }
-        .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
+        
+        .btn-pdf:hover { 
+            background: #c0392b; 
+        }
+        
+        .btn-pdf:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+        }
         
         /* ==========================================================================
-           3. ESTILOS DO PDF (A4)
+           3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
            ========================================================================== */
-        #pdf-root { display: none; } 
+        
+        #pdf-root { 
+            display: none; 
+        } 
         
         .page { 
             width: 210mm; 
@@ -133,52 +178,166 @@
             page-break-after: always; 
             padding: 0; 
         }
-        .page:last-child { page-break-after: avoid; }
+        
+        .page:last-child { 
+            page-break-after: avoid; 
+        }
         
         /* CAPA */
         .capa-box { 
-            width: 100%; height: 100%; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
             border: 20mm solid #f4f6f8; 
             text-align: center; 
         }
-        .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
-        .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
-        .c-info { width: 80%; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 40px 0; margin-bottom: 50px; }
-        .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
-        .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
-        .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        /* HEADER */
-        .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
+        .c-logo { 
+            font-size: 38pt; 
+            font-weight: 900; 
+            color: #2c3e50; 
+            margin-bottom: 10px; 
+            letter-spacing: -1px; 
+        }
+        
+        .c-sub { 
+            font-size: 10pt; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            color: #7f8c8d; 
+            margin-bottom: 80px; 
+        }
+        
+        .c-info { 
+            width: 80%; 
+            border-top: 2px solid #2c3e50; 
+            border-bottom: 2px solid #2c3e50; 
+            padding: 40px 0; 
+            margin-bottom: 50px; 
+        }
+        
+        .ci-lbl { 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #aaa; 
+            text-transform: uppercase; 
+            margin-bottom: 5px; 
+            display: block; 
+            letter-spacing: 1px; 
+        }
+        
+        .ci-val { 
+            font-size: 16pt; 
+            font-weight: 700; 
+            color: #2c3e50; 
+            margin-bottom: 25px; 
+            display: block; 
+        }
+        
+        .c-foot { 
+            position: absolute; 
+            bottom: 15mm; 
+            font-size: 8pt; 
+            color: #ccc; 
+            text-transform: uppercase; 
+        }
+        
+        /* HEADER DO MODULO */
+        .mod-content { 
+            padding: 15mm 15mm 10mm 15mm; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+        }
         
         .m-head { 
-            display: flex; justify-content: space-between; align-items: flex-end; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
             border-bottom: 4px solid #2c3e50; 
-            padding-bottom: 10px; margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            margin-bottom: 20px; 
         }
-        .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
-        .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
-        .mh-meta { text-align: right; }
-        .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
-        .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        /* BOXES */
+        .mh-tit { 
+            font-size: 22pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            line-height: 1; 
+        }
+        
+        .mh-sub { 
+            font-size: 9pt; 
+            font-weight: 600; 
+            color: #7f8c8d; 
+            text-transform: uppercase; 
+            margin-top: 5px; 
+        }
+        
+        .mh-meta { 
+            text-align: right; 
+        }
+        
+        .mh-num { 
+            font-size: 30pt; 
+            font-weight: 900; 
+            color: #eee; 
+            line-height: 0.8; 
+        }
+        
+        .mh-time { 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #e74c3c; 
+            margin-top: 5px; 
+            display: block; 
+        }
+        
+        /* BOXES DE CONTEÚDO */
         .win-box { 
             border: 1px solid #ccc; 
             border-radius: 6px; 
             overflow: hidden; 
             margin-bottom: 15px; 
-            display: flex; flex-direction: column;
+            display: flex; 
+            flex-direction: column; 
         }
-        .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
-        .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
-        .wb-body { padding: 20px; flex: 1; }
         
-        /* GRIDS ESTRATÉGICOS (MOD 1/2) */
-        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
+        .wb-head { 
+            padding: 10px 15px; 
+            color: white; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .wb-tit { 
+            font-size: 14pt; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+        
+        .wb-sty { 
+            font-size: 8pt; 
+            font-weight: 600; 
+            opacity: 0.95; 
+            text-transform: uppercase; 
+        }
+        
+        .wb-body { 
+            padding: 20px; 
+            flex: 1; 
+        }
+        
+        /* GRIDS ESTRATÉGICOS (MÓDULO 1 E 2) */
+        .strategy-grid { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+        }
         
         .st-card { 
             flex: 1; 
@@ -186,54 +345,232 @@
             border: 1px solid #eee; 
             border-radius: 6px; 
             padding: 15px; 
-            display: flex; flex-direction: column; 
+            display: flex; 
+            flex-direction: column; 
         }
-        .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; }
-        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; }
+        
+        .st-card.highlight { 
+            border-left: 4px solid #3498db; 
+            background: #fbfdff; 
+        }
+        
+        .st-card.shadow-card { 
+            border-left: 4px solid #f1c40f; 
+            background: #fffcf5; 
+        }
         
         .st-head { 
-            font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
-            margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; 
+            font-size: 9pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            padding-bottom: 5px; 
+            border-bottom: 2px solid #eee; 
         }
-        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
+        
+        .st-text { 
+            font-size: 8.5pt; 
+            color: #555; 
+            line-height: 1.5; 
+            text-align: justify; 
+        }
 
-        /* GRÁFICOS */
-        .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 40px; }
-        .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
-        .cc-top { display: flex; justify-content: space-between; align-items: center; }
-        .cc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
-        .cc-val { font-size: 11pt; font-weight: 900; }
-        .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
-        .cc-fill { height: 100%; }
+        /* GRÁFICOS DE BARRAS (MOD 1) */
+        .charts { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 15px; 
+            height: 40px; 
+        }
+        
+        .cc-box { 
+            flex: 1; 
+            border: 1px solid #eee; 
+            border-radius: 4px; 
+            padding: 5px 8px; 
+            background: #fafafa; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+        
+        .cc-top { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .cc-lbl { 
+            font-size: 8pt; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+        
+        .cc-val { 
+            font-size: 11pt; 
+            font-weight: 900; 
+        }
+        
+        .cc-bar { 
+            width: 100%; 
+            height: 5px; 
+            background: #ddd; 
+            border-radius: 3px; 
+            overflow: hidden; 
+        }
+        
+        .cc-fill { 
+            height: 100%; 
+        }
 
-        /* RODAPÉ */
+        /* BOX DE CONCLUSÃO TÉCNICA (RODAPÉ) */
         .box-conclusao { 
             background: #fdfdfd; 
             border-left: 4px solid #2c3e50; 
             padding: 15px; 
-            font-size: 9pt; color: #555; line-height: 1.5; 
-            margin-top: auto; margin-bottom: 10px; 
+            font-size: 9pt; 
+            color: #555; 
+            line-height: 1.5; 
+            margin-top: auto; 
+            margin-bottom: 10px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
         }
-        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
-        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
         
-        /* LISTAS */
-        .info-row { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
-        .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .iv { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.25; }
-        .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
-        .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
-        .il-val { font-size: 9pt; color: #555; }
+        .bc-tit { 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            font-size: 10pt; 
+            display: block; 
+        }
+        
+        .ft-note { 
+            text-align: center; 
+            font-size: 6pt; 
+            color: #bbb; 
+            padding-top: 5px; 
+        }
+        
+        /* GRIDS & LISTAS */
+        .grid-2 { 
+            display: flex; 
+            gap: 20px; 
+        }
+        
+        .col { 
+            flex: 1; 
+        }
+        
+        .info-row { 
+            margin-bottom: 8px; 
+            border-bottom: 1px dashed #eee; 
+            padding-bottom: 4px; 
+        }
+        
+        .il { 
+            font-size: 7pt; 
+            font-weight: 700; 
+            color: #999; 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 2px; 
+        }
+        
+        .iv { 
+            font-size: 10pt; 
+            font-weight: 600; 
+            color: #333; 
+            line-height: 1.25; 
+        }
+        
+        .item-list { 
+            margin-bottom: 8px; 
+            border-bottom: 1px dashed #eee; 
+            padding-bottom: 8px; 
+        }
+        
+        .il-lbl { 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 3px; 
+        }
+        
+        .il-val { 
+            font-size: 9pt; 
+            color: #555; 
+        }
+        
+        /* BARRAS SENSORIAIS */
+        .sensory-bar { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 8px; 
+        }
+        
+        .sb-lbl { 
+            width: 100px; 
+            font-size: 8pt; 
+            font-weight: 700; 
+            text-align: right; 
+            margin-right: 10px; 
+        }
+        
+        .sb-track { 
+            flex: 1; 
+            height: 6px; 
+            background: #eee; 
+            border-radius: 3px; 
+            overflow: hidden; 
+        }
+        
+        .sb-fill { 
+            height: 100%; 
+            background: #2c3e50; 
+        }
+        
+        .sb-val { 
+            width: 30px; 
+            font-size: 8pt; 
+            font-weight: 700; 
+            margin-left: 10px; 
+        }
+
+        /* TAGS DE CHECKLIST (MOD 5) */
+        .check-tags { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 5px; 
+        }
+        
+        .ct-item { 
+            background: #f0f2f5; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            font-size: 8.5pt; 
+            font-weight: 600; 
+            color: #555; 
+            border: 1px solid #ddd; 
+        }
+        
+        .ct-item.highlight { 
+            background: #e8f5e9; 
+            color: #27ae60; 
+            border-color: #c8e6c9; 
+        }
 
         /* ==========================================================================
-           ESTILOS NOVOS DO MÓDULO 3 (GRID SENSORIAL 8 CARDS)
+           ESTILOS DO MÓDULO 3 (GRID SENSORIAL)
            ========================================================================== */
         
         .sensory-grid-8 { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
-            grid-template-rows: auto; /* Altura automática */
+            grid-template-rows: repeat(4, auto); 
             gap: 12px; 
             margin-bottom: 20px; 
         }
@@ -244,7 +581,8 @@
             border-radius: 8px; 
             padding: 10px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            display: flex; flex-direction: column;
+            display: flex; 
+            flex-direction: column;
             position: relative;
             overflow: hidden;
         }
@@ -260,38 +598,121 @@
         .sense-card.s-cog { border-top: 4px solid #2980b9; }
 
         .sense-head { 
-            display: flex; justify-content: space-between; align-items: center; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
             margin-bottom: 6px; 
         }
         
         .sense-title { 
-            font-size: 8.5pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
-            display: flex; align-items: center; gap: 5px; 
+            font-size: 8.5pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
         }
         
-        .sense-bar-container { display: flex; align-items: center; margin-bottom: 6px; }
-        .sense-bar-bg { flex: 1; height: 5px; background: #eee; border-radius: 3px; overflow: hidden; }
-        .sense-bar-fill { height: 100%; border-radius: 3px; }
-        .sense-val { font-size: 8pt; font-weight: 800; width: 30px; text-align: right; margin-left: 5px; }
+        .sense-bar-container { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 6px; 
+        }
+        
+        .sense-bar-bg { 
+            flex: 1; 
+            height: 5px; 
+            background: #eee; 
+            border-radius: 3px; 
+            overflow: hidden; 
+        }
+        
+        .sense-bar-fill { 
+            height: 100%; 
+            border-radius: 3px; 
+        }
+        
+        .sense-val { 
+            font-size: 8pt; 
+            font-weight: 800; 
+            width: 30px; 
+            text-align: right; 
+            margin-left: 5px; 
+        }
         
         .sense-strategy { 
-            font-size: 7pt; color: #666; line-height: 1.35; 
-            background: #f8f9fa; padding: 6px; border-radius: 4px; 
+            font-size: 7pt; 
+            color: #666; 
+            line-height: 1.35; 
+            background: #f8f9fa; 
+            padding: 6px; 
+            border-radius: 4px; 
             margin-top: auto; 
             border: 1px solid #eee;
         }
-        .sense-strategy strong { color: #333; font-weight: 700; display: block; margin-bottom: 2px; }
+        
+        .sense-strategy strong { 
+            color: #333; 
+            font-weight: 700; 
+            display: block; 
+            margin-bottom: 2px; 
+        }
 
-        /* BARRAS SIMPLES (MOD 4/5) */
-        .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
-        .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
-        .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
-        .sb-fill { height: 100%; background: #2c3e50; }
-        .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
-
-        /* TAGS (MOD 5) */
-        .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-        .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
+        /* ==========================================================================
+           NOVO ESTILO PARA MÓDULO 4 (MEMÓRIAS COM ESCALAS - V39)
+           ========================================================================== */
+        
+        .mem-container {
+            width: 48%; /* Exibe 2 por linha */
+            margin-bottom: 12px;
+        }
+        
+        .mem-label-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        
+        .mem-title { 
+            font-size: 7.5pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+        }
+        
+        .mem-val { 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #555; 
+        }
+        
+        .mem-track {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 2px;
+        }
+        
+        .mem-fill { 
+            height: 100%; 
+            border-radius: 4px; 
+        }
+        
+        /* A Régua de Escala (0 -- 50 -- 100) */
+        .mem-scale {
+            display: flex;
+            justify-content: space-between;
+            font-size: 6pt;
+            color: #aaa;
+            padding: 0 2px;
+            font-family: monospace; /* Fonte mono para alinhar melhor */
+        }
+        
+        /* Cores Memórias */
+        .mem-epi .mem-fill { background: #8e44ad; }
+        .mem-imp .mem-fill { background: #2c3e50; }
 
         /* CORES UTILITÁRIAS */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -351,14 +772,11 @@
                     <div><div class="mh-tit">IDENTIDADE DO SER</div><div class="mh-sub">Arquétipo & Temperamento</div></div>
                     <div class="mh-meta"><div class="mh-num">01</div><span class="mh-time" id="t1-time">--:--</span></div>
                 </div>
-                
                 <div class="charts" id="chart-container"></div>
-                
                 <div class="win-box">
                     <div class="wb-head" id="wb-head"><div class="wb-tit" id="txt-el">-</div><div class="wb-sty" id="txt-tit">-</div></div>
                     <div class="wb-body" id="m1-content"></div>
                 </div>
-
                 <div class="strategy-grid">
                     <div class="st-card">
                         <div class="st-head">🧠 NEUROARQUITETURA (BASE)</div>
@@ -369,7 +787,6 @@
                         <div class="st-text" id="m1-comunicacao-individual"></div>
                     </div>
                 </div>
-
                 <div class="strategy-grid">
                     <div class="st-card highlight">
                         <div class="st-head">👑 PERFIL COMBINADO (DOMINANTE + SECUNDÁRIO)</div>
@@ -379,13 +796,13 @@
                     <div class="st-card shadow-card">
                         <div class="st-head">⚠️ PONTO DE ATENÇÃO (SOMBRA)</div>
                         <div class="st-text" id="m1-sombra-texto"></div>
+                        <div class="st-text" id="m1-comunicacao-texto" style="margin-top:8px; font-style:italic;"></div>
                     </div>
                 </div>
-
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
-                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base". 
-                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta (Dopamina vs Ocitocina), equilibrando o temperamento dominante com o secundário e compensando a sombra.
+                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base" do cliente. 
+                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -397,7 +814,6 @@
                     <div><div class="mh-tit">IDENTIDADE VISUAL</div><div class="mh-sub">Estilo & Preferência Estética</div></div>
                     <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" id="t2-time">--:--</span></div>
                 </div>
-                
                 <div class="win-box" style="flex:0 auto; margin-bottom:20px;">
                     <div class="wb-head" style="background:#2c3e50;">
                         <div class="wb-tit">ESTILO PREDOMINANTE</div>
@@ -408,15 +824,10 @@
                         <div style="margin-top:10px; font-size:12pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
                     </div>
                 </div>
-
                 <div id="m2-content"></div>
-
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
-                    <span id="m2-conclusao-dinamica">
-                        A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
-                        Utilize o estilo predominante como base estrutural e os secundários para camadas de decoração.
-                    </span>
+                    <span id="m2-conclusao-dinamica">A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.</span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -429,16 +840,15 @@
                     <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
                 </div>
                 
-                <div class="sensory-grid-8" id="m3-grid-container">
-                    </div>
+                <div class="sensory-grid-8" id="m3-grid-container"></div>
 
                 <div class="box-conclusao">
                     <span class="bc-tit">CONCLUSÃO TÉCNICA (SISTEMA SENSORIAL)</span>
-                    A arquitetura multissensorial ativa o sistema límbico (emoções) de forma inconsciente.
+                    A arquitetura multissensorial ativa o sistema límbico.
                     <strong>Foco Estratégico:</strong>
-                    <br>• <strong>Regulação:</strong> Equilibre os estímulos extremos (Visual/Auditivo) para evitar estresse.
-                    <br>• <strong>Conexão:</strong> Use Olfato e Tato para criar memórias afetivas profundas (Hipocampo).
-                    <br>• <strong>Domínio:</strong> Ajuste a escala (Propriocepção) para dar segurança ou poder ao usuário.
+                    <br>• <strong>Regulação:</strong> Equilibre os estímulos extremos para evitar estresse.
+                    <br>• <strong>Conexão:</strong> Use Olfato e Tato para criar memórias afetivas.
+                    <br>• <strong>Domínio:</strong> Ajuste a escala (Propriocepção) para dar segurança.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -450,20 +860,28 @@
                     <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Memórias Explícitas & Implícitas</div></div>
                     <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" id="t4-time">--:--</span></div>
                 </div>
+                
                 <div class="win-box">
-                    <div class="wb-head" style="background:#8e44ad;"><div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div><div class="wb-sty">O QUE ELE DIZ</div></div>
-                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px;"></div>
+                    <div class="wb-head" style="background:#8e44ad;">
+                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
+                        <div class="wb-sty">O QUE ELE DIZ</div>
+                    </div>
+                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
                 </div>
+
                 <div class="win-box">
-                    <div class="wb-head" style="background:#2c3e50;"><div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div><div class="wb-sty">O QUE ELE SENTE/FAZ</div></div>
-                    <div class="wb-body" id="m4-impl"></div>
+                    <div class="wb-head" style="background:#2c3e50;">
+                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
+                        <div class="wb-sty">O QUE ELE SENTE/FAZ</div>
+                    </div>
+                    <div class="wb-body" id="m4-impl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
                 </div>
+
                 <div class="box-conclusao">
-                    <span class="bc-tit">APLICAÇÃO PRÁTICA (MEMÓRIA)</span>
-                    Baseado em <strong>Endel Tulving</strong>:
-                    <br>1. Crie "altares de memória" para objetos afetivos (Episódica).
-                    <br>2. Respeite o fluxo e a bagunça funcional (Procedural).
-                    <br>3. Use cores/cheiros como gatilhos sutis de bem-estar (Priming).
+                    <span class="bc-tit">ESTRATÉGIA DE PROJETO (BASEADO EM MEMÓRIAS)</span>
+                    <span id="m4-conclusao-dinamica">
+                        A casa deve ser um espelho da biografia do cliente. Crie "altares de memória" para objetos afetivos.
+                    </span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -522,39 +940,15 @@
     </div>
 
     <script>
-        // 1. BANCO DE DADOS - TEMPERAMENTOS (MÓDULO 1)
+        // 1. BANCO DE DADOS TEMPERAMENTOS (MÓDULO 1)
         const DB = {
-            FOGO: { 
-                id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
-                energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', 
-                perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'],
-                neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente. Evite excessos visuais.',
-                comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.'
-            },
-            AR: { 
-                id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', 
-                energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis, criativas e visuais.', 
-                perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'],
-                neuro: 'Este cérebro busca <strong>estímulos variados</strong>. O projeto precisa de <strong>áreas de convivência integradas</strong>, elementos "instagramáveis" e flexibilidade. Luz natural é vital.',
-                comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências. Foque na experiência social.'
-            },
-            AGUA: { 
-                id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', 
-                energia:'Acolhimento · Calma · Empatia', quem:'Pessoas diplomáticas, constantes e sensíveis.', 
-                perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'],
-                neuro: 'Este cérebro busca <strong>segurança e ocitocina</strong> (afeto). O projeto deve ser um <strong>refúgio (casulo)</strong>. Priorize acústica, texturas táteis macias e cantos de leitura.',
-                comunicacao: 'Seja <strong>paciente e ouvinte</strong>. Dê tempo para ele pensar. Transmita segurança nas decisões.'
-            },
-            TERRA: { 
-                id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', 
-                energia:'Estrutura · Ordem · Detalhe', quem:'Pessoas metódicas, profundas e perfeccionistas.', 
-                perfil:'Analista', estilos:['Clássico', 'Moderno Elegante', 'Minimalismo'],
-                neuro: 'Este cérebro busca <strong>previsibilidade e ordem</strong>. O projeto precisa de <strong>simetria</strong>, armários fechados (menos ruído visual) e acabamentos impecáveis.',
-                comunicacao: 'Seja <strong>detalhista e técnico</strong>. Mostre cronogramas, orçamentos detalhados e especificações.'
-            }
+            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.' },
+            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis e visuais.', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], neuro: 'Busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' },
+            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', energia:'Acolhimento · Calma', quem:'Pessoas diplomáticas.', perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], neuro: 'Busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.' },
+            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', energia:'Estrutura · Ordem', quem:'Pessoas metódicas.', perfil:'Analista', estilos:['Clássico', 'Minimalismo'], neuro: 'Busca <strong>previsibilidade</strong>. Simetria e armários fechados.', comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.' }
         };
 
-        // 2. BANCO DE DADOS - VISUAL (MÓDULO 2)
+        // 2. BANCO DE DADOS VISUAL (MÓDULO 2)
         const DB_VISUAL = {
             'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
             'est_scandi': 'Escandinavo', 'est_cont_leve': 'Contemporâneo Leve', 'est_boho': 'Boho Chic', 'est_japandi': 'Japandi', 'est_wabi': 'Wabi-Sabi',
@@ -563,7 +957,6 @@
             'est_trad': 'Tradicional Contemporâneo', 'est_mod_eleg': 'Moderno Elegante', 'est_colonial': 'Colonial Atualizado'
         };
 
-        // 2.1 DETALHAMENTO VISUAL
         const DB_VISUAL_DETAILS = {
             'est_tech': { conceito: 'Futurismo e automação.', materiais: 'Vidro, Aço, High-Gloss.', luz: 'Linear, RGB, Fria.', mobiliario: 'Design ergonômico.', neuro: 'Reduz carga cognitiva pela limpeza. Automação gera controle.' },
             'est_scandi': { conceito: 'Hygge: Conforto e luz.', materiais: 'Madeira clara, Lã.', luz: 'Ampla, Natural, Quente.', mobiliario: 'Pés palito, sofás cinza.', neuro: 'Promove calma. Madeira clara reduz pressão arterial.' },
@@ -577,12 +970,11 @@
             'default': { conceito: 'Estilo personalizado.', materiais: 'Equilíbrio de texturas.', luz: 'Foco em camadas.', mobiliario: 'Prioridade para ergonomia.', neuro: 'Reflete a autoimagem do cliente.' }
         };
 
-        // 3. MATRIZ DE CORRELAÇÃO (12 COMBINAÇÕES)
         const CORRELACOES = {
             'FOGO_TERRA': { perfil: 'O CONSTRUTOR: Pragmático e ambicioso.', projeto: 'Solidez e Status. Materiais nobres.', atendimento: 'Seja técnico e pontual.' },
-            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau") e Automação.', atendimento: 'Seja ágil, visual e venda a novidade.' },
+            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau").', atendimento: 'Seja ágil e visual.' },
             'FOGO_AGUA': { perfil: 'O PROTETOR: Intenso e emotivo.', projeto: 'Refúgio Seguro e robusto.', atendimento: 'Vínculo emocional rápido.' },
-            'AR_FOGO': { perfil: 'O CRIATIVO: Mente acelerada.', projeto: 'Liberdade, cor e ambientes flexíveis.', atendimento: 'Brainstorming e ritmo.' },
+            'AR_FOGO': { perfil: 'O CRIATIVO: Mente acelerada.', projeto: 'Liberdade e Cor.', atendimento: 'Brainstorming e ritmo.' },
             'AR_TERRA': { perfil: 'O DESIGNER: Bom gosto racional.', projeto: 'Estética Funcional.', atendimento: 'Explique o porquê estético.' },
             'AR_AGUA': { perfil: 'O ANFITRIÃO: Social e empático.', projeto: 'Experiência Sensorial.', atendimento: 'Foque no bem-estar.' },
             'TERRA_FOGO': { perfil: 'O ESTRATEGISTA: Controlador.', projeto: 'Eficiência Máxima.', atendimento: 'Mostre controle total.' },
@@ -600,69 +992,32 @@
             'AGUA': 'Falta praticidade. Priorize uso.'
         };
 
-        // 4. NOVA BASE DE DADOS SENSORIAL (MÓDULO 3 - 8 SENSORES)
-        // Aqui definimos os 8 cards e a lógica de estratégia para cada um.
+        // 3. ESTRATÉGIAS SENSORIAIS (MÓDULO 3)
         const DB_SENSORY_STRATEGIES = {
-            'vis': { 
-                title: '3.1 VISUAL', icon: '👁️', color: 's-vis', border: 'bg-vis', 
-                key: 'vis_complex', 
-                getStrat: (val) => val > 75 
-                    ? "<strong>Alta Demanda:</strong> Cuidado com o caos visual. Use simetria e pontos focais claros para organizar a complexidade." 
-                    : "<strong>Baixa Demanda:</strong> Prefere Minimalismo. Reduza estímulos, use cores neutras e esconda a bagunça."
-            },
-            'aud': { 
-                title: '3.2 AUDITIVO', icon: '👂', color: 's-aud', border: 'bg-aud', 
-                key: 'aud_eco', 
-                getStrat: (val) => val < 30 
-                    ? "<strong>Alta Sensibilidade:</strong> O silêncio é luxo. Use tapetes, cortinas duplas, madeira e painéis acústicos." 
-                    : "<strong>Tolerante:</strong> Pode usar materiais reflexivos (vidro/piso frio) e integrar TV com estar."
-            },
-            'olf': { 
-                title: '3.3 OLFATIVO', icon: '👃', color: 's-olf', border: 'bg-olf', 
-                key: 'olf_sens',
-                getStrat: (val) => val > 70 
-                    ? "<strong>Scent Design:</strong> O cheiro define a experiência. Preveja ventilação cruzada e difusores." 
-                    : "<strong>Neutro:</strong> Evite cheiros fortes de materiais novos (colas/tintas) na entrega."
-            },
-            'tat': { 
-                title: '3.4 TÁTIL', icon: '✋', color: 's-tat', border: 'bg-tat', 
-                key: 'tat_tex_macia',
-                getStrat: (val) => val > 60 
-                    ? "<strong>Haptic (Toque):</strong> Use texturas naturais (pedra, linho, madeira bruta). O corpo precisa sentir a casa." 
-                    : "<strong>Liso/Frio:</strong> Prefere superfícies polidas (vidro, metal) que transmitam limpeza e modernidade."
-            },
-            'prop': { 
-                title: '3.5 ESPACIAL', icon: '🧭', color: 's-prop', border: 'bg-prop', 
-                key: 'prop_pe_dir',
-                getStrat: (val) => val > 50 
-                    ? "<strong>Prospecto:</strong> Gosta de amplitude, pé direito alto e ver tudo ao redor (Domínio)." 
-                    : "<strong>Refúgio:</strong> Prefere ambientes menores, tetos rebaixados e cantos de leitura (Abraço)."
-            },
-            'gus': { 
-                title: '3.6 GUSTATIVO', icon: '🍽️', color: 's-gus', border: 'bg-gus', 
-                key: 'gus_social',
-                getStrat: (val) => val > 50 
-                    ? "<strong>Cozinha Social:</strong> Ilha gourmet é o palco. Iluminação quente sobre a comida (3000K)." 
-                    : "<strong>Cozinha Lab:</strong> Foco na função, higiene e eletros. Cozinha fechada ou discreta."
-            },
-            'emo': { 
-                title: '3.7 EMOCIONAL', icon: '❤️', color: 's-emo', border: 'bg-emo', 
-                key: 'emo_nostalgia', 
-                getStrat: (val) => val > 50 
-                    ? "<strong>Nostalgia:</strong> É vital expor objetos de família e fotos. A casa é um museu da vida." 
-                    : "<strong>Renovação:</strong> Foco no futuro. Desapego do passado. Design limpo e novo."
-            },
-            'cog': { 
-                title: '3.8 COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog', 
-                key: 'cog_prod',
-                getStrat: (val) => val < 50 
-                    ? "<strong>Foco Único:</strong> Precisa de silêncio visual para concentrar. Home office fechado." 
-                    : "<strong>Multitarefa:</strong> Funciona bem no caos. Pode trabalhar na mesa de jantar integrada."
-            }
+            'vis': { title: '3.1 VISUAL', icon: '👁️', color: 's-vis', border: 'bg-vis', key: 'vis_complex', getStrat: (val) => val > 75 ? "Alta demanda visual. Use iluminação em camadas e evite poluição." : "Preferência por simplicidade visual." },
+            'aud': { title: '3.2 AUDITIVO', icon: '👂', color: 's-aud', border: 'bg-aud', key: 'aud_eco', getStrat: (val) => val < 30 ? "Alta sensibilidade. Requer isolamento acústico e tecidos." : "Tolera ruídos. Pode integrar ambientes." },
+            'olf': { title: '3.3 OLFATIVO', icon: '👃', color: 's-olf', border: 'bg-olf', key: 'olf_sens', getStrat: (val) => val > 70 ? "Scent Design vital. Preveja difusores e ventilação." : "Olfato neutro. Foco na ventilação." },
+            'tat': { title: '3.4 TÁTIL', icon: '✋', color: 's-tat', border: 'bg-tat', key: 'tat_tex_macia', getStrat: (val) => val > 60 ? "Necessidade de toque. Use madeira, veludo e linho." : "Prefere superfícies lisas e frias (limpeza)." },
+            'prop': { title: '3.5 ESPACIAL', icon: '🧭', color: 's-prop', border: 'bg-prop', key: 'prop_pe_dir', getStrat: (val) => val > 50 ? "Gosta de amplitude e pé direito alto." : "Prefere 'Toca' (ambientes acolhedores)." },
+            'gus': { title: '3.6 GUSTATIVO', icon: '🍽️', color: 's-gus', border: 'bg-gus', key: 'gus_social', getStrat: (val) => val > 50 ? "Cozinha social. Ilha gourmet e luz quente." : "Cozinha funcional. Praticidade." },
+            'emo': { title: '3.7 EMOCIONAL', icon: '❤️', color: 's-emo', border: 'bg-emo', key: 'emo_nostalgia', getStrat: (val) => val > 50 ? "Nostalgia vital. Exponha objetos de memória." : "Foco no novo e no futuro." },
+            'cog': { title: '3.8 COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog', key: 'cog_prod', getStrat: (val) => val < 50 ? "Foco frágil. Precisa de silêncio visual." : "Multitarefa e dinâmico." }
         };
 
-        // 5. INICIALIZAÇÃO
+        // 4. ESTRATÉGIAS DE MEMÓRIA (MÓDULO 4 - NOVO V40)
+        // Mapeia chaves de resposta para estratégias arquitetônicas
+        const DB_MEMORY_STRATEGIES = {
+            'mem_epi_infancia': "<strong>Estratégia Infância:</strong> A infância é o porto seguro. Use referências da casa dos pais (ex: piso de taco, cheiro de bolo, quintal).",
+            'mem_epi_viagem': "<strong>Estratégia Cosmopolita:</strong> O projeto deve ser um diário de viagens, expondo souvenirs, mapas e arte global.",
+            'mem_epi_aconchego': "<strong>Estratégia Ninho:</strong> Busca proteção. Crie 'cantos de refúgio' com mantas, luz baixa (2700K) e cores quentes.",
+            'mem_epi_lar': "<strong>Estratégia Família:</strong> Foco na convivência. A mesa de jantar e o sofá são os protagonistas da casa.",
+            'mem_proc_bagunca': "<strong>Estratégia Realista:</strong> A 'bagunça criativa' faz parte do processo. Não force minimalismo extremo. Crie organizadores abertos.",
+            'mem_proc_fluxo': "<strong>Estratégia Eficiência:</strong> Valoriza a agilidade. O layout deve ser intuitivo, sem obstáculos no caminho.",
+            'default': "<strong>Estratégia Biográfica:</strong> A casa deve contar a história do morador através de objetos significativos e layout fluido."
+        };
+
         let dadosAPI = [];
+
         async function init() {
             try {
                 const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
@@ -672,7 +1027,6 @@
             } catch(e) { console.error(e); }
         }
 
-        // Funções Auxiliares
         function checkMod(r, k){ return r && Object.keys(r).some(x=>x.startsWith(k)); }
         function formatTime(s) { s = parseInt(s); if(isNaN(s)) return "00:00"; return `${Math.floor(s/60)}:${s%60 < 10 ? '0'+(s%60) : s%60}`; }
 
@@ -690,7 +1044,6 @@
             });
         }
 
-        // 6. GERAÇÃO DO PDF (PROCESSAMENTO)
         async function makePDF(index, btn) {
             try {
                 const d = dadosAPI[index];
@@ -698,11 +1051,11 @@
                 const r = d.respostas || {};
 
                 // CAPA
-                document.getElementById('cp-nome').innerText = d.cliente || '-';
-                document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
-                document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
+                if(document.getElementById('cp-nome')) document.getElementById('cp-nome').innerText = d.cliente || '-';
+                if(document.getElementById('cp-arq')) document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
+                if(document.getElementById('cp-data')) document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
 
-                // --- MOD 1 (COMPLETO) ---
+                // --- MOD 1 ---
                 let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
                 Object.keys(r).forEach(k => {
                     let v = parseInt(r[k]) || 0;
@@ -712,35 +1065,31 @@
                 const sorted = [{id:'FOGO',...DB.FOGO,v:p.FOGO},{id:'AR',...DB.AR,v:p.AR},{id:'AGUA',...DB.AGUA,v:p.AGUA},{id:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
                 const dom = sorted[0]; const sec = sorted[1]; const sombra = sorted[3];
 
-                document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
+                if(document.getElementById('t1-time')) document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
                 let chartHTML = '';
                 sorted.forEach(i => {
                     let pct = Math.min((i.v / 25) * 100, 100);
                     chartHTML += `<div class="cc-box"><div class="cc-top"><span class="cc-lbl c-${i.class}">${i.id}</span><span class="cc-val">${i.v}</span></div><div class="cc-bar"><div class="cc-fill bg-${i.class}" style="width:${pct}%"></div></div></div>`;
                 });
-                document.getElementById('chart-container').innerHTML = chartHTML;
-                document.getElementById('wb-head').style.backgroundColor = dom.cor;
-                document.getElementById('txt-el').innerText = dom.id;
-                document.getElementById('txt-tit').innerText = dom.titulo;
-                document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia</span><span class="iv">${dom.energia}</span></div><div class="info-row"><span class="il">Perfil</span><span class="iv">${dom.quem}</span></div><div class="info-row"><span class="il">Estilos</span><span class="iv">${dom.estilos.join(', ')}</span></div>`;
+                if(document.getElementById('chart-container')) document.getElementById('chart-container').innerHTML = chartHTML;
+                if(document.getElementById('wb-head')) document.getElementById('wb-head').style.backgroundColor = dom.cor;
+                if(document.getElementById('txt-el')) document.getElementById('txt-el').innerText = dom.id;
+                if(document.getElementById('txt-tit')) document.getElementById('txt-tit').innerText = dom.titulo;
+                if(document.getElementById('m1-content')) document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia</span><span class="iv">${dom.energia}</span></div><div class="info-row"><span class="il">Perfil</span><span class="iv">${dom.quem}</span></div><div class="info-row"><span class="il">Estilos</span><span class="iv">${dom.estilos.join(', ')}</span></div>`;
                 
-                // Preenche Estratégias Individuais
                 if(document.getElementById('m1-neuro-individual')) document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
                 if(document.getElementById('m1-comunicacao-individual')) document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
 
-                // Preenche Correlações
                 const keyComb = `${dom.id}_${sec.id}`;
                 const dataComb = CORRELACOES[keyComb] || { perfil:'Misto', projeto:'Equilíbrio', atendimento:'Adaptável' };
                 if(document.getElementById('m1-perfil-texto')) document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
                 if(document.getElementById('m1-projeto-texto')) document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
-                
-                // Preenche Sombra
                 const txtSombra = SOMBRAS[sombra.id] || "Buscar equilíbrio.";
                 if(document.getElementById('m1-sombra-texto')) document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
                 if(document.getElementById('m1-comunicacao-texto')) document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento;
 
                 // --- MOD 2 ---
-                document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
+                if(document.getElementById('t2-time')) document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
                 let visualScores = [];
                 Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({id:k, nome:DB_VISUAL[k]||k, val:parseInt(r[k])||0}); });
                 visualScores.sort((a,b)=>b.val-a.val);
@@ -748,25 +1097,19 @@
                     const top = visualScores[0];
                     if(document.getElementById('vis-top1-nome')) document.getElementById('vis-top1-nome').innerText = top.nome;
                     if(document.getElementById('vis-top1-nota')) document.getElementById('vis-top1-nota').innerText = top.val;
-                    
                     const det = DB_VISUAL_DETAILS[top.id] || DB_VISUAL_DETAILS['default'];
                     let richHTML = `<div class="strategy-grid"><div class="st-card highlight"><div class="st-head">🗝️ CONCEITO</div><div class="st-text">${det.conceito}</div></div><div class="st-card"><div class="st-head">🧠 NEURO DICA</div><div class="st-text">${det.neuro}</div></div></div>`;
                     richHTML += `<div class="strategy-grid"><div class="st-card"><div class="st-head">🧱 MATERIAIS</div><div class="st-text">${det.materiais}</div></div><div class="st-card"><div class="st-head">💡 ILUMINAÇÃO</div><div class="st-text">${det.luz}</div></div><div class="st-card"><div class="st-head">🪑 MOBILIÁRIO</div><div class="st-text">${det.mobiliario}</div></div></div>`;
                     richHTML += `<div style="margin-top:15px; font-size:9pt; font-weight:700; color:#999;">AFINIDADES SECUNDÁRIAS:</div>`;
                     richHTML += visualScores.slice(1,5).map(i=>`<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}%</span></div>`).join('');
-                    
                     if(document.getElementById('m2-content')) document.getElementById('m2-content').innerHTML = richHTML;
                     if(document.getElementById('m2-conclusao-dinamica')) document.getElementById('m2-conclusao-dinamica').innerText = `Perfil ${top.nome}: Foco em ${det.conceito}`;
                 }
 
-                // --- MOD 3 (SENSORIAL - GRID 8 CARDS) ---
+                // --- MOD 3 ---
                 if(document.getElementById('t3-time')) document.getElementById('t3-time').innerText = formatTime(d.tempos?.[2] || 0);
-                
                 const senseKeys = ['vis','aud','olf','tat','prop','gus','emo','cog'];
                 let senseHTML = '';
-                
-                // Mapeia valores do questionário para os sensores
-                // Fallback para 50 caso o dado não exista
                 const sVals = {
                     vis: r['vis_complex'] !== undefined ? parseInt(r['vis_complex']) : 50,
                     aud: r['aud_eco'] !== undefined ? parseInt(r['aud_eco']) : 50,
@@ -777,42 +1120,80 @@
                     emo: r['emo_nostalgia'] !== undefined ? parseInt(r['emo_nostalgia']) : 50,
                     cog: r['cog_prod'] !== undefined ? parseInt(r['cog_prod']) : 50
                 };
-
                 senseKeys.forEach(k => {
                     const info = DB_SENSORY_STRATEGIES[k];
                     const val = sVals[k]; 
                     const strat = info.getStrat(val);
-                    
                     senseHTML += `
                         <div class="sense-card ${info.color}">
-                            <div class="sense-head">
-                                <span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span>
-                            </div>
-                            <div class="sense-bar-container">
-                                <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
-                                <span class="sense-val ${info.color}">${val}%</span>
-                            </div>
+                            <div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div>
+                            <div class="sense-bar-container"><div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div><span class="sense-val ${info.color}">${val}%</span></div>
                             <div class="sense-strategy"><strong>Estratégia:</strong> ${strat}</div>
                         </div>
                     `;
                 });
                 if(document.getElementById('m3-grid-container')) document.getElementById('m3-grid-container').innerHTML = senseHTML;
 
-                // --- MOD 4 ---
+                // --- MOD 4 (TURBINADO V40) ---
                 if(document.getElementById('t4-time')) document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
+                
                 let explHTML = '', implHTML = '';
+                let highestMem = { key: 'default', val: 0 }; 
+
+                // Processamento de Memórias com Escalas
                 Object.keys(r).forEach(k => {
+                    // Explícitas
                     if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
-                        if(typeof r[k] === 'string') explHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#8e44ad">${k.split('_')[2].toUpperCase()}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
-                        else explHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#8e44ad"></div></div></div>`;
+                        let label = k.split('_')[2].toUpperCase();
+                        let val = r[k];
+                        if(typeof val === 'number') {
+                            if(val > highestMem.val) highestMem = { key: k, val: val };
+                            explHTML += `
+                                <div class="mem-container mem-epi">
+                                    <div class="mem-label-row"><span class="mem-title">${label}</span><span class="mem-val">${val}%</span></div>
+                                    <div class="mem-track"><div class="mem-fill" style="width:${val}%"></div></div>
+                                    <div class="mem-scale"><span>0</span><span>50</span><span>100</span></div>
+                                </div>
+                            `;
+                        } else {
+                            explHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#8e44ad">${label}</span><span class="il-val" style="font-style:italic">"${val}"</span></div>`;
+                        }
                     }
+                    // Implícitas
                     if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
-                        if(typeof r[k] === 'string') implHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#2c3e50">${k.split('_')[2].toUpperCase()}</span><span class="il-val" style="font-style:italic">"${r[k]}"</span></div>`;
-                        else implHTML += `<div style="width:48%; margin-bottom:5px;"><span class="il-lbl">${k.split('_')[2].toUpperCase()}</span><div class="sb-track"><div class="sb-fill" style="width:${r[k]}%; background:#2c3e50"></div></div></div>`;
+                        let label = k.split('_')[2].toUpperCase();
+                        let val = r[k];
+                        if(typeof val === 'number') {
+                            implHTML += `
+                                <div class="mem-container mem-imp">
+                                    <div class="mem-label-row"><span class="mem-title">${label}</span><span class="mem-val">${val}%</span></div>
+                                    <div class="mem-track"><div class="mem-fill" style="width:${val}%"></div></div>
+                                    <div class="mem-scale"><span>0</span><span>50</span><span>100</span></div>
+                                </div>
+                            `;
+                        } else {
+                            implHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#2c3e50">${label}</span><span class="il-val" style="font-style:italic">"${val}"</span></div>`;
+                        }
                     }
                 });
+
                 if(document.getElementById('m4-expl')) document.getElementById('m4-expl').innerHTML = explHTML || 'Sem dados.';
                 if(document.getElementById('m4-impl')) document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
+                
+                // Conclusão Estratégica Dinâmica (Mod 4)
+                // Procura a estratégia correspondente à chave da memória mais alta (ex: 'mem_epi_infancia')
+                // Se não achar, usa 'default'
+                // Ajuste para encontrar a chave correta no banco DB_MEMORY_STRATEGIES
+                let strategyText = DB_MEMORY_STRATEGIES['default'];
+                // Tenta achar correspondência parcial se a chave exata não existir
+                for (const key in DB_MEMORY_STRATEGIES) {
+                    if (highestMem.key.includes(key)) {
+                        strategyText = DB_MEMORY_STRATEGIES[key];
+                        break;
+                    }
+                }
+                
+                if(document.getElementById('m4-conclusao-dinamica')) document.getElementById('m4-conclusao-dinamica').innerHTML = strategyText;
 
                 // --- MOD 5 ---
                 if(document.getElementById('t5-time')) document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
