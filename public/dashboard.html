@@ -11,68 +11,31 @@
     
     <style>
         /* ==========================================================================
-           1. ESTILOS GERAIS
+           1. ESTILOS GERAIS E RESET
            ========================================================================== */
-        * { 
-            box-sizing: border-box; 
-            -webkit-print-color-adjust: exact; 
-        }
-        
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background: #f0f2f5; 
-            margin: 0; 
-            padding: 20px; 
-            color: #333; 
-        }
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
+        body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
         
         /* ==========================================================================
-           2. PAINEL DE CONTROLE (TELA)
+           2. ESTILOS DO PAINEL (TELA DO COMPUTADOR)
            ========================================================================== */
-        .painel { 
-            max-width: 1200px; 
-            margin: 0 auto 30px auto; 
-            background: white; 
-            padding: 25px; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
-        }
-        
-        .header-painel { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 2px solid #f0f0f0; 
-            padding-bottom: 20px; 
-            margin-bottom: 20px; 
-        }
-        
-        .hp-title { 
-            font-size: 18pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-        }
-        
-        .btn-refresh { 
-            background: #2c3e50; 
-            color: white; 
-            padding: 10px 20px; 
-            border: none; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-weight: 700; 
-            transition: 0.2s; 
-        }
+        .painel { max-width: 1200px; margin: 0 auto 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 20px; }
+        .hp-title { font-size: 18pt; font-weight: 800; color: #2c3e50; }
+        .btn-refresh { background: #2c3e50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 6px; font-weight: 700; font-size: 9pt; transition: 0.2s; }
         .btn-refresh:hover { background: #34495e; }
         
-        /* TABELA */
+        /* TABELA DE CLIENTES */
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px 10px; background: #f8f9fa; color: #7f8c8d; font-weight: 700; font-size: 8pt; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: top; font-size: 9.5pt; }
         tr:hover { background-color: #fafafa; }
-        
         .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
         .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
+        .contact-row { display: flex; gap: 8px; }
+        .btn-contact { text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
+        .btn-wa { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .btn-mail { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
         
         .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         .mod-tag { padding: 3px 6px; border-radius: 4px; font-size: 7pt; font-weight: 700; text-transform: uppercase; background: #eee; color: #bbb; border: 1px solid #e0e0e0; }
@@ -83,23 +46,13 @@
         .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
         
         /* ==========================================================================
-           3. ESTILOS DO PDF (A4)
+           3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
            ========================================================================== */
         #pdf-root { display: none; } 
-        
-        .page { 
-            width: 210mm; 
-            height: 296mm; 
-            background: white; 
-            position: relative; 
-            overflow: hidden; 
-            margin: 0 auto; 
-            page-break-after: always; 
-            padding: 0; 
-        }
+        .page { width: 210mm; height: 296mm; background: white; position: relative; overflow: hidden; margin: 0 auto; page-break-after: always; padding: 0; }
         .page:last-child { page-break-after: avoid; }
         
-        /* CAPA */
+        /* CAPA & HEADER */
         .capa-box { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 20mm solid #f4f6f8; text-align: center; }
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
@@ -108,7 +61,7 @@
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        /* HEADER */
+        /* HEADER DOS MÓDULOS */
         .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
         .m-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #2c3e50; padding-bottom: 10px; margin-bottom: 20px; }
         .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
@@ -117,14 +70,23 @@
         .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
         .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        /* BOXES */
+        /* BOXES DE CONTEÚDO */
         .win-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin-bottom: 15px; display: flex; flex-direction: column; }
         .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
         .wb-body { padding: 20px; flex: 1; }
         
-        /* GRÁFICOS */
+        /* GRIDS & LAYOUTS ESPECÍFICOS */
+        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
+        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
+        .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; }
+        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; }
+        
+        .st-head { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
+        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
+
+        /* GRÁFICOS (CSS PURO) */
         .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 40px; }
         .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
         .cc-top { display: flex; justify-content: space-between; align-items: center; }
@@ -133,14 +95,10 @@
         .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
         .cc-fill { height: 100%; }
 
-        /* GRID ESTRATÉGICO (MÓDULO 1) */
-        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
-        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
-        .st-card.highlight { border-left: 4px solid #3498db; background: #fdfdfd; }
-        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fdfdfd; }
-        
-        .st-head { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; }
-        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
+        /* RODAPÉ E CONCLUSÃO */
+        .box-conclusao { background: #fdfdfd; border-left: 4px solid #2c3e50; padding: 15px; font-size: 9pt; color: #555; line-height: 1.5; margin-top: auto; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
+        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
         
         /* GRIDS & LISTAS */
         .grid-2 { display: flex; gap: 20px; }
@@ -160,7 +118,7 @@
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
-        /* TAGS (MOD 5) */
+        /* TAGS (MÓDULO 5) */
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
 
@@ -169,10 +127,6 @@
         .c-ar { color: #3498db; } .bg-ar { background: #3498db; }
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
-        
-        .box-conclusao { background: #fdfdfd; border-left: 4px solid #2c3e50; padding: 15px; font-size: 9pt; color: #555; line-height: 1.5; margin-top: auto; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
-        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
     </style>
 </head>
 <body>
@@ -264,21 +218,27 @@
                     <div><div class="mh-tit">IDENTIDADE VISUAL</div><div class="mh-sub">Estilo & Preferência Estética</div></div>
                     <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" id="t2-time">--:--</span></div>
                 </div>
-                <div class="win-box" style="flex:0 auto; margin-bottom:30px;">
+                
+                <div class="win-box" style="flex:0 auto; margin-bottom:20px;">
                     <div class="wb-head" style="background:#2c3e50;">
                         <div class="wb-tit">ESTILO PREDOMINANTE</div>
                         <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
                     </div>
-                    <div class="wb-body" style="padding:25px; text-align:center;">
-                        <h2 style="margin:0; font-size:26pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
-                        <div style="margin-top:15px; font-size:14pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
+                    <div class="wb-body" style="padding:20px; text-align:center;">
+                        <h2 style="margin:0; font-size:24pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
+                        <div style="margin-top:10px; font-size:12pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
                     </div>
                 </div>
-                <div id="m2-content"></div>
+
+                <div id="m2-content">
+                    </div>
+
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
-                    A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro do cliente decodifica com facilidade.
-                    Utilize o estilo predominante como base estrutural (revestimentos, marcenaria) e os estilos secundários para camadas de decoração.
+                    <span id="m2-conclusao-dinamica">
+                        A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
+                        Utilize o estilo predominante como base estrutural e os secundários para camadas de decoração.
+                    </span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -353,7 +313,10 @@
                 <div class="win-box">
                     <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
                     <div class="wb-body">
-                        <div style="margin-bottom:15px;"><span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span><div class="check-tags" id="m5-pers"></div></div>
+                        <div style="margin-bottom:15px;">
+                            <span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span>
+                            <div class="check-tags" id="m5-pers"></div>
+                        </div>
                         <div>
                             <span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span>
                             <div class="sensory-bar" style="margin-top:5px;">
@@ -380,7 +343,7 @@
     </div>
 
     <script>
-        // 1. BANCO DE DADOS (TEXTOS RESTAURADOS)
+        // 1. BANCO DE DADOS (TEXTOS COMPLETOS RESTAURADOS - MOD 1)
         const DB = {
             FOGO: { 
                 id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
@@ -412,6 +375,46 @@
             }
         };
 
+        // 2. BASE DE CONHECIMENTO VISUAL (NOVA E DETALHADA - MÓDULO 2)
+        const DB_VISUAL_DETAILS = {
+            'est_tech': {
+                conceito: 'Futurismo, automação e linhas puras.',
+                materiais: 'Vidro, Aço Inox, Superfícies High-Gloss.',
+                luz: 'Linear, RGB (cenas), Fria (foco) e Indireta (LEDs em marcenaria).',
+                mobiliario: 'Design ergonômico, peças assinadas, cadeiras de escritório premium.',
+                neuro: 'Reduz a carga cognitiva pela limpeza visual. A automação gera sensação de controle e eficiência (Dopamina).'
+            },
+            'est_scandi': {
+                conceito: 'Hygge: Conforto, luz e simplicidade.',
+                materiais: 'Madeira clara (Carvalho), Lã, Algodão, Paredes Brancas.',
+                luz: 'Ampla, Natural maximizada, Pendentes baixos com luz quente (2700K).',
+                mobiliario: 'Pés palito, sofás cinza/bege, mantas, poucos objetos mas com significado.',
+                neuro: 'Promove calma e clareza mental. A madeira clara reduz a pressão arterial e aumenta a sensação de acolhimento.'
+            },
+            'est_ind': {
+                conceito: 'Estrutura aparente e autenticidade urbana.',
+                materiais: 'Tijolo aparente, Concreto, Metal Preto, Couro.',
+                luz: 'Trilhos, Pendentes metálicos, Filamento de carbono (quente).',
+                mobiliario: 'Sofás de couro, estantes de ferro, mesas de madeira bruta.',
+                neuro: 'Estimula a criatividade e a sensação de liberdade (pé direito alto). Cuidado com a acústica.'
+            },
+            'est_contemp': {
+                conceito: 'O "agora". Conforto atual e linhas suaves.',
+                materiais: 'Mix de texturas, pedras naturais, metais dourados ou pretos.',
+                luz: 'Versátil. Sancas de gesso, spots direcionáveis.',
+                mobiliario: 'Peças baixas, linhas horizontais, design brasileiro atual.',
+                neuro: 'Equilíbrio. O cérebro lê como um ambiente atualizado e seguro, validando o status social.'
+            },
+            // Fallback para outros estilos (Genérico Inteligente)
+            'default': {
+                conceito: 'Estilo personalizado com foco na identidade do cliente.',
+                materiais: 'Equilíbrio entre texturas naturais e acabamentos refinados.',
+                luz: 'Foco em camadas: Geral, Tarefa e Sotaque.',
+                mobiliario: 'Prioridade para ergonomia e fluxo de circulação.',
+                neuro: 'O ambiente deve refletir a autoimagem do cliente para gerar pertencimento (Place Attachment).'
+            }
+        };
+
         const DB_VISUAL = {
             'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
             'est_scandi': 'Escandinavo', 'est_cont_leve': 'Contemporâneo Leve', 'est_boho': 'Boho Chic', 'est_japandi': 'Japandi', 'est_wabi': 'Wabi-Sabi',
@@ -419,7 +422,7 @@
             'est_mid': 'Mid-Century', 'est_ecletico': 'Eclético', 'est_classico': 'Clássico', 'est_neoclass': 'Neoclássico'
         };
 
-        // 2. CORRELAÇÕES COMBINADAS (12 COMBINAÇÕES)
+        // 3. MATRIZ DE CORRELAÇÃO (12 COMBINAÇÕES)
         const CORRELACOES = {
             'FOGO_TERRA': { perfil: 'O CONSTRUTOR: Pragmático e ambicioso.', projeto: 'Solidez e Status. Materiais nobres e simetria.', atendimento: 'Seja técnico, pontual e mostre competência.' },
             'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau") e Automação.', atendimento: 'Seja ágil, visual e venda a novidade.' },
@@ -435,7 +438,7 @@
             'AGUA_TERRA': { perfil: 'O ACOLHEDOR: Família e estabilidade.', projeto: 'Ninho, Farmhouse e cozinha grande.', atendimento: 'Seja previsível e carinhoso.' }
         };
 
-        // 3. SOMBRA (O QUE FALTA)
+        // 4. SOMBRA (O QUE FALTA)
         const SOMBRAS = {
             'FOGO': 'Falta paciência. O projeto deve ter manutenção zero.',
             'AR': 'Falta foco. Evite excesso de informação visual.',
@@ -502,18 +505,18 @@
         }
 
         async function makePDF(index, btn) {
-            // TRY CATCH: Evita que o botão trave se houver erro
+            // PROTEÇÃO TRY/CATCH PARA NÃO TRAVAR O BOTÃO
             try {
                 const d = dadosAPI[index];
                 const original = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
                 const r = d.respostas || {};
 
-                // CAPA
+                // --- CAPA ---
                 document.getElementById('cp-nome').innerText = d.cliente || '-';
                 document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
                 document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
 
-                // --- MÓDULO 1: CÁLCULO E CORRELAÇÃO ---
+                // --- MÓDULO 1: LÓGICA COMPLETA ---
                 let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
                 Object.keys(r).forEach(k => {
                     let v = parseInt(r[k]) || 0;
@@ -526,7 +529,7 @@
                 
                 const dom = sorted[0]; // Dominante
                 const sec = sorted[1]; // Secundário
-                const sombra = sorted[3]; // Menos Acessado
+                const sombra = sorted[3]; // Sombra
 
                 document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
                 
@@ -538,7 +541,7 @@
                 });
                 document.getElementById('chart-container').innerHTML = chartHTML;
                 
-                // Preenchimento do Card Dominante
+                // Card Dominante (Textos Originais)
                 document.getElementById('wb-head').style.backgroundColor = dom.cor;
                 document.getElementById('txt-el').innerText = dom.id;
                 document.getElementById('txt-tit').innerText = dom.titulo;
@@ -547,36 +550,71 @@
                     <div class="info-row"><span class="il">Estilos Sugeridos</span><span class="iv">${dom.estilos.join(', ')}</span></div>
                 `;
                 
-                // Textos Individuais (RESTAURADOS) - AQUI ESTAVA O ERRO DE ID
+                // Card Estratégia Individual (Restaurado)
                 const elNeuro = document.getElementById('m1-neuro-individual');
-                if (elNeuro) elNeuro.innerHTML = dom.neuro;
-                
+                if(elNeuro) elNeuro.innerHTML = dom.neuro;
                 const elCom = document.getElementById('m1-comunicacao-individual');
-                if (elCom) elCom.innerHTML = dom.comunicacao;
+                if(elCom) elCom.innerHTML = dom.comunicacao;
 
-                // Correlação (NOVOS TEXTOS)
+                // Card Correlação (Novo)
                 const keyComb = `${dom.id}_${sec.id}`;
                 const dataComb = CORRELACOES[keyComb] || { perfil:'Misto', projeto:'Equilíbrio', atendimento:'Adaptável' };
-                
                 document.getElementById('m1-perfil-texto').innerHTML = dataComb.perfil;
                 document.getElementById('m1-projeto-texto').innerHTML = dataComb.projeto;
                 
-                // Sombra (O que falta)
+                // Card Sombra (Novo)
                 const txtSombra = SOMBRAS[sombra.id] || "Buscar equilíbrio.";
                 document.getElementById('m1-sombra-texto').innerHTML = `Menos Acessado: <strong>${sombra.id}</strong><br>${txtSombra}`;
-                
-                // Atendimento (Combinação)
                 document.getElementById('m1-comunicacao-texto').innerHTML = dataComb.atendimento;
 
-                // --- MÓDULO 2: VISUAL ---
+                // --- MÓDULO 2: VISUAL ENRIQUECIDO ---
                 document.getElementById('t2-time').innerText = formatTime(d.tempos?.[1] || 0);
                 let visualScores = [];
-                Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0}); });
+                Object.keys(r).forEach(k => { if(k.startsWith('est_')) visualScores.push({id: k, nome: DB_VISUAL[k]||k, val: parseInt(r[k])||0}); });
                 visualScores.sort((a,b) => b.val - a.val);
+                
                 if(visualScores.length > 0) {
-                    document.getElementById('vis-top1-nome').innerText = visualScores[0].nome;
-                    document.getElementById('vis-top1-nota').innerText = visualScores[0].val;
-                    document.getElementById('m2-content').innerHTML = visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
+                    const topStyle = visualScores[0];
+                    document.getElementById('vis-top1-nome').innerText = topStyle.nome;
+                    document.getElementById('vis-top1-nota').innerText = topStyle.val;
+                    
+                    // Geração do Conteúdo Rico (Mod 2)
+                    const details = DB_VISUAL_DETAILS[topStyle.id] || DB_VISUAL_DETAILS['default'];
+                    let richHTML = `
+                        <div class="strategy-grid">
+                            <div class="st-card highlight">
+                                <div class="st-head">🗝️ CONCEITO CHAVE</div>
+                                <div class="st-text">${details.conceito}</div>
+                            </div>
+                            <div class="st-card">
+                                <div class="st-head">🧠 NEURO DICA</div>
+                                <div class="st-text">${details.neuro}</div>
+                            </div>
+                        </div>
+                        <div class="strategy-grid">
+                            <div class="st-card">
+                                <div class="st-head">🧱 MATERIAIS</div>
+                                <div class="st-text">${details.materiais}</div>
+                            </div>
+                            <div class="st-card">
+                                <div class="st-head">💡 ILUMINAÇÃO</div>
+                                <div class="st-text">${details.luz}</div>
+                            </div>
+                            <div class="st-card">
+                                <div class="st-head">🪑 MOBILIÁRIO</div>
+                                <div class="st-text">${details.mobiliario}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:20px; font-size:10pt; font-weight:700; color:#999; text-transform:uppercase;">Outros estilos com afinidade:</div>
+                    `;
+                    
+                    // Lista os próximos estilos
+                    richHTML += visualScores.slice(1,5).map(i => `<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}% de afinidade</span></div>`).join('');
+                    
+                    document.getElementById('m2-content').innerHTML = richHTML;
+                    
+                    // Atualiza conclusão do Módulo 2
+                    document.getElementById('m2-conclusao-dinamica').innerText = `Para um perfil ${topStyle.nome}, o ambiente deve focar em ${details.conceito}. A neuroarquitetura sugere ${details.neuro}`;
                 }
 
                 // --- MÓDULO 3: SENSORIAL ---
@@ -653,11 +691,12 @@
 
             } catch (err) {
                 console.error("ERRO AO GERAR PDF:", err);
-                alert("Erro ao gerar PDF. Verifique o console.");
+                alert("Erro ao gerar PDF: " + err.message);
                 btn.innerText = "Erro"; btn.disabled = false;
             }
         }
 
+        // Inicia o sistema
         init();
     </script>
 </body>
