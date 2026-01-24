@@ -13,7 +13,6 @@
         /* ==========================================================================
            1. ESTILOS GERAIS
            ========================================================================== */
-        
         * { 
             box-sizing: border-box; 
             -webkit-print-color-adjust: exact; 
@@ -30,7 +29,6 @@
         /* ==========================================================================
            2. ESTILOS DO PAINEL (TELA)
            ========================================================================== */
-        
         .painel { 
             max-width: 1200px; 
             margin: 0 auto 30px auto; 
@@ -71,7 +69,7 @@
             background: #34495e; 
         }
         
-        /* TABELA DE CLIENTES */
+        /* TABELA */
         table { 
             width: 100%; 
             border-collapse: collapse; 
@@ -114,7 +112,6 @@
             margin-bottom: 8px; 
         }
         
-        /* STATUS TAGS */
         .mod-grid { 
             display: flex; 
             gap: 4px; 
@@ -149,14 +146,22 @@
             cursor: pointer; 
         }
         
-        .btn-pdf:hover { background: #c0392b; }
-        .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
-
+        .btn-pdf:hover { 
+            background: #c0392b; 
+        }
+        
+        .btn-pdf:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+        }
+        
         /* ==========================================================================
-           3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
+           3. ESTILOS DO PDF (A4)
            ========================================================================== */
         
-        #pdf-root { display: none; } 
+        #pdf-root { 
+            display: none; 
+        } 
         
         .page { 
             width: 210mm; 
@@ -168,7 +173,10 @@
             page-break-after: always; 
             padding: 0; 
         }
-        .page:last-child { page-break-after: avoid; }
+        
+        .page:last-child { 
+            page-break-after: avoid; 
+        }
         
         /* CAPA */
         .capa-box { 
@@ -182,14 +190,57 @@
             text-align: center; 
         }
         
-        .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
-        .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
-        .c-info { width: 80%; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 40px 0; margin-bottom: 50px; }
-        .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
-        .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
-        .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
+        .c-logo { 
+            font-size: 38pt; 
+            font-weight: 900; 
+            color: #2c3e50; 
+            margin-bottom: 10px; 
+            letter-spacing: -1px; 
+        }
         
-        /* HEADER DO MODULO */
+        .c-sub { 
+            font-size: 10pt; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            color: #7f8c8d; 
+            margin-bottom: 80px; 
+        }
+        
+        .c-info { 
+            width: 80%; 
+            border-top: 2px solid #2c3e50; 
+            border-bottom: 2px solid #2c3e50; 
+            padding: 40px 0; 
+            margin-bottom: 50px; 
+        }
+        
+        .ci-lbl { 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #aaa; 
+            text-transform: uppercase; 
+            margin-bottom: 5px; 
+            display: block; 
+            letter-spacing: 1px; 
+        }
+        
+        .ci-val { 
+            font-size: 16pt; 
+            font-weight: 700; 
+            color: #2c3e50; 
+            margin-bottom: 25px; 
+            display: block; 
+        }
+        
+        .c-foot { 
+            position: absolute; 
+            bottom: 15mm; 
+            font-size: 8pt; 
+            color: #ccc; 
+            text-transform: uppercase; 
+        }
+        
+        /* HEADER */
         .mod-content { 
             padding: 15mm 15mm 10mm 15mm; 
             height: 100%; 
@@ -206,13 +257,41 @@
             margin-bottom: 20px; 
         }
         
-        .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
-        .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
-        .mh-meta { text-align: right; }
-        .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
-        .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
+        .mh-tit { 
+            font-size: 22pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            line-height: 1; 
+        }
         
-        /* BOXES DE CONTEÚDO */
+        .mh-sub { 
+            font-size: 9pt; 
+            font-weight: 600; 
+            color: #7f8c8d; 
+            text-transform: uppercase; 
+            margin-top: 5px; 
+        }
+        
+        .mh-meta { 
+            text-align: right; 
+        }
+        
+        .mh-num { 
+            font-size: 30pt; 
+            font-weight: 900; 
+            color: #eee; 
+            line-height: 0.8; 
+        }
+        
+        .mh-time { 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #e74c3c; 
+            margin-top: 5px; 
+            display: block; 
+        }
+        
+        /* BOXES */
         .win-box { 
             border: 1px solid #ccc; 
             border-radius: 6px; 
@@ -222,13 +301,38 @@
             flex-direction: column; 
         }
         
-        .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
-        .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
-        .wb-body { padding: 20px; flex: 1; }
+        .wb-head { 
+            padding: 10px 15px; 
+            color: white; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .wb-tit { 
+            font-size: 14pt; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+        
+        .wb-sty { 
+            font-size: 8pt; 
+            font-weight: 600; 
+            opacity: 0.95; 
+            text-transform: uppercase; 
+        }
+        
+        .wb-body { 
+            padding: 20px; 
+            flex: 1; 
+        }
         
         /* GRIDS ESTRATÉGICOS */
-        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
+        .strategy-grid { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+        }
         
         .st-card { 
             flex: 1; 
@@ -239,50 +343,166 @@
             display: flex; 
             flex-direction: column; 
         }
-        .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; }
-        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; }
+        
+        .st-card.highlight { 
+            border-left: 4px solid #3498db; 
+            background: #fbfdff; 
+        }
+        
+        .st-card.shadow-card { 
+            border-left: 4px solid #f1c40f; 
+            background: #fffcf5; 
+        }
         
         .st-head { 
-            font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
-            margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; 
+            font-size: 9pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            padding-bottom: 5px; 
+            border-bottom: 2px solid #eee; 
         }
-        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
+        
+        .st-text { 
+            font-size: 8.5pt; 
+            color: #555; 
+            line-height: 1.5; 
+            text-align: justify; 
+        }
 
-        /* GRÁFICOS DE BARRAS (MOD 1) */
-        .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 40px; }
-        .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
-        .cc-top { display: flex; justify-content: space-between; align-items: center; }
-        .cc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
-        .cc-val { font-size: 11pt; font-weight: 900; }
-        .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
-        .cc-fill { height: 100%; }
+        /* GRÁFICOS */
+        .charts { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 15px; 
+            height: 40px; 
+        }
+        
+        .cc-box { 
+            flex: 1; 
+            border: 1px solid #eee; 
+            border-radius: 4px; 
+            padding: 5px 8px; 
+            background: #fafafa; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+        
+        .cc-top { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .cc-lbl { 
+            font-size: 8pt; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+        
+        .cc-val { 
+            font-size: 11pt; 
+            font-weight: 900; 
+        }
+        
+        .cc-bar { 
+            width: 100%; 
+            height: 5px; 
+            background: #ddd; 
+            border-radius: 3px; 
+            overflow: hidden; 
+        }
+        
+        .cc-fill { 
+            height: 100%; 
+        }
 
-        /* BOX DE CONCLUSÃO TÉCNICA (RODAPÉ) */
+        /* RODAPÉ */
         .box-conclusao { 
             background: #fdfdfd; 
             border-left: 4px solid #2c3e50; 
             padding: 15px; 
-            font-size: 9pt; color: #555; line-height: 1.5; 
+            font-size: 9pt; 
+            color: #555; 
+            line-height: 1.5; 
             margin-top: auto; 
             margin-bottom: 10px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
         }
-        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
         
-        /* GRIDS & LISTAS */
-        .grid-2 { display: flex; gap: 20px; }
-        .col { flex: 1; }
-        .info-row { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
-        .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .iv { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.25; }
-        .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
-        .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
-        .il-val { font-size: 9pt; color: #555; }
+        .bc-tit { 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            font-size: 10pt; 
+            display: block; 
+        }
         
+        .ft-note { 
+            text-align: center; 
+            font-size: 6pt; 
+            color: #bbb; 
+            padding-top: 5px; 
+        }
+        
+        /* LISTAS */
+        .info-row { 
+            margin-bottom: 8px; 
+            border-bottom: 1px dashed #eee; 
+            padding-bottom: 4px; 
+        }
+        
+        .il { 
+            font-size: 7pt; 
+            font-weight: 700; 
+            color: #999; 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 2px; 
+        }
+        
+        .iv { 
+            font-size: 10pt; 
+            font-weight: 600; 
+            color: #333; 
+            line-height: 1.25; 
+        }
+        
+        .item-list { 
+            margin-bottom: 8px; 
+            border-bottom: 1px dashed #eee; 
+            padding-bottom: 8px; 
+        }
+        
+        .il-lbl { 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 3px; 
+        }
+        
+        .il-val { 
+            font-size: 9pt; 
+            color: #555; 
+        }
+        
+        .grid-2 { 
+            display: flex; 
+            gap: 20px; 
+        }
+        
+        .col { 
+            flex: 1; 
+        }
+
         /* ==========================================================================
-           ESTILOS DO MÓDULO 3 (GRID SENSORIAL 4x4)
+           ESTILOS MÓDULO 3 (GRID SENSORIAL EXPANDIDO - 4 POR PÁGINA)
            ========================================================================== */
-        
         .sensory-page-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -298,7 +518,8 @@
             border-radius: 8px; 
             padding: 15px; 
             box-shadow: 0 3px 6px rgba(0,0,0,0.03);
-            display: flex; flex-direction: column;
+            display: flex; 
+            flex-direction: column;
             position: relative;
         }
         
@@ -313,74 +534,140 @@
         .sense-card.s-cog { border-top: 5px solid #2980b9; }
 
         .sense-head { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #eee;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 12px; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 8px;
         }
         
         .sense-title { 
-            font-size: 10pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
-            display: flex; align-items: center; gap: 8px; 
+            font-size: 10pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
         }
         
-        .sense-icon { font-size: 14pt; }
+        .sense-icon { 
+            font-size: 14pt; 
+        }
+
+        .sense-bar-container { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 15px; 
+        }
         
-        .sense-bar-container { display: flex; align-items: center; margin-bottom: 15px; }
-        .sense-bar-bg { flex: 1; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
-        .sense-bar-fill { height: 100%; border-radius: 4px; }
-        .sense-val { font-size: 10pt; font-weight: 800; width: 40px; text-align: right; margin-left: 10px; }
+        .sense-bar-bg { 
+            flex: 1; 
+            height: 8px; 
+            background: #f0f0f0; 
+            border-radius: 4px; 
+            overflow: hidden; 
+        }
+        
+        .sense-bar-fill { 
+            height: 100%; 
+            border-radius: 4px; 
+        }
+        
+        .sense-val { 
+            font-size: 11pt; 
+            font-weight: 800; 
+            width: 40px; 
+            text-align: right; 
+            margin-left: 10px; 
+        }
         
         /* Blocos de Texto dentro do Card Sensorial */
-        .sense-section { margin-bottom: 10px; }
-        .sense-lbl { font-size: 7.5pt; font-weight: 700; color: #95a5a6; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .sense-txt { font-size: 8.5pt; color: #444; line-height: 1.4; text-align: justify; }
-        
-        /* ==========================================================================
-           ESTILOS MÓDULO 4 (MEMÓRIAS - CORRIGIDO)
-           ========================================================================== */
-        
-        /* Container das Barras (Gráficos) */
-        .mem-container {
-            width: 48%; /* Garante 2 colunas */
-            margin-bottom: 12px;
-            page-break-inside: avoid;
+        .sense-block { 
+            margin-bottom: 10px; 
         }
         
-        .mem-label-row {
+        .sense-label { 
+            font-size: 7.5pt; 
+            font-weight: 700; 
+            color: #95a5a6; 
+            text-transform: uppercase; 
+            display: block; 
+            margin-bottom: 3px; 
+        }
+        
+        .sense-text { 
+            font-size: 8.5pt; 
+            color: #444; 
+            line-height: 1.4; 
+            text-align: justify; 
+        }
+        
+        /* ==========================================================================
+           ESTILOS MÓDULO 4 e 5
+           ========================================================================== */
+        
+        /* GRID DE MEMÓRIAS (Página 6) */
+        .mem-grid {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
-            margin-bottom: 4px;
+            align-content: flex-start;
+            gap: 15px;
+        }
+
+        .mem-container { 
+            width: 48%; /* Garante 2 colunas */
+            margin-bottom: 15px; 
+            page-break-inside: avoid; /* Evita quebra */
+        }
+        
+        .mem-label-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 4px; 
         }
         
         .mem-title { 
-            font-size: 7.5pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
+            font-size: 7.5pt; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase; 
         }
         
         .mem-val { 
-            font-size: 8pt; font-weight: 700; color: #555; 
+            font-size: 8pt; 
+            font-weight: 700; 
+            color: #555; 
         }
         
-        .mem-track {
-            height: 8px;
-            background: #eee;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 2px;
+        .mem-track { 
+            height: 8px; 
+            background: #eee; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            margin-bottom: 2px; 
         }
         
         .mem-fill { 
-            height: 100%; border-radius: 4px; 
+            height: 100%; 
+            border-radius: 4px; 
         }
         
-        .mem-scale {
-            display: flex; justify-content: space-between;
-            font-size: 6pt; color: #aaa; padding: 0 2px;
-            font-family: monospace;
+        .mem-scale { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 6pt; 
+            color: #aaa; 
+            padding: 0 2px; 
+            font-family: monospace; 
         }
         
         .mem-epi .mem-fill { background: #8e44ad; }
         .mem-imp .mem-fill { background: #2c3e50; }
 
-        /* Estilo para Textos de Relato (Ex: "O que ele diz") */
+        /* Estilo para Textos de Relato (Ex: "O que ele diz") - ESCONDIDO DO GRID PRINCIPAL */
         .mem-text-block {
             width: 100%;
             margin-bottom: 10px;
@@ -392,13 +679,14 @@
         .mem-text-label { font-size: 7pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
         .mem-text-val { font-size: 8.5pt; font-style: italic; color: #555; }
 
-        /* TAGS E BARRAS MOD 5 */
+        /* BARRAS SIMPLES (OUTROS MÓDULOS) */
         .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
         .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
         .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
+        /* TAGS DE CHECKLIST (MOD 5) */
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
         .ct-item.highlight { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
@@ -407,8 +695,6 @@
         .matrix-box { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; margin-bottom: 15px; }
         .matrix-title { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
         .matrix-content { font-size: 9pt; color: #555; line-height: 1.5; }
-
-        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
 
         /* CORES UTILITÁRIAS */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -474,31 +760,16 @@
                     <div class="wb-body" id="m1-content"></div>
                 </div>
                 <div class="strategy-grid">
-                    <div class="st-card">
-                        <div class="st-head">🧠 NEUROARQUITETURA (BASE)</div>
-                        <div class="st-text" id="m1-neuro-individual"></div>
-                    </div>
-                    <div class="st-card">
-                        <div class="st-head">🗣️ ATENDIMENTO (BASE)</div>
-                        <div class="st-text" id="m1-comunicacao-individual"></div>
-                    </div>
+                    <div class="st-card"><div class="st-head">🧠 NEUROARQUITETURA (BASE)</div><div class="st-text" id="m1-neuro-individual"></div></div>
+                    <div class="st-card"><div class="st-head">🗣️ ATENDIMENTO (BASE)</div><div class="st-text" id="m1-comunicacao-individual"></div></div>
                 </div>
                 <div class="strategy-grid">
-                    <div class="st-card highlight">
-                        <div class="st-head">👑 PERFIL COMBINADO (DOMINANTE + SECUNDÁRIO)</div>
-                        <div class="st-text" id="m1-perfil-texto"></div>
-                        <div class="st-text" id="m1-projeto-texto" style="margin-top:8px; font-weight:bold;"></div>
-                    </div>
-                    <div class="st-card shadow-card">
-                        <div class="st-head">⚠️ PONTO DE ATENÇÃO (SOMBRA)</div>
-                        <div class="st-text" id="m1-sombra-texto"></div>
-                        <div class="st-text" id="m1-comunicacao-texto" style="margin-top:8px; font-style:italic;"></div>
-                    </div>
+                    <div class="st-card highlight"><div class="st-head">👑 PERFIL COMBINADO (DOM + SEC)</div><div class="st-text" id="m1-perfil-texto"></div><div class="st-text" id="m1-projeto-texto" style="margin-top:8px; font-weight:bold;"></div></div>
+                    <div class="st-card shadow-card"><div class="st-head">⚠️ PONTO DE ATENÇÃO (SOMBRA)</div><div class="st-text" id="m1-sombra-texto"></div><div class="st-text" id="m1-comunicacao-texto" style="margin-top:8px; font-style:italic;"></div></div>
                 </div>
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
-                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base" do cliente. 
-                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
+                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base" do cliente. A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -511,10 +782,7 @@
                     <div class="mh-meta"><div class="mh-num">02</div><span class="mh-time" id="t2-time">--:--</span></div>
                 </div>
                 <div class="win-box" style="flex:0 auto; margin-bottom:20px;">
-                    <div class="wb-head" style="background:#2c3e50;">
-                        <div class="wb-tit">ESTILO PREDOMINANTE</div>
-                        <div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div>
-                    </div>
+                    <div class="wb-head" style="background:#2c3e50;"><div class="wb-tit">ESTILO PREDOMINANTE</div><div class="wb-sty" style="color:#f1c40f;">MATCH PRINCIPAL</div></div>
                     <div class="wb-body" style="padding:20px; text-align:center;">
                         <h2 style="margin:0; font-size:24pt; color:#2c3e50; text-transform:uppercase;" id="vis-top1-nome">-</h2>
                         <div style="margin-top:10px; font-size:12pt; font-weight:bold; color:#27ae60;">AFINIDADE: <span id="vis-top1-nota">-</span>%</div>
@@ -523,9 +791,7 @@
                 <div id="m2-content"></div>
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
-                    <span id="m2-conclusao-dinamica">
-                        A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
-                    </span>
+                    <span id="m2-conclusao-dinamica">A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.</span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -542,9 +808,8 @@
                     </div>
 
                 <div class="box-conclusao">
-                    <span class="bc-tit">ESTRATÉGIA DE CONFORTO AMBIENTAL</span>
-                    Estes sentidos (Visual, Auditivo, Olfativo, Tátil) formam a base biológica do bem-estar.
-                    Se houver pontuação extrema (0-20 ou 80-100), a intervenção técnica (isolamento, iluminação) é obrigatória.
+                    <span class="bc-tit">ESTRATÉGIA DE CONFORTO (SENTIDOS BÁSICOS)</span>
+                    Estes sentidos formam a base biológica do bem-estar. Se houver pontuação extrema (0-20 ou 80-100), a intervenção técnica (isolamento, iluminação) é obrigatória.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
             </div>
@@ -561,9 +826,8 @@
                     </div>
 
                 <div class="box-conclusao">
-                    <span class="bc-tit">ESTRATÉGIA DE EXPERIÊNCIA DO USUÁRIO</span>
-                    Estes sentidos definem a usabilidade e a conexão emocional.
-                    O Proprioceptivo define a escala; o Emocional dita as "âncoras" afetivas; o Cognitivo orienta o layout de foco.
+                    <span class="bc-tit">ESTRATÉGIA DE EXPERIÊNCIA (SENTIDOS COMPLEXOS)</span>
+                    Estes sentidos definem como o cliente se sente e se comporta no espaço. O proprioceptivo define a escala; o emocional dita as "âncoras" afetivas.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -581,7 +845,9 @@
                         <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
                         <div class="wb-sty">O QUE ELE DIZ</div>
                     </div>
-                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-content:flex-start; gap:15px;"></div>
+                    <div class="wb-body">
+                        <div id="m4-expl" class="mem-grid"></div>
+                    </div>
                 </div>
 
                 <div class="win-box">
@@ -589,9 +855,11 @@
                         <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
                         <div class="wb-sty">O QUE ELE SENTE/FAZ</div>
                     </div>
-                    <div class="wb-body" id="m4-impl" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-content:flex-start; gap:15px;"></div>
+                    <div class="wb-body">
+                        <div id="m4-impl" class="mem-grid"></div>
+                    </div>
                 </div>
-
+                
                 <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
             </div>
         </div>
@@ -607,7 +875,7 @@
                     <div class="st-card highlight"><div class="st-head">🔑 ESTRATÉGIA DE ANCORAGEM</div><div class="st-text" id="m4-ancoragem">...</div></div>
                 </div>
                 <div class="box-conclusao" style="margin-top:auto;">
-                    <span class="bc-tit">CONCLUSÃO ESTRATÉGICA (MEMÓRIAS)</span>
+                    <span class="bc-tit">CONCLUSÃO ESTRATÉGICA</span>
                     <span id="m4-conclusao-dinamica">A casa deve ser um espelho da biografia do cliente.</span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
@@ -743,7 +1011,7 @@
             'olf': { 
                 title: '3.3 OLFATIVO', icon: '👃', color: 's-olf', border: 'bg-olf', key: 'olf_sens', 
                 getStrat: (val) => {
-                    if(val > 70) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Olfato apurado e emocional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Scent Design, ventilação cruzada, materiais inodoros.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Sistema Límbico direto.</div></div>`;
+                    if(val > 70) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Olfato apurado e emocional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Scent Design, ventilação cruzada, materiais inodoros.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Acesso direto ao Sistema Límbico.</div></div>`;
                     return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Neutro.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Foco em ar fresco e higiene.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Saúde básica.</div></div>`;
                 }
             },
@@ -779,9 +1047,23 @@
                 title: '3.8 COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog', key: 'cog_prod', 
                 getStrat: (val) => {
                     if(val < 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Foco Frágil.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Home Office fechado, paredes lisas à frente.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Gestão da Atenção.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Multitarefa.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Integração trabalho-lazer permitida.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Flexibilidade.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Multitarefa.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO:</span><div class="sense-txt">Integração trabalho-lazer permitida.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Flexibilidade.</div></div>`;
                 }
             }
+        };
+
+        // --- DICIONÁRIO PARA TRADUÇÃO DE SIGLAS TÉCNICAS (NOVO V49) ---
+        const DB_LABELS = {
+            'TEC': 'Tecnologia/Automação',
+            'AZUL': 'Tons Frios (Azul)',
+            'MADEIRA': 'Madeira Natural',
+            'METAL': 'Metal/Industrial',
+            'BAGUNCA': 'Tolerância a Bagunça',
+            'FLUXO': 'Fluxo/Circulação',
+            'ACONCHEGO': 'Aconchego/Ninho',
+            'LAR': 'Valorização do Lar',
+            'INFANCIA': 'Memória de Infância',
+            'VIAGEM': 'Memória de Viagem'
         };
 
         let dadosAPI = [];
@@ -921,7 +1203,7 @@
                 if(document.getElementById('m3-grid-part-b')) document.getElementById('m3-grid-part-b').innerHTML = htmlB;
 
 
-                // --- MOD 4 (PÁGINA 6 - GRÁFICOS CORRIGIDOS) ---
+                // --- MOD 4 (PÁGINA 6 - GRÁFICOS CORRIGIDOS E FILTRADOS V49) ---
                 if(document.getElementById('t4-time')) document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
                 
                 let explHTML = '', implHTML = '';
@@ -930,7 +1212,8 @@
                 // Lógica de Renderização Limpa: Só exibe se for número ou string válida
                 Object.keys(r).forEach(k => {
                     if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
-                        let label = k.split('_')[2].toUpperCase();
+                        let rawLabel = k.split('_')[2].toUpperCase();
+                        let label = DB_LABELS[rawLabel] || rawLabel; // Aplica tradução
                         let val = r[k];
                         
                         if(typeof val === 'number') {
@@ -942,12 +1225,11 @@
                                     <div class="mem-scale"><span>0</span><span>50</span><span>100</span></div>
                                 </div>
                             `;
-                        } else if (typeof val === 'string' && val.length > 0) {
-                            explHTML += `<div class="mem-text-block"><span class="mem-text-label">${label}</span><span class="mem-text-val">"${val}"</span></div>`;
                         }
                     }
                     if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
-                        let label = k.split('_')[2].toUpperCase();
+                        let rawLabel = k.split('_')[2].toUpperCase();
+                        let label = DB_LABELS[rawLabel] || rawLabel; // Aplica tradução
                         let val = r[k];
                         if(typeof val === 'number') {
                             implHTML += `
@@ -957,8 +1239,6 @@
                                     <div class="mem-scale"><span>0</span><span>50</span><span>100</span></div>
                                 </div>
                             `;
-                        } else if (typeof val === 'string' && val.length > 0) {
-                            implHTML += `<div class="mem-text-block"><span class="mem-text-label">${label}</span><span class="mem-text-val">"${val}"</span></div>`;
                         }
                     }
                 });
