@@ -61,6 +61,7 @@
             cursor: pointer; 
             border-radius: 6px; 
             font-weight: 700; 
+            font-size: 9pt; 
             transition: 0.2s; 
         }
         .btn-refresh:hover { background: #34495e; }
@@ -225,8 +226,8 @@
         .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
         .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
         .il-val { font-size: 9pt; color: #555; }
-
-        /* GRID SENSORIAL (MÓDULO 3) */
+        
+        /* GRID SENSORIAL */
         .sensory-grid-8 { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -272,35 +273,22 @@
         }
         .sense-strategy strong { color: #333; font-weight: 700; display: block; margin-bottom: 2px; }
 
-        /* BARRAS SIMPLES */
-        .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
-        .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
-        .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
-        .sb-fill { height: 100%; background: #2c3e50; }
-        .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
-
-        /* ==========================================================================
-           NOVOS ESTILOS PARA MÓDULO 4 (MEMÓRIAS COM ESCALAS - V41)
-           ========================================================================== */
+        /* BARRAS SIMPLES (Memórias) */
         .mem-container {
             width: 48%; /* Exibe 2 por linha */
             margin-bottom: 12px;
         }
-        
         .mem-label-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 4px;
         }
-        
         .mem-title { 
             font-size: 7.5pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
         }
-        
         .mem-val { 
             font-size: 8pt; font-weight: 700; color: #555; 
         }
-        
         .mem-track {
             height: 8px;
             background: #eee;
@@ -308,21 +296,24 @@
             overflow: hidden;
             margin-bottom: 2px;
         }
-        
         .mem-fill { 
             height: 100%; border-radius: 4px; 
         }
-        
         .mem-scale {
             display: flex; justify-content: space-between;
             font-size: 6pt; color: #aaa; padding: 0 2px;
             font-family: monospace;
         }
-        
         .mem-epi .mem-fill { background: #8e44ad; }
         .mem-imp .mem-fill { background: #2c3e50; }
 
-        /* TAGS (MOD 5) */
+        /* TAGS E BARRAS MOD 5 */
+        .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
+        .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
+        .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+        .sb-fill { height: 100%; background: #2c3e50; }
+        .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
+
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
 
@@ -439,7 +430,9 @@
                 <div id="m2-content"></div>
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
-                    <span id="m2-conclusao-dinamica">A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.</span>
+                    <span id="m2-conclusao-dinamica">
+                        A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
+                    </span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -451,9 +444,7 @@
                     <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Os 8 Sentidos & Neuroarquitetura</div></div>
                     <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
                 </div>
-                
                 <div class="sensory-grid-8" id="m3-grid-container"></div>
-
                 <div class="box-conclusao">
                     <span class="bc-tit">CONCLUSÃO TÉCNICA (SISTEMA SENSORIAL)</span>
                     A arquitetura multissensorial ativa o sistema límbico.
@@ -469,26 +460,33 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Análise de Vínculo Temporal & Gatilhos</div></div>
+                    <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Parte A: Mapeamento de Memórias</div></div>
                     <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" id="t4-time">--:--</span></div>
                 </div>
-                
                 <div class="win-box">
                     <div class="wb-head" style="background:#8e44ad;">
-                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (NARRATIVA)</div>
+                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
                         <div class="wb-sty">O QUE ELE DIZ</div>
                     </div>
                     <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
                 </div>
-
                 <div class="win-box">
                     <div class="wb-head" style="background:#2c3e50;">
-                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (SENSORIAL)</div>
+                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
                         <div class="wb-sty">O QUE ELE SENTE/FAZ</div>
                     </div>
                     <div class="wb-body" id="m4-impl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
                 </div>
+                <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
+            </div>
+        </div>
 
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Parte B: Estratégia de Vínculo</div></div>
+                    <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
+                </div>
                 <div class="strategy-grid">
                     <div class="st-card">
                         <div class="st-head">⏳ VÍNCULO TEMPORAL</div>
@@ -499,8 +497,7 @@
                         <div class="st-text" id="m4-ancoragem">Analisando dados...</div>
                     </div>
                 </div>
-
-                <div class="box-conclusao">
+                <div class="box-conclusao" style="margin-top: 50px;">
                     <span class="bc-tit">CONCLUSÃO ESTRATÉGICA (MEMÓRIAS)</span>
                     <span id="m4-conclusao-dinamica">
                         O projeto deve atuar como um suporte para a identidade do cliente, reforçando as memórias positivas e criando espaço para novas.
@@ -513,7 +510,7 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Estilo de Vida & Matriz de Decisão</div></div>
+                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Parte A: Estilo de Vida</div></div>
                     <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" id="t5-time">--:--</span></div>
                 </div>
                 <div class="grid-2">
@@ -526,19 +523,21 @@
                         <div class="wb-body"><div class="check-tags" id="m5-invest"></div></div>
                     </div>
                 </div>
-
-                <div class="strategy-grid">
-                    <div class="st-card shadow-card">
-                        <div class="st-head">💰 MATRIZ DE INVESTIMENTO</div>
-                        <div class="st-text" id="m5-invest-matrix">Calculando melhor alocação de recursos...</div>
-                    </div>
-                    <div class="st-card">
-                        <div class="st-head">🔄 RITUAIS & HOBBIES</div>
-                        <div class="check-tags" id="m5-hobbies" style="margin-bottom:10px;"></div>
-                        <div class="st-text" id="m5-ritual-tips" style="font-size:8pt; font-style:italic;"></div>
-                    </div>
+                <div class="win-box">
+                    <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & LAZER (Behavior Settings)</div></div>
+                    <div class="wb-body"><div class="check-tags" id="m5-hobbies"></div></div>
                 </div>
+                <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
+            </div>
+        </div>
 
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Parte B: Matriz de Decisão</div></div>
+                    <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
+                </div>
+                
                 <div class="win-box">
                     <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
                     <div class="wb-body">
@@ -557,12 +556,25 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="strategy-grid">
+                    <div class="st-card shadow-card">
+                        <div class="st-head">💰 MATRIZ DE INVESTIMENTO INTELIGENTE</div>
+                        <div class="st-text" id="m5-invest-matrix">Calculando...</div>
+                    </div>
+                    <div class="st-card">
+                        <div class="st-head">🔄 DESIGN DE RITUAIS</div>
+                        <div class="st-text" id="m5-ritual-tips" style="font-size:8.5pt;"></div>
+                    </div>
+                </div>
+
                 <div class="win-box">
                     <div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">OBSERVAÇÕES GERAIS</div></div>
                     <div class="wb-body" style="font-style:italic; color:#555;" id="m5-obs">-</div>
                 </div>
+
                 <div class="box-conclusao">
-                    <span class="bc-tit">CONCLUSÃO (ESTRATÉGIA)</span>
+                    <span class="bc-tit">CONCLUSÃO FINAL (ESTRATÉGIA)</span>
                     Baseado em <strong>Roger Barker</strong>, o design deve sustentar os comportamentos. O alinhamento do budget com a expectativa de tempo define a materialidade.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
@@ -604,7 +616,7 @@
 
         const CORRELACOES = {
             'FOGO_TERRA': { perfil: 'O CONSTRUTOR: Pragmático e ambicioso.', projeto: 'Solidez e Status. Materiais nobres.', atendimento: 'Seja técnico e pontual.' },
-            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau").', atendimento: 'Seja ágil e visual.' },
+            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau") e Automação.', atendimento: 'Seja ágil, visual e venda a novidade.' },
             'FOGO_AGUA': { perfil: 'O PROTETOR: Intenso e emotivo.', projeto: 'Refúgio Seguro e robusto.', atendimento: 'Vínculo emocional rápido.' },
             'AR_FOGO': { perfil: 'O CRIATIVO: Mente acelerada.', projeto: 'Liberdade e Cor.', atendimento: 'Brainstorming e ritmo.' },
             'AR_TERRA': { perfil: 'O DESIGNER: Bom gosto racional.', projeto: 'Estética Funcional.', atendimento: 'Explique o porquê estético.' },
@@ -642,9 +654,9 @@
             'mem_epi_viagem': "<strong>Estratégia Cosmopolita:</strong> O projeto deve ser um diário de viagens, expondo souvenirs, mapas e arte global.",
             'mem_epi_aconchego': "<strong>Estratégia Ninho:</strong> Busca proteção. Crie 'cantos de refúgio' com mantas, luz baixa (2700K) e cores quentes.",
             'mem_epi_lar': "<strong>Estratégia Família:</strong> Foco na convivência. A mesa de jantar e o sofá são os protagonistas da casa.",
-            'mem_proc_bagunca': "<strong>Estratégia Realista:</strong> A 'bagunça criativa' faz parte do processo. Crie organizadores abertos e práticos.",
+            'mem_proc_bagunca': "<strong>Estratégia Realista:</strong> A 'bagunça criativa' faz parte do processo. Não force minimalismo extremo. Crie organizadores abertos.",
             'mem_proc_fluxo': "<strong>Estratégia Eficiência:</strong> Valoriza a agilidade. O layout deve ser intuitivo, sem obstáculos no caminho.",
-            'default': "<strong>Estratégia Biográfica:</strong> A casa deve contar a história do morador através de objetos significativos."
+            'default': "<strong>Estratégia Biográfica:</strong> A casa deve contar a história do morador através de objetos significativos e layout fluido."
         };
 
         // 5. ESTRATÉGIAS DE LIFESTYLE (MÓDULO 5 - NOVO V41)
