@@ -6,16 +6,13 @@
     <title>Dashboard NeuroBriefing | Diagnóstico Integral</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
            1. ESTILOS GERAIS E RESET
            ========================================================================== */
-        
         * { 
             box-sizing: border-box; 
             -webkit-print-color-adjust: exact; 
@@ -30,9 +27,8 @@
         }
         
         /* ==========================================================================
-           2. ESTILOS DO PAINEL (TELA DO COMPUTADOR)
+           2. ESTILOS DO PAINEL (TELA)
            ========================================================================== */
-        
         .painel { 
             max-width: 1200px; 
             margin: 0 auto 30px auto; 
@@ -65,19 +61,12 @@
             cursor: pointer; 
             border-radius: 6px; 
             font-weight: 700; 
-            font-size: 9pt; 
             transition: 0.2s; 
         }
+        .btn-refresh:hover { background: #34495e; }
         
-        .btn-refresh:hover { 
-            background: #34495e; 
-        }
-        
-        /* TABELA DE CLIENTES */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-        }
+        /* TABELA */
+        table { width: 100%; border-collapse: collapse; }
         
         th { 
             text-align: left; 
@@ -97,31 +86,12 @@
             font-size: 9.5pt; 
         }
         
-        tr:hover { 
-            background-color: #fafafa; 
-        }
+        tr:hover { background-color: #fafafa; }
         
-        .cli-name { 
-            font-size: 11pt; 
-            font-weight: 700; 
-            color: #2c3e50; 
-            display: block; 
-            margin-bottom: 4px; 
-        }
+        .cli-name { font-size: 11pt; font-weight: 700; color: #2c3e50; display: block; margin-bottom: 4px; }
+        .cli-local { font-size: 8pt; color: #999; display: block; margin-bottom: 8px; }
         
-        .cli-local { 
-            font-size: 8pt; 
-            color: #999; 
-            display: block; 
-            margin-bottom: 8px; 
-        }
-        
-        /* STATUS TAGS */
-        .mod-grid { 
-            display: flex; 
-            gap: 4px; 
-            flex-wrap: wrap; 
-        }
+        .mod-grid { display: flex; gap: 4px; flex-wrap: wrap; }
         
         .mod-tag { 
             padding: 3px 6px; 
@@ -133,12 +103,7 @@
             color: #bbb; 
             border: 1px solid #e0e0e0; 
         }
-        
-        .mod-tag.done { 
-            background: #e8f5e9; 
-            color: #27ae60; 
-            border-color: #c8e6c9; 
-        }
+        .mod-tag.done { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
         
         .btn-pdf { 
             background: #e74c3c; 
@@ -150,23 +115,13 @@
             font-size: 8pt; 
             cursor: pointer; 
         }
-        
-        .btn-pdf:hover { 
-            background: #c0392b; 
-        }
-        
-        .btn-pdf:disabled { 
-            background: #ccc; 
-            cursor: not-allowed; 
-        }
+        .btn-pdf:hover { background: #c0392b; }
+        .btn-pdf:disabled { background: #ccc; cursor: not-allowed; }
         
         /* ==========================================================================
-           3. ESTILOS DO RELATÓRIO PDF (FOLHA A4)
+           3. ESTILOS DO PDF (A4)
            ========================================================================== */
-        
-        #pdf-root { 
-            display: none; 
-        } 
+        #pdf-root { display: none; } 
         
         .page { 
             width: 210mm; 
@@ -178,166 +133,52 @@
             page-break-after: always; 
             padding: 0; 
         }
-        
-        .page:last-child { 
-            page-break-after: avoid; 
-        }
+        .page:last-child { page-break-after: avoid; }
         
         /* CAPA */
         .capa-box { 
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
+            width: 100%; height: 100%; 
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; 
             border: 20mm solid #f4f6f8; 
             text-align: center; 
         }
+        .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
+        .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
+        .c-info { width: 80%; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 40px 0; margin-bottom: 50px; }
+        .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
+        .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
+        .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
         
-        .c-logo { 
-            font-size: 38pt; 
-            font-weight: 900; 
-            color: #2c3e50; 
-            margin-bottom: 10px; 
-            letter-spacing: -1px; 
-        }
-        
-        .c-sub { 
-            font-size: 10pt; 
-            letter-spacing: 4px; 
-            text-transform: uppercase; 
-            color: #7f8c8d; 
-            margin-bottom: 80px; 
-        }
-        
-        .c-info { 
-            width: 80%; 
-            border-top: 2px solid #2c3e50; 
-            border-bottom: 2px solid #2c3e50; 
-            padding: 40px 0; 
-            margin-bottom: 50px; 
-        }
-        
-        .ci-lbl { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #aaa; 
-            text-transform: uppercase; 
-            margin-bottom: 5px; 
-            display: block; 
-            letter-spacing: 1px; 
-        }
-        
-        .ci-val { 
-            font-size: 16pt; 
-            font-weight: 700; 
-            color: #2c3e50; 
-            margin-bottom: 25px; 
-            display: block; 
-        }
-        
-        .c-foot { 
-            position: absolute; 
-            bottom: 15mm; 
-            font-size: 8pt; 
-            color: #ccc; 
-            text-transform: uppercase; 
-        }
-        
-        /* HEADER DO MODULO */
-        .mod-content { 
-            padding: 15mm 15mm 10mm 15mm; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-        }
+        /* HEADER */
+        .mod-content { padding: 15mm 15mm 10mm 15mm; height: 100%; display: flex; flex-direction: column; }
         
         .m-head { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-end; 
+            display: flex; justify-content: space-between; align-items: flex-end; 
             border-bottom: 4px solid #2c3e50; 
-            padding-bottom: 10px; 
-            margin-bottom: 20px; 
+            padding-bottom: 10px; margin-bottom: 20px; 
         }
+        .mh-tit { font-size: 22pt; font-weight: 800; color: #2c3e50; line-height: 1; }
+        .mh-sub { font-size: 9pt; font-weight: 600; color: #7f8c8d; text-transform: uppercase; margin-top: 5px; }
+        .mh-meta { text-align: right; }
+        .mh-num { font-size: 30pt; font-weight: 900; color: #eee; line-height: 0.8; }
+        .mh-time { font-size: 8pt; font-weight: 700; color: #e74c3c; margin-top: 5px; display: block; }
         
-        .mh-tit { 
-            font-size: 22pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            line-height: 1; 
-        }
-        
-        .mh-sub { 
-            font-size: 9pt; 
-            font-weight: 600; 
-            color: #7f8c8d; 
-            text-transform: uppercase; 
-            margin-top: 5px; 
-        }
-        
-        .mh-meta { 
-            text-align: right; 
-        }
-        
-        .mh-num { 
-            font-size: 30pt; 
-            font-weight: 900; 
-            color: #eee; 
-            line-height: 0.8; 
-        }
-        
-        .mh-time { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #e74c3c; 
-            margin-top: 5px; 
-            display: block; 
-        }
-        
-        /* BOXES DE CONTEÚDO */
+        /* BOXES */
         .win-box { 
             border: 1px solid #ccc; 
             border-radius: 6px; 
             overflow: hidden; 
             margin-bottom: 15px; 
-            display: flex; 
-            flex-direction: column; 
+            display: flex; flex-direction: column;
         }
+        .wb-head { padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .wb-tit { font-size: 14pt; font-weight: 800; text-transform: uppercase; }
+        .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
+        .wb-body { padding: 20px; flex: 1; }
         
-        .wb-head { 
-            padding: 10px 15px; 
-            color: white; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .wb-tit { 
-            font-size: 14pt; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-        }
-        
-        .wb-sty { 
-            font-size: 8pt; 
-            font-weight: 600; 
-            opacity: 0.95; 
-            text-transform: uppercase; 
-        }
-        
-        .wb-body { 
-            padding: 20px; 
-            flex: 1; 
-        }
-        
-        /* GRIDS ESTRATÉGICOS (MÓDULO 1 E 2) */
-        .strategy-grid { 
-            display: flex; 
-            gap: 15px; 
-            margin-bottom: 15px; 
-        }
+        /* GRIDS ESTRATÉGICOS */
+        .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
         
         .st-card { 
             flex: 1; 
@@ -345,228 +186,47 @@
             border: 1px solid #eee; 
             border-radius: 6px; 
             padding: 15px; 
-            display: flex; 
-            flex-direction: column; 
+            display: flex; flex-direction: column; 
         }
-        
-        .st-card.highlight { 
-            border-left: 4px solid #3498db; 
-            background: #fbfdff; 
-        }
-        
-        .st-card.shadow-card { 
-            border-left: 4px solid #f1c40f; 
-            background: #fffcf5; 
-        }
+        .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; }
+        .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; }
         
         .st-head { 
-            font-size: 9pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            margin-bottom: 8px; 
-            padding-bottom: 5px; 
-            border-bottom: 2px solid #eee; 
+            font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
+            margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #eee; 
         }
-        
-        .st-text { 
-            font-size: 8.5pt; 
-            color: #555; 
-            line-height: 1.5; 
-            text-align: justify; 
-        }
+        .st-text { font-size: 8.5pt; color: #555; line-height: 1.5; text-align: justify; }
 
-        /* GRÁFICOS DE BARRAS (MOD 1) */
-        .charts { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 15px; 
-            height: 40px; 
-        }
-        
-        .cc-box { 
-            flex: 1; 
-            border: 1px solid #eee; 
-            border-radius: 4px; 
-            padding: 5px 8px; 
-            background: #fafafa; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-        }
-        
-        .cc-top { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .cc-lbl { 
-            font-size: 8pt; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-        }
-        
-        .cc-val { 
-            font-size: 11pt; 
-            font-weight: 900; 
-        }
-        
-        .cc-bar { 
-            width: 100%; 
-            height: 5px; 
-            background: #ddd; 
-            border-radius: 3px; 
-            overflow: hidden; 
-        }
-        
-        .cc-fill { 
-            height: 100%; 
-        }
+        /* GRÁFICOS */
+        .charts { display: flex; gap: 10px; margin-bottom: 15px; height: 40px; }
+        .cc-box { flex: 1; border: 1px solid #eee; border-radius: 4px; padding: 5px 8px; background: #fafafa; display: flex; flex-direction: column; justify-content: space-between; }
+        .cc-top { display: flex; justify-content: space-between; align-items: center; }
+        .cc-lbl { font-size: 8pt; font-weight: 800; text-transform: uppercase; }
+        .cc-val { font-size: 11pt; font-weight: 900; }
+        .cc-bar { width: 100%; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
+        .cc-fill { height: 100%; }
 
-        /* BOX DE CONCLUSÃO TÉCNICA (RODAPÉ) */
+        /* RODAPÉ */
         .box-conclusao { 
             background: #fdfdfd; 
             border-left: 4px solid #2c3e50; 
             padding: 15px; 
-            font-size: 9pt; 
-            color: #555; 
-            line-height: 1.5; 
-            margin-top: auto; 
-            margin-bottom: 10px; 
+            font-size: 9pt; color: #555; line-height: 1.5; 
+            margin-top: auto; margin-bottom: 10px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
         }
+        .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
+        .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
         
-        .bc-tit { 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            margin-bottom: 8px; 
-            font-size: 10pt; 
-            display: block; 
-        }
-        
-        .ft-note { 
-            text-align: center; 
-            font-size: 6pt; 
-            color: #bbb; 
-            padding-top: 5px; 
-        }
-        
-        /* GRIDS & LISTAS */
-        .grid-2 { 
-            display: flex; 
-            gap: 20px; 
-        }
-        
-        .col { 
-            flex: 1; 
-        }
-        
-        .info-row { 
-            margin-bottom: 8px; 
-            border-bottom: 1px dashed #eee; 
-            padding-bottom: 4px; 
-        }
-        
-        .il { 
-            font-size: 7pt; 
-            font-weight: 700; 
-            color: #999; 
-            text-transform: uppercase; 
-            display: block; 
-            margin-bottom: 2px; 
-        }
-        
-        .iv { 
-            font-size: 10pt; 
-            font-weight: 600; 
-            color: #333; 
-            line-height: 1.25; 
-        }
-        
-        .item-list { 
-            margin-bottom: 8px; 
-            border-bottom: 1px dashed #eee; 
-            padding-bottom: 8px; 
-        }
-        
-        .il-lbl { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            display: block; 
-            margin-bottom: 3px; 
-        }
-        
-        .il-val { 
-            font-size: 9pt; 
-            color: #555; 
-        }
-        
-        /* BARRAS SENSORIAIS */
-        .sensory-bar { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 8px; 
-        }
-        
-        .sb-lbl { 
-            width: 100px; 
-            font-size: 8pt; 
-            font-weight: 700; 
-            text-align: right; 
-            margin-right: 10px; 
-        }
-        
-        .sb-track { 
-            flex: 1; 
-            height: 6px; 
-            background: #eee; 
-            border-radius: 3px; 
-            overflow: hidden; 
-        }
-        
-        .sb-fill { 
-            height: 100%; 
-            background: #2c3e50; 
-        }
-        
-        .sb-val { 
-            width: 30px; 
-            font-size: 8pt; 
-            font-weight: 700; 
-            margin-left: 10px; 
-        }
+        /* LISTAS */
+        .info-row { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
+        .il { font-size: 7pt; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .iv { font-size: 10pt; font-weight: 600; color: #333; line-height: 1.25; }
+        .item-list { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        .il-lbl { font-size: 8pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .il-val { font-size: 9pt; color: #555; }
 
-        /* TAGS DE CHECKLIST (MOD 5) */
-        .check-tags { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 5px; 
-        }
-        
-        .ct-item { 
-            background: #f0f2f5; 
-            padding: 5px 10px; 
-            border-radius: 4px; 
-            font-size: 8.5pt; 
-            font-weight: 600; 
-            color: #555; 
-            border: 1px solid #ddd; 
-        }
-        
-        .ct-item.highlight { 
-            background: #e8f5e9; 
-            color: #27ae60; 
-            border-color: #c8e6c9; 
-        }
-
-        /* ==========================================================================
-           ESTILOS DO MÓDULO 3 (GRID SENSORIAL)
-           ========================================================================== */
-        
+        /* GRID SENSORIAL (MÓDULO 3) */
         .sensory-grid-8 { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -581,13 +241,10 @@
             border-radius: 8px; 
             padding: 10px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            display: flex; 
-            flex-direction: column;
+            display: flex; flex-direction: column;
             position: relative;
             overflow: hidden;
         }
-        
-        /* Cores de Borda por Sentido */
         .sense-card.s-vis { border-top: 4px solid #f39c12; }
         .sense-card.s-aud { border-top: 4px solid #9b59b6; }
         .sense-card.s-olf { border-top: 4px solid #27ae60; }
@@ -598,71 +255,33 @@
         .sense-card.s-cog { border-top: 4px solid #2980b9; }
 
         .sense-head { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+            display: flex; justify-content: space-between; align-items: center; 
             margin-bottom: 6px; 
         }
+        .sense-title { font-size: 8.5pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
         
-        .sense-title { 
-            font-size: 8.5pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-        }
-        
-        .sense-bar-container { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 6px; 
-        }
-        
-        .sense-bar-bg { 
-            flex: 1; 
-            height: 5px; 
-            background: #eee; 
-            border-radius: 3px; 
-            overflow: hidden; 
-        }
-        
-        .sense-bar-fill { 
-            height: 100%; 
-            border-radius: 3px; 
-        }
-        
-        .sense-val { 
-            font-size: 8pt; 
-            font-weight: 800; 
-            width: 30px; 
-            text-align: right; 
-            margin-left: 5px; 
-        }
+        .sense-bar-container { display: flex; align-items: center; margin-bottom: 6px; }
+        .sense-bar-bg { flex: 1; height: 5px; background: #eee; border-radius: 3px; overflow: hidden; }
+        .sense-bar-fill { height: 100%; border-radius: 3px; }
+        .sense-val { font-size: 8pt; font-weight: 800; width: 30px; text-align: right; margin-left: 5px; }
         
         .sense-strategy { 
-            font-size: 7pt; 
-            color: #666; 
-            line-height: 1.35; 
-            background: #f8f9fa; 
-            padding: 6px; 
-            border-radius: 4px; 
-            margin-top: auto; 
-            border: 1px solid #eee;
+            font-size: 7pt; color: #666; line-height: 1.35; 
+            background: #f8f9fa; padding: 6px; border-radius: 4px; 
+            margin-top: auto; border: 1px solid #eee;
         }
-        
-        .sense-strategy strong { 
-            color: #333; 
-            font-weight: 700; 
-            display: block; 
-            margin-bottom: 2px; 
-        }
+        .sense-strategy strong { color: #333; font-weight: 700; display: block; margin-bottom: 2px; }
+
+        /* BARRAS SIMPLES */
+        .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
+        .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
+        .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+        .sb-fill { height: 100%; background: #2c3e50; }
+        .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
         /* ==========================================================================
-           NOVO ESTILO PARA MÓDULO 4 (MEMÓRIAS COM ESCALAS - V39)
+           NOVOS ESTILOS PARA MÓDULO 4 (MEMÓRIAS COM ESCALAS - V41)
            ========================================================================== */
-        
         .mem-container {
             width: 48%; /* Exibe 2 por linha */
             margin-bottom: 12px;
@@ -675,16 +294,11 @@
         }
         
         .mem-title { 
-            font-size: 7.5pt; 
-            font-weight: 800; 
-            color: #2c3e50; 
-            text-transform: uppercase; 
+            font-size: 7.5pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
         }
         
         .mem-val { 
-            font-size: 8pt; 
-            font-weight: 700; 
-            color: #555; 
+            font-size: 8pt; font-weight: 700; color: #555; 
         }
         
         .mem-track {
@@ -696,23 +310,21 @@
         }
         
         .mem-fill { 
-            height: 100%; 
-            border-radius: 4px; 
+            height: 100%; border-radius: 4px; 
         }
         
-        /* A Régua de Escala (0 -- 50 -- 100) */
         .mem-scale {
-            display: flex;
-            justify-content: space-between;
-            font-size: 6pt;
-            color: #aaa;
-            padding: 0 2px;
-            font-family: monospace; /* Fonte mono para alinhar melhor */
+            display: flex; justify-content: space-between;
+            font-size: 6pt; color: #aaa; padding: 0 2px;
+            font-family: monospace;
         }
         
-        /* Cores Memórias */
         .mem-epi .mem-fill { background: #8e44ad; }
         .mem-imp .mem-fill { background: #2c3e50; }
+
+        /* TAGS (MOD 5) */
+        .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+        .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
 
         /* CORES UTILITÁRIAS */
         .c-fogo { color: #e74c3c; } .bg-fogo { background: #e74c3c; }
@@ -857,13 +469,13 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Memórias Explícitas & Implícitas</div></div>
+                    <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Análise de Vínculo Temporal & Gatilhos</div></div>
                     <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" id="t4-time">--:--</span></div>
                 </div>
                 
                 <div class="win-box">
                     <div class="wb-head" style="background:#8e44ad;">
-                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
+                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (NARRATIVA)</div>
                         <div class="wb-sty">O QUE ELE DIZ</div>
                     </div>
                     <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
@@ -871,16 +483,27 @@
 
                 <div class="win-box">
                     <div class="wb-head" style="background:#2c3e50;">
-                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
+                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (SENSORIAL)</div>
                         <div class="wb-sty">O QUE ELE SENTE/FAZ</div>
                     </div>
                     <div class="wb-body" id="m4-impl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
                 </div>
 
+                <div class="strategy-grid">
+                    <div class="st-card">
+                        <div class="st-head">⏳ VÍNCULO TEMPORAL</div>
+                        <div class="st-text" id="m4-vinculo">Analisando dados...</div>
+                    </div>
+                    <div class="st-card highlight">
+                        <div class="st-head">🔑 ESTRATÉGIA DE ANCORAGEM</div>
+                        <div class="st-text" id="m4-ancoragem">Analisando dados...</div>
+                    </div>
+                </div>
+
                 <div class="box-conclusao">
-                    <span class="bc-tit">ESTRATÉGIA DE PROJETO (BASEADO EM MEMÓRIAS)</span>
+                    <span class="bc-tit">CONCLUSÃO ESTRATÉGICA (MEMÓRIAS)</span>
                     <span id="m4-conclusao-dinamica">
-                        A casa deve ser um espelho da biografia do cliente. Crie "altares de memória" para objetos afetivos.
+                        O projeto deve atuar como um suporte para a identidade do cliente, reforçando as memórias positivas e criando espaço para novas.
                     </span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
@@ -890,7 +513,7 @@
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Estilo de Vida & Estratégia</div></div>
+                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Estilo de Vida & Matriz de Decisão</div></div>
                     <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" id="t5-time">--:--</span></div>
                 </div>
                 <div class="grid-2">
@@ -903,10 +526,19 @@
                         <div class="wb-body"><div class="check-tags" id="m5-invest"></div></div>
                     </div>
                 </div>
-                <div class="win-box">
-                    <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & LAZER (Behavior Settings)</div></div>
-                    <div class="wb-body"><div class="check-tags" id="m5-hobbies"></div></div>
+
+                <div class="strategy-grid">
+                    <div class="st-card shadow-card">
+                        <div class="st-head">💰 MATRIZ DE INVESTIMENTO</div>
+                        <div class="st-text" id="m5-invest-matrix">Calculando melhor alocação de recursos...</div>
+                    </div>
+                    <div class="st-card">
+                        <div class="st-head">🔄 RITUAIS & HOBBIES</div>
+                        <div class="check-tags" id="m5-hobbies" style="margin-bottom:10px;"></div>
+                        <div class="st-text" id="m5-ritual-tips" style="font-size:8pt; font-style:italic;"></div>
+                    </div>
                 </div>
+
                 <div class="win-box">
                     <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
                     <div class="wb-body">
@@ -1004,16 +636,24 @@
             'cog': { title: '3.8 COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog', key: 'cog_prod', getStrat: (val) => val < 50 ? "Foco frágil. Precisa de silêncio visual." : "Multitarefa e dinâmico." }
         };
 
-        // 4. ESTRATÉGIAS DE MEMÓRIA (MÓDULO 4 - NOVO V40)
-        // Mapeia chaves de resposta para estratégias arquitetônicas
+        // 4. ESTRATÉGIAS DE MEMÓRIA (MÓDULO 4 - ATUALIZADO V41)
         const DB_MEMORY_STRATEGIES = {
-            'mem_epi_infancia': "<strong>Estratégia Infância:</strong> A infância é o porto seguro. Use referências da casa dos pais (ex: piso de taco, cheiro de bolo, quintal).",
+            'mem_epi_infancia': "<strong>Estratégia Infância:</strong> A infância é o porto seguro. Reinterprete elementos da casa dos pais (ex: piso de taco, cheiro de bolo).",
             'mem_epi_viagem': "<strong>Estratégia Cosmopolita:</strong> O projeto deve ser um diário de viagens, expondo souvenirs, mapas e arte global.",
             'mem_epi_aconchego': "<strong>Estratégia Ninho:</strong> Busca proteção. Crie 'cantos de refúgio' com mantas, luz baixa (2700K) e cores quentes.",
             'mem_epi_lar': "<strong>Estratégia Família:</strong> Foco na convivência. A mesa de jantar e o sofá são os protagonistas da casa.",
-            'mem_proc_bagunca': "<strong>Estratégia Realista:</strong> A 'bagunça criativa' faz parte do processo. Não force minimalismo extremo. Crie organizadores abertos.",
+            'mem_proc_bagunca': "<strong>Estratégia Realista:</strong> A 'bagunça criativa' faz parte do processo. Crie organizadores abertos e práticos.",
             'mem_proc_fluxo': "<strong>Estratégia Eficiência:</strong> Valoriza a agilidade. O layout deve ser intuitivo, sem obstáculos no caminho.",
-            'default': "<strong>Estratégia Biográfica:</strong> A casa deve contar a história do morador através de objetos significativos e layout fluido."
+            'default': "<strong>Estratégia Biográfica:</strong> A casa deve contar a história do morador através de objetos significativos."
+        };
+
+        // 5. ESTRATÉGIAS DE LIFESTYLE (MÓDULO 5 - NOVO V41)
+        const DB_LIFESTYLE = {
+            'curto_prazo': "Foco em <strong>Revenda e Liquidez</strong>. Use materiais neutros e invista em mobiliário solto de qualidade que possa ser levado.",
+            'longo_prazo': "Foco em <strong>Longevidade e Personalização</strong>. Invista pesado em infraestrutura, automação e marcenaria sob medida.",
+            'economico': "Priorize o <strong>Custo-Benefício</strong>. Use pintura criativa e iluminação para dar efeito sem gastar em revestimentos caros.",
+            'luxo': "Priorize a <strong>Exclusividade</strong>. Materiais naturais e peças assinadas são obrigatórios.",
+            'default': "Equilíbrio entre função e estética."
         };
 
         let dadosAPI = [];
@@ -1134,15 +774,13 @@
                 });
                 if(document.getElementById('m3-grid-container')) document.getElementById('m3-grid-container').innerHTML = senseHTML;
 
-                // --- MOD 4 (TURBINADO V40) ---
+                // --- MOD 4 (TURBINADO V41) ---
                 if(document.getElementById('t4-time')) document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
                 
                 let explHTML = '', implHTML = '';
                 let highestMem = { key: 'default', val: 0 }; 
 
-                // Processamento de Memórias com Escalas
                 Object.keys(r).forEach(k => {
-                    // Explícitas
                     if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
                         let label = k.split('_')[2].toUpperCase();
                         let val = r[k];
@@ -1159,7 +797,6 @@
                             explHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#8e44ad">${label}</span><span class="il-val" style="font-style:italic">"${val}"</span></div>`;
                         }
                     }
-                    // Implícitas
                     if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
                         let label = k.split('_')[2].toUpperCase();
                         let val = r[k];
@@ -1181,11 +818,7 @@
                 if(document.getElementById('m4-impl')) document.getElementById('m4-impl').innerHTML = implHTML || 'Sem dados.';
                 
                 // Conclusão Estratégica Dinâmica (Mod 4)
-                // Procura a estratégia correspondente à chave da memória mais alta (ex: 'mem_epi_infancia')
-                // Se não achar, usa 'default'
-                // Ajuste para encontrar a chave correta no banco DB_MEMORY_STRATEGIES
                 let strategyText = DB_MEMORY_STRATEGIES['default'];
-                // Tenta achar correspondência parcial se a chave exata não existir
                 for (const key in DB_MEMORY_STRATEGIES) {
                     if (highestMem.key.includes(key)) {
                         strategyText = DB_MEMORY_STRATEGIES[key];
@@ -1193,9 +826,17 @@
                     }
                 }
                 
+                // Adiciona análise de vínculo temporal
+                let vinculoText = "Vínculo Misto (Passado/Presente).";
+                if(highestMem.key.includes('infancia')) vinculoText = "Vínculo Forte com o PASSADO (Nostalgia).";
+                else if(highestMem.key.includes('viagem')) vinculoText = "Vínculo com a EXPERIÊNCIA (Exploração).";
+                else if(highestMem.key.includes('lar')) vinculoText = "Vínculo com o PRESENTE (Acolhimento).";
+                
+                if(document.getElementById('m4-vinculo')) document.getElementById('m4-vinculo').innerText = vinculoText;
+                if(document.getElementById('m4-ancoragem')) document.getElementById('m4-ancoragem').innerHTML = strategyText;
                 if(document.getElementById('m4-conclusao-dinamica')) document.getElementById('m4-conclusao-dinamica').innerHTML = strategyText;
 
-                // --- MOD 5 ---
+                // --- MOD 5 (TURBINADO V41) ---
                 if(document.getElementById('t5-time')) document.getElementById('t5-time').innerText = formatTime(d.tempos?.[4] || 0);
                 const makeTags = (key, elId) => {
                     const el = document.getElementById(elId); if(el) el.innerHTML = '';
@@ -1210,6 +851,14 @@
                 if(document.getElementById('m5-tempo-bar')) document.getElementById('m5-tempo-bar').style.width = tempo + '%';
                 if(document.getElementById('m5-tempo-val')) document.getElementById('m5-tempo-val').innerText = tempo + '% (0=Curto, 100=Longo)';
                 if(document.getElementById('m5-obs')) document.getElementById('m5-obs').innerText = r['atu_obs_geral'] || '-';
+
+                // Lógica da Matriz de Investimento (Mod 5)
+                let investStrat = DB_LIFESTYLE['default'];
+                if(tempo < 40) investStrat = DB_LIFESTYLE['curto_prazo'];
+                else if(tempo > 70) investStrat = DB_LIFESTYLE['longo_prazo'];
+                
+                if(document.getElementById('m5-invest-matrix')) document.getElementById('m5-invest-matrix').innerHTML = investStrat;
+                if(document.getElementById('m5-ritual-tips')) document.getElementById('m5-ritual-tips').innerText = "Cada hobby listado acima deve ter um 'Behavior Setting' (cenário) dedicado no projeto.";
 
                 // DOWNLOAD
                 const el = document.getElementById('pdf-root');
