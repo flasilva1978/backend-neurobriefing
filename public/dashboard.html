@@ -184,15 +184,7 @@
         
         .c-logo { font-size: 38pt; font-weight: 900; color: #2c3e50; margin-bottom: 10px; letter-spacing: -1px; }
         .c-sub { font-size: 10pt; letter-spacing: 4px; text-transform: uppercase; color: #7f8c8d; margin-bottom: 80px; }
-        
-        .c-info { 
-            width: 80%; 
-            border-top: 2px solid #2c3e50; 
-            border-bottom: 2px solid #2c3e50; 
-            padding: 40px 0; 
-            margin-bottom: 50px; 
-        }
-        
+        .c-info { width: 80%; border-top: 2px solid #2c3e50; border-bottom: 2px solid #2c3e50; padding: 40px 0; margin-bottom: 50px; }
         .ci-lbl { font-size: 8pt; font-weight: 700; color: #aaa; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
         .ci-val { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 25px; display: block; }
         .c-foot { position: absolute; bottom: 15mm; font-size: 8pt; color: #ccc; text-transform: uppercase; }
@@ -235,9 +227,18 @@
         .wb-sty { font-size: 8pt; font-weight: 600; opacity: 0.95; text-transform: uppercase; }
         .wb-body { padding: 20px; flex: 1; }
         
-        /* GRIDS ESTRATÉGICOS (MÓDULO 1) */
+        /* GRIDS ESTRATÉGICOS */
         .strategy-grid { display: flex; gap: 15px; margin-bottom: 15px; }
-        .st-card { flex: 1; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
+        
+        .st-card { 
+            flex: 1; 
+            background: #fdfdfd; 
+            border: 1px solid #eee; 
+            border-radius: 6px; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+        }
         .st-card.highlight { border-left: 4px solid #3498db; background: #fbfdff; }
         .st-card.shadow-card { border-left: 4px solid #f1c40f; background: #fffcf5; }
         
@@ -268,7 +269,7 @@
         }
         .bc-tit { font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; font-size: 10pt; display: block; }
         
-        /* GRIDS & LISTAS (GERAL) */
+        /* GRIDS & LISTAS */
         .grid-2 { display: flex; gap: 20px; }
         .col { flex: 1; }
         .info-row { margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 4px; }
@@ -279,15 +280,15 @@
         .il-val { font-size: 9pt; color: #555; }
         
         /* ==========================================================================
-           ESTILOS NOVOS DO MÓDULO 3 (GRID SENSORIAL) - 4 CARDS POR PÁGINA
+           ESTILOS DO MÓDULO 3 (GRID SENSORIAL 4x4)
            ========================================================================== */
         
-        .sensory-grid-4 { 
+        .sensory-page-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             grid-template-rows: 1fr 1fr; 
             gap: 20px; 
-            flex: 1;
+            flex: 1; 
             margin-bottom: 20px; 
         }
         
@@ -299,7 +300,6 @@
             box-shadow: 0 3px 6px rgba(0,0,0,0.03);
             display: flex; flex-direction: column;
             position: relative;
-            overflow: hidden;
         }
         
         /* Cores de Borda por Sentido */
@@ -314,7 +314,7 @@
 
         .sense-head { 
             display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #eee;
         }
         
         .sense-title { 
@@ -325,38 +325,89 @@
         .sense-icon { font-size: 14pt; }
         
         .sense-bar-container { display: flex; align-items: center; margin-bottom: 15px; }
-        .sense-bar-bg { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .sense-bar-bg { flex: 1; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
         .sense-bar-fill { height: 100%; border-radius: 4px; }
-        .sense-val { font-size: 11pt; font-weight: 800; width: 40px; text-align: right; margin-left: 10px; }
+        .sense-val { font-size: 10pt; font-weight: 800; width: 40px; text-align: right; margin-left: 10px; }
         
-        /* BLOCOS DE TEXTO DO MOD 3 */
-        .sense-block { margin-bottom: 10px; }
-        .sense-label { font-size: 7.5pt; font-weight: 700; color: #95a5a6; text-transform: uppercase; display: block; margin-bottom: 2px; }
-        .sense-text { font-size: 8.5pt; color: #444; line-height: 1.4; text-align: justify; }
+        /* Blocos de Texto dentro do Card Sensorial */
+        .sense-section { margin-bottom: 10px; }
+        .sense-lbl { font-size: 7.5pt; font-weight: 700; color: #95a5a6; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .sense-txt { font-size: 8.5pt; color: #444; line-height: 1.4; text-align: justify; }
+        
+        /* ==========================================================================
+           ESTILOS MÓDULO 4 (MEMÓRIAS - CORRIGIDO)
+           ========================================================================== */
+        
+        /* Container das Barras (Gráficos) */
+        .mem-container {
+            width: 48%; /* Garante 2 colunas */
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        
+        .mem-label-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        
+        .mem-title { 
+            font-size: 7.5pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; 
+        }
+        
+        .mem-val { 
+            font-size: 8pt; font-weight: 700; color: #555; 
+        }
+        
+        .mem-track {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 2px;
+        }
+        
+        .mem-fill { 
+            height: 100%; border-radius: 4px; 
+        }
+        
+        .mem-scale {
+            display: flex; justify-content: space-between;
+            font-size: 6pt; color: #aaa; padding: 0 2px;
+            font-family: monospace;
+        }
+        
+        .mem-epi .mem-fill { background: #8e44ad; }
+        .mem-imp .mem-fill { background: #2c3e50; }
 
-        /* BARRAS SIMPLES (OUTROS MÓDULOS) */
+        /* Estilo para Textos de Relato (Ex: "O que ele diz") */
+        .mem-text-block {
+            width: 100%;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #ccc;
+        }
+        .mem-text-label { font-size: 7pt; font-weight: 700; color: #2c3e50; text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .mem-text-val { font-size: 8.5pt; font-style: italic; color: #555; }
+
+        /* TAGS E BARRAS MOD 5 */
         .sensory-bar { display: flex; align-items: center; margin-bottom: 8px; }
         .sb-lbl { width: 100px; font-size: 8pt; font-weight: 700; text-align: right; margin-right: 10px; }
         .sb-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
         .sb-fill { height: 100%; background: #2c3e50; }
         .sb-val { width: 30px; font-size: 8pt; font-weight: 700; margin-left: 10px; }
 
-        /* TAGS DE CHECKLIST (MOD 5) */
         .check-tags { display: flex; flex-wrap: wrap; gap: 5px; }
         .ct-item { background: #f0f2f5; padding: 5px 10px; border-radius: 4px; font-size: 8.5pt; font-weight: 600; color: #555; border: 1px solid #ddd; }
         .ct-item.highlight { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
 
-        /* MÓDULO 4: MEMÓRIAS (ESTILO) */
-        .mem-container { width: 48%; margin-bottom: 15px; }
-        .mem-label-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-        .mem-title { font-size: 7.5pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; }
-        .mem-val { font-size: 8pt; font-weight: 700; color: #555; }
-        .mem-track { height: 10px; background: #eee; border-radius: 5px; overflow: hidden; margin-bottom: 2px; }
-        .mem-fill { height: 100%; border-radius: 5px; }
-        .mem-scale { display: flex; justify-content: space-between; font-size: 7pt; color: #aaa; padding: 0 2px; font-family: monospace; }
-        .mem-epi .mem-fill { background: #8e44ad; }
-        .mem-imp .mem-fill { background: #2c3e50; }
-        
+        /* Matriz Mod 5 */
+        .matrix-box { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+        .matrix-title { font-size: 9pt; font-weight: 800; color: #2c3e50; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+        .matrix-content { font-size: 9pt; color: #555; line-height: 1.5; }
+
         .ft-note { text-align: center; font-size: 6pt; color: #bbb; padding-top: 5px; }
 
         /* CORES UTILITÁRIAS */
@@ -365,15 +416,14 @@
         .c-agua { color: #2980b9; } .bg-agua { background: #2980b9; }
         .c-terra { color: #27ae60; } .bg-terra { background: #27ae60; }
         
-        /* Cores Sensoriais (Mod 3) */
-        .s-vis { color: #f39c12; } .bg-vis { background: #f39c12; border-color: #f39c12; }
-        .s-aud { color: #9b59b6; } .bg-aud { background: #9b59b6; border-color: #9b59b6; }
-        .s-olf { color: #27ae60; } .bg-olf { background: #27ae60; border-color: #27ae60; }
-        .s-tat { color: #e67e22; } .bg-tat { background: #e67e22; border-color: #e67e22; }
-        .s-prop { color: #c0392b; } .bg-prop { background: #c0392b; border-color: #c0392b; }
-        .s-gus { color: #e84393; } .bg-gus { background: #e84393; border-color: #e84393; }
-        .s-emo { color: #8e44ad; } .bg-emo { background: #8e44ad; border-color: #8e44ad; }
-        .s-cog { color: #2980b9; } .bg-cog { background: #2980b9; border-color: #2980b9; }
+        .s-vis { color: #f39c12; } .bg-vis { background: #f39c12; }
+        .s-aud { color: #9b59b6; } .bg-aud { background: #9b59b6; }
+        .s-olf { color: #27ae60; } .bg-olf { background: #27ae60; }
+        .s-tat { color: #e67e22; } .bg-tat { background: #e67e22; }
+        .s-prop { color: #c0392b; } .bg-prop { background: #c0392b; }
+        .s-gus { color: #e84393; } .bg-gus { background: #e84393; }
+        .s-emo { color: #8e44ad; } .bg-emo { background: #8e44ad; }
+        .s-cog { color: #2980b9; } .bg-cog { background: #2980b9; }
     </style>
 </head>
 <body>
@@ -447,8 +497,8 @@
                 </div>
                 <div class="box-conclusao">
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 1)</span>
-                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base". 
-                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta (Dopamina vs Ocitocina).
+                    O perfil identificado exige uma estratégia de design que respeite a "Energia Base" do cliente. 
+                    A neuroarquitetura sugere alinhar a complexidade visual ao nível de estímulo que este cérebro suporta.
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -475,7 +525,6 @@
                     <span class="bc-tit">DIRETRIZ PROJETUAL (MÓDULO 2)</span>
                     <span id="m2-conclusao-dinamica">
                         A preferência estética não é apenas "gosto", é a linguagem visual que o cérebro decodifica com facilidade.
-                        Utilize o estilo predominante como base estrutural e os secundários para camadas de decoração.
                     </span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
@@ -489,7 +538,7 @@
                     <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
                 </div>
                 
-                <div class="sensory-grid-4" id="m3-grid-part-a">
+                <div class="sensory-page-grid" id="m3-grid-part-a">
                     </div>
 
                 <div class="box-conclusao">
@@ -508,7 +557,7 @@
                     <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
                 </div>
                 
-                <div class="sensory-grid-4" id="m3-grid-part-b">
+                <div class="sensory-page-grid" id="m3-grid-part-b">
                     </div>
 
                 <div class="box-conclusao">
@@ -526,14 +575,23 @@
                     <div><div class="mh-tit">IDENTIDADE MEMÓRIAS</div><div class="mh-sub">Parte A: Mapeamento de Memórias</div></div>
                     <div class="mh-meta"><div class="mh-num">04</div><span class="mh-time" id="t4-time">--:--</span></div>
                 </div>
+                
                 <div class="win-box">
-                    <div class="wb-head" style="background:#8e44ad;"><div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div><div class="wb-sty">O QUE ELE DIZ</div></div>
-                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
+                    <div class="wb-head" style="background:#8e44ad;">
+                        <div class="wb-tit">MEMÓRIA EXPLÍCITA (CONSCIENTE)</div>
+                        <div class="wb-sty">O QUE ELE DIZ</div>
+                    </div>
+                    <div class="wb-body" id="m4-expl" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-content:flex-start; gap:15px;"></div>
                 </div>
+
                 <div class="win-box">
-                    <div class="wb-head" style="background:#2c3e50;"><div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div><div class="wb-sty">O QUE ELE SENTE/FAZ</div></div>
-                    <div class="wb-body" id="m4-impl" style="display:flex; flex-wrap:wrap; gap:15px; align-content: flex-start;"></div>
+                    <div class="wb-head" style="background:#2c3e50;">
+                        <div class="wb-tit">MEMÓRIA IMPLÍCITA (INCONSCIENTE)</div>
+                        <div class="wb-sty">O QUE ELE SENTE/FAZ</div>
+                    </div>
+                    <div class="wb-body" id="m4-impl" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-content:flex-start; gap:15px;"></div>
                 </div>
+
                 <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
             </div>
         </div>
@@ -550,7 +608,7 @@
                 </div>
                 <div class="box-conclusao" style="margin-top:auto;">
                     <span class="bc-tit">CONCLUSÃO ESTRATÉGICA (MEMÓRIAS)</span>
-                    <span id="m4-conclusao-dinamica">A casa deve ser um espelho da biografia do cliente. Crie "altares de memória" para objetos afetivos e respeite o fluxo intuitivo da rotina (memória procedural).</span>
+                    <span id="m4-conclusao-dinamica">A casa deve ser um espelho da biografia do cliente.</span>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
@@ -568,12 +626,12 @@
                         <div class="wb-body"><div class="check-tags" id="m5-fase"></div></div>
                     </div>
                     <div class="win-box col">
-                        <div class="wb-head" style="background:#27ae60;"><div class="wb-tit">INVESTIMENTO (BUDGET)</div></div>
+                        <div class="wb-head" style="background:#27ae60;"><div class="wb-tit">INVESTIMENTO</div></div>
                         <div class="wb-body"><div class="check-tags" id="m5-invest"></div></div>
                     </div>
                 </div>
                 <div class="win-box">
-                    <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & LAZER (Behavior Settings)</div></div>
+                    <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & RITUAIS</div></div>
                     <div class="wb-body"><div class="check-tags" id="m5-hobbies"></div></div>
                 </div>
                 <div class="ft-note">NeuroBriefing Intelligence - Continua na próxima página...</div>
@@ -586,25 +644,16 @@
                     <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Parte B: Matriz de Decisão</div></div>
                     <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
                 </div>
-                <div class="win-box">
-                    <div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div>
-                    <div class="wb-body">
-                        <div style="margin-bottom:15px;"><span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span><div class="check-tags" id="m5-pers"></div></div>
-                        <div><span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span><div class="sensory-bar" style="margin-top:5px;"><span class="sb-lbl" style="width:auto; margin-right:10px;">Provisório</span><div class="sb-track"><div class="sb-fill" id="m5-tempo-bar" style="width:50%; background:#e67e22;"></div></div><span class="sb-val" style="width:auto; margin-left:10px;">Eterno</span></div><div style="text-align:center; font-size:9pt; font-weight:bold; color:#e67e22;" id="m5-tempo-val">50%</div></div>
-                    </div>
-                </div>
+                <div class="win-box"><div class="wb-head" style="background:#34495e;"><div class="wb-tit">PERSONALIDADE & EXPECTATIVA</div></div><div class="wb-body">
+                    <div style="margin-bottom:15px;"><span class="il-lbl">TRAÇOS DE PERSONALIDADE:</span><div class="check-tags" id="m5-pers"></div></div>
+                    <div><span class="il-lbl">EXPECTATIVA DE MORADIA (TEMPO):</span><div class="sensory-bar" style="margin-top:5px;"><span class="sb-lbl" style="width:auto; margin-right:10px;">Provisório</span><div class="sb-track" style="margin:0 10px;"><div class="sb-fill" id="m5-tempo-bar" style="width:50%; background:#e67e22;"></div></div><span class="sb-val" style="width:auto; margin-left:10px;">Eterno</span></div><div style="text-align:center; font-size:9pt; font-weight:bold; color:#e67e22;" id="m5-tempo-val">50%</div></div>
+                </div></div>
                 <div class="strategy-grid">
                     <div class="st-card shadow-card"><div class="st-head">💰 MATRIZ DE INVESTIMENTO INTELIGENTE</div><div class="st-text" id="m5-invest-matrix">...</div></div>
                     <div class="st-card"><div class="st-head">🔄 DESIGN DE RITUAIS</div><div class="st-text" id="m5-ritual-tips" style="font-size:8.5pt;"></div></div>
                 </div>
-                <div class="win-box">
-                    <div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">OBSERVAÇÕES GERAIS</div></div>
-                    <div class="wb-body" style="font-style:italic; color:#555;" id="m5-obs">-</div>
-                </div>
-                <div class="box-conclusao">
-                    <span class="bc-tit">CONCLUSÃO FINAL (ESTRATÉGIA)</span>
-                    Baseado em <strong>Roger Barker</strong>, o design deve sustentar os comportamentos. O alinhamento do budget com a expectativa de tempo define a materialidade.
-                </div>
+                <div class="win-box"><div class="wb-head" style="background:#7f8c8d;"><div class="wb-tit">OBSERVAÇÕES GERAIS</div></div><div class="wb-body" style="font-style:italic; color:#555;" id="m5-obs">-</div></div>
+                <div class="box-conclusao"><span class="bc-tit">CONCLUSÃO FINAL</span>Baseado em Roger Barker, o design deve sustentar os comportamentos. O alinhamento do budget com a expectativa de tempo define a materialidade.</div>
                 <div class="ft-note">NeuroBriefing Intelligence</div>
             </div>
         </div>
@@ -612,39 +661,13 @@
     </div>
 
     <script>
-        // 1. BANCO DE DADOS TEMPERAMENTOS (MÓDULO 1)
+        // 1. DADOS MOD 1 e 2 (MANTIDOS)
         const DB = {
-            FOGO: { 
-                id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', 
-                energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', 
-                perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], 
-                neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', 
-                comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.' 
-            },
-            AR: { 
-                id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', 
-                energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis e visuais.', 
-                perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], 
-                neuro: 'Busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', 
-                comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' 
-            },
-            AGUA: { 
-                id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', 
-                energia:'Acolhimento · Calma', quem:'Pessoas diplomáticas.', 
-                perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], 
-                neuro: 'Busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', 
-                comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.' 
-            },
-            TERRA: { 
-                id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', 
-                energia:'Estrutura · Ordem', quem:'Pessoas metódicas.', 
-                perfil:'Analista', estilos:['Clássico', 'Minimalismo'], 
-                neuro: 'Busca <strong>previsibilidade</strong>. Simetria e armários fechados.', 
-                comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.' 
-            }
+            FOGO: { id:'FOGO', cor:'#e74c3c', class:'fogo', titulo:'Executor (Colérico)', energia:'Ação · Direção · Intensidade', quem:'Pessoas focadas em resultados e agilidade.', perfil:'Executor', estilos:['Contemporâneo', 'Industrial', 'High Tech'], neuro: 'Este cérebro busca <strong>dopamina</strong> (recompensa rápida). O projeto deve ter <strong>fluxos livres</strong>, iluminação clara e setorização eficiente.', comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.' },
+            AR: { id:'AR', cor:'#3498db', class:'ar', titulo:'Comunicador (Sanguíneo)', energia:'Expressão · Conexão · Novidade', quem:'Pessoas sociáveis e visuais.', perfil:'Comunicador', estilos:['Boho Chic', 'Eclético', 'Maximalismo'], neuro: 'Busca <strong>estímulos variados</strong>. O projeto precisa de áreas de convivência e flexibilidade.', comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.' },
+            AGUA: { id:'ÁGUA', cor:'#2980b9', class:'agua', titulo:'Planejador (Fleumático)', energia:'Acolhimento · Calma', quem:'Pessoas diplomáticas.', perfil:'Planejador', estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'], neuro: 'Busca <strong>segurança e ocitocina</strong>. Priorize acústica e texturas táteis macias.', comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.' },
+            TERRA: { id:'TERRA', cor:'#27ae60', class:'terra', titulo:'Analista (Melancólico)', energia:'Estrutura · Ordem', quem:'Pessoas metódicas.', perfil:'Analista', estilos:['Clássico', 'Minimalismo'], neuro: 'Busca <strong>previsibilidade</strong>. Simetria e armários fechados.', comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.' }
         };
-
-        // 2. BANCO DE DADOS VISUAL (MÓDULO 2)
         const DB_VISUAL = {
             'est_contemp': 'Contemporâneo', 'est_ind': 'Industrial', 'est_urb': 'Moderno Urbano', 'est_tech': 'High Tech', 'est_luxo': 'Luxo Moderno',
             'est_scandi': 'Escandinavo', 'est_cont_leve': 'Contemporâneo Leve', 'est_boho': 'Boho Chic', 'est_japandi': 'Japandi', 'est_wabi': 'Wabi-Sabi',
@@ -652,7 +675,6 @@
             'est_mid': 'Mid-Century', 'est_ecletico': 'Eclético', 'est_classico': 'Clássico', 'est_neoclass': 'Neoclássico',
             'est_trad': 'Tradicional Contemporâneo', 'est_mod_eleg': 'Moderno Elegante', 'est_colonial': 'Colonial Atualizado'
         };
-
         const DB_VISUAL_DETAILS = {
             'est_tech': { conceito: 'Futurismo e automação.', materiais: 'Vidro, Aço, High-Gloss.', luz: 'Linear, RGB, Fria.', mobiliario: 'Design ergonômico.', neuro: 'Reduz carga cognitiva pela limpeza. Automação gera controle.' },
             'est_scandi': { conceito: 'Hygge: Conforto e luz.', materiais: 'Madeira clara, Lã.', luz: 'Ampla, Natural, Quente.', mobiliario: 'Pés palito, sofás cinza.', neuro: 'Promove calma. Madeira clara reduz pressão arterial.' },
@@ -665,10 +687,9 @@
             'est_luxo': { conceito: 'Sofisticação e brilho.', materiais: 'Metais nobres, Espelhos.', luz: 'Cênica, pendentes.', mobiliario: 'Design italiano.', neuro: 'Validação de status e conquista (Serotonina).' },
             'default': { conceito: 'Estilo personalizado.', materiais: 'Equilíbrio de texturas.', luz: 'Foco em camadas.', mobiliario: 'Prioridade para ergonomia.', neuro: 'Reflete a autoimagem do cliente.' }
         };
-
         const CORRELACOES = {
             'FOGO_TERRA': { perfil: 'O CONSTRUTOR: Pragmático e ambicioso.', projeto: 'Solidez e Status. Materiais nobres.', atendimento: 'Seja técnico e pontual.' },
-            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau").', atendimento: 'Seja ágil e visual.' },
+            'FOGO_AR': { perfil: 'O INOVADOR: Dinâmico e criativo.', projeto: 'Impacto Visual ("Uau") e Automação.', atendimento: 'Seja ágil, visual e venda a novidade.' },
             'FOGO_AGUA': { perfil: 'O PROTETOR: Intenso e emotivo.', projeto: 'Refúgio Seguro e robusto.', atendimento: 'Vínculo emocional rápido.' },
             'AR_FOGO': { perfil: 'O CRIATIVO: Mente acelerada.', projeto: 'Liberdade e Cor.', atendimento: 'Brainstorming e ritmo.' },
             'AR_TERRA': { perfil: 'O DESIGNER: Bom gosto racional.', projeto: 'Estética Funcional.', atendimento: 'Explique o porquê estético.' },
@@ -680,14 +701,12 @@
             'AGUA_AR': { perfil: 'O SONHADOR: Sensível.', projeto: 'Leveza e tons pastéis.', atendimento: 'Seja delicado.' },
             'AGUA_TERRA': { perfil: 'O ACOLHEDOR: Família.', projeto: 'Ninho e cozinha grande.', atendimento: 'Seja previsível.' }
         };
-
         const SOMBRAS = {
             'FOGO': 'Falta paciência. Manutenção zero.',
             'AR': 'Falta foco. Evite excesso visual.',
             'TERRA': 'Falta flexibilidade. Prove a ordem.',
             'AGUA': 'Falta praticidade. Priorize uso.'
         };
-
         const DB_MEMORY_STRATEGIES = {
             'mem_epi_infancia': "<strong>Estratégia Infância:</strong> A infância é o porto seguro. Reinterprete elementos da casa dos pais (ex: piso de taco, cheiro de bolo).",
             'mem_epi_viagem': "<strong>Estratégia Cosmopolita:</strong> O projeto deve ser um diário de viagens, expondo souvenirs, mapas e arte global.",
@@ -697,7 +716,6 @@
             'mem_proc_fluxo': "<strong>Estratégia Eficiência:</strong> Valoriza a agilidade. O layout deve ser intuitivo, sem obstáculos no caminho.",
             'default': "<strong>Estratégia Biográfica:</strong> A casa deve contar a história do morador através de objetos significativos e layout fluido."
         };
-
         const DB_LIFESTYLE = {
             'curto_prazo': "Foco em <strong>Revenda e Liquidez</strong>. Use materiais neutros e invista em mobiliário solto de qualidade que possa ser levado.",
             'longo_prazo': "Foco em <strong>Longevidade e Personalização</strong>. Invista pesado em infraestrutura, automação e marcenaria sob medida.",
@@ -706,63 +724,62 @@
             'default': "Equilíbrio entre função e estética."
         };
 
-        // --- DADOS EXPERT MÓDULO 3 (MELHORADO E EXPANDIDO) ---
-        // Agora com descrições mais ricas para o layout 2x2
+        // --- DADOS EXPERT MÓDULO 3 (EXPANDIDO PARA 8 SENSORES) ---
         const DB_SENSORY_EXPERT = {
             'vis': { 
                 title: '3.1 VISUAL', icon: '👁️', color: 's-vis', border: 'bg-vis', key: 'vis_complex', 
                 getStrat: (val) => {
-                    if (val > 75) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Alta demanda visual. Cérebro busca complexidade para não entediar (Dopamina).</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Iluminação em camadas, pontos focais e mix de estampas controladas. Evite paredes vazias.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Estímulo ao córtex visual para manter o alerta.</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Preferência por Minimalismo. Excesso de info gera estresse.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Reduza ruídos visuais. Armários fechados, cores neutras, poucos objetos.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Redução de carga cognitiva para descanso mental.</div></div>`;
+                    if(val > 75) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Alta demanda visual. Cérebro busca complexidade para não entediar.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Iluminação em camadas, pontos focais, mix de estampas controladas.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-txt">Estímulo Dopaminérgico.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere Minimalismo. Excesso gera estresse.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Oculte bagunça, use cores neutras e superfícies limpas.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Descanso Cognitivo.</div></div>`;
                 }
             },
             'aud': { 
                 title: '3.2 AUDITIVO', icon: '👂', color: 's-aud', border: 'bg-aud', key: 'aud_eco', 
                 getStrat: (val) => {
-                    if (val < 30) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Hipersensibilidade. Ruído gera cortisol imediato.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">OBRIGATÓRIO: Painéis acústicos, tapetes densos, cortinas duplas, vedação de janelas.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Proteção da amígdala contra ameaças sonoras.</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Tolerante. Gosta de "som de vida" na casa.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Pode integrar ambientes sem medo. Use pisos frios se desejar. Sonorização ambiente.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Som como conexão social, não ameaça.</div></div>`;
+                    if(val < 30) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Hipersensibilidade. Ruído = Cortisol.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">OBRIGATÓRIO: Painéis acústicos, tapetes densos, vedação.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Proteção da Amígdala.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Tolerante a ruídos.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Integração total e pisos frios (cerâmica/pedra).</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Conexão Social.</div></div>`;
                 }
             },
             'olf': { 
                 title: '3.3 OLFATIVO', icon: '👃', color: 's-olf', border: 'bg-olf', key: 'olf_sens', 
                 getStrat: (val) => {
-                    if (val > 70) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Olfato apurado. O cheiro define a memória do lugar.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Scent Design. Preveja nichos para difusores. Ventilação cruzada é vital. Evite colas fortes.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Ligação direta com o Sistema Límbico (Emoção pura).</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Neutro. Foco em ar fresco apenas.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Ventilação mecânica em banheiros/cozinha.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Higiene básica.</div></div>`;
+                    if(val > 70) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Olfato apurado e emocional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Scent Design, ventilação cruzada, materiais inodoros.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Sistema Límbico direto.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Neutro.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Foco em ar fresco e higiene.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Saúde básica.</div></div>`;
                 }
             },
             'tat': { 
                 title: '3.4 TÁTIL', icon: '✋', color: 's-tat', border: 'bg-tat', key: 'tat_tex_macia', 
                 getStrat: (val) => {
-                    if (val > 60) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Necessidade Hápica (Toque). O corpo precisa sentir a casa.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Madeira natural (veios), veludo, linho, tapetes altos, pedras rugosas.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Liberação de Ocitocina pelo conforto tátil.</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Visual > Tátil. Prefere sensação de limpeza.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Superfícies lisas, vidro, metal, porcelanato polido.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Clareza e higiene.</div></div>`;
+                    if(val > 60) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Necessidade Hápica (Toque).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Madeira natural, linho, veludo, tapetes altos.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Liberação de Ocitocina.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere lisura e limpeza.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Vidro, metal, porcelanato polido.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Segurança sanitária.</div></div>`;
                 }
             },
             'prop': { 
-                title: '3.5 ESPACIAL', icon: '🧭', color: 's-prop', border: 'bg-prop', key: 'prop_pe_dir', 
+                title: '3.5 PROPRIOCEPTIVO', icon: '🧭', color: 's-prop', border: 'bg-prop', key: 'prop_pe_dir', 
                 getStrat: (val) => {
-                    if (val > 50) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Prospecto (Domínio). Precisa ver o todo.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Pé direito alto, integração total, janelas do chão ao teto. Evite barreiras.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Sensação de poder e liberdade.</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Refúgio (Abraço). Sente-se exposto em áreas grandes.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Pé direito padrão, cantos definidos, "Tocas".</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Segurança e proteção primitiva.</div></div>`;
+                    if(val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prospecto (Domínio).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Pé direito alto, vistas livres, circulação larga.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Poder e Liberdade.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Refúgio (Abraço).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Tetos baixos, cantos de leitura, 'tocas'.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Proteção primitiva.</div></div>`;
                 }
             },
             'gus': { 
                 title: '3.6 GUSTATIVO', icon: '🍽️', color: 's-gus', border: 'bg-gus', key: 'gus_social', 
                 getStrat: (val) => {
-                    if (val > 50) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Comensalidade Social. Comer é um evento.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Ilha gourmet com banquetas confortáveis. Luz quente (CRI>90) sobre a comida.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Estímulo multissensorial (visão+olfato+paladar).</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Nutrição Funcional. Comer é necessidade.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Cozinha laboratório. Foco na ergonomia e limpeza.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Eficiência.</div></div>`;
+                    if(val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Comensalidade Social.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Ilha gourmet, luz quente (3000K) sobre a mesa.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Estímulo multissensorial.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Nutrição Funcional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Cozinha laboratório, foco na limpeza.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Eficiência.</div></div>`;
                 }
             },
             'emo': { 
                 title: '3.7 EMOCIONAL', icon: '❤️', color: 's-emo', border: 'bg-emo', key: 'emo_nostalgia', 
                 getStrat: (val) => {
-                    if (val > 50) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Nostalgia. Conexão forte com o passado/família.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Crie nichos iluminados para expor heranças. Use materiais "velhos" (madeira de demolição).</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Continuidade da identidade (Self).</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Renovação. Quer se reinventar.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Design limpo, novo, sem "peso" do passado.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Plasticidade e futuro.</div></div>`;
+                    if(val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Nostalgia e Raízes.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Expor heranças, fotos e objetos com história.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Identidade do Self.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Renovação e Futuro.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Design limpo, novo, sem apegos.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Plasticidade cerebral.</div></div>`;
                 }
             },
             'cog': { 
                 title: '3.8 COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog', key: 'cog_prod', 
                 getStrat: (val) => {
-                    if (val < 50) return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Foco Frágil. Distrai-se facilmente.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Home Office fechado. Cores sólidas e neutras na frente da mesa. Sem circulação atrás.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Gestão da atenção dirigida.</div></div>`;
-                    return `<div class="sense-block"><span class="sense-label">DIAGNÓSTICO:</span><div class="sense-text">Foco Robusto / Multitarefa.</div></div><div class="sense-block"><span class="sense-label">AÇÃO PROJETUAL:</span><div class="sense-text">Pode trabalhar na mesa de jantar ou em ambientes integrados. O caos visual não atrapalha tanto.</div></div><div class="sense-block"><span class="sense-label">NEURO-LINK:</span><div class="sense-text">Flexibilidade cognitiva.</div></div>`;
+                    if(val < 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Foco Frágil.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Home Office fechado, paredes lisas à frente.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Gestão da Atenção.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Multitarefa.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Integração trabalho-lazer permitida.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Flexibilidade.</div></div>`;
                 }
             }
         };
@@ -904,16 +921,18 @@
                 if(document.getElementById('m3-grid-part-b')) document.getElementById('m3-grid-part-b').innerHTML = htmlB;
 
 
-                // --- MOD 4 ---
+                // --- MOD 4 (PÁGINA 6 - GRÁFICOS CORRIGIDOS) ---
                 if(document.getElementById('t4-time')) document.getElementById('t4-time').innerText = formatTime(d.tempos?.[3] || 0);
                 
                 let explHTML = '', implHTML = '';
                 let highestMem = { key: 'default', val: 0 }; 
 
+                // Lógica de Renderização Limpa: Só exibe se for número ou string válida
                 Object.keys(r).forEach(k => {
                     if(k.startsWith('mem_epi') || k.startsWith('mem_sem')) {
                         let label = k.split('_')[2].toUpperCase();
                         let val = r[k];
+                        
                         if(typeof val === 'number') {
                             if(val > highestMem.val) highestMem = { key: k, val: val };
                             explHTML += `
@@ -923,8 +942,8 @@
                                     <div class="mem-scale"><span>0</span><span>50</span><span>100</span></div>
                                 </div>
                             `;
-                        } else {
-                            explHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#8e44ad">${label}</span><span class="il-val" style="font-style:italic">"${val}"</span></div>`;
+                        } else if (typeof val === 'string' && val.length > 0) {
+                            explHTML += `<div class="mem-text-block"><span class="mem-text-label">${label}</span><span class="mem-text-val">"${val}"</span></div>`;
                         }
                     }
                     if(k.startsWith('mem_proc') || k.startsWith('mem_prim') || k.startsWith('mem_cond')) {
@@ -938,8 +957,8 @@
                                     <div class="mem-scale"><span>0</span><span>50</span><span>100</span></div>
                                 </div>
                             `;
-                        } else {
-                            implHTML += `<div style="width:100%; margin-bottom:8px; background:#f9f9f9; padding:5px; border-radius:4px;"><span class="il-lbl" style="color:#2c3e50">${label}</span><span class="il-val" style="font-style:italic">"${val}"</span></div>`;
+                        } else if (typeof val === 'string' && val.length > 0) {
+                            implHTML += `<div class="mem-text-block"><span class="mem-text-label">${label}</span><span class="mem-text-val">"${val}"</span></div>`;
                         }
                     }
                 });
