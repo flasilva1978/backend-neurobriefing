@@ -1881,12 +1881,24 @@
                 const original = btn.innerText; btn.innerText = "Gerando..."; btn.disabled = true;
                 const r = d.respostas || {};
 
-                // CAPA
+                // --- 3.1.1 CAPA: INSERIR CONTATOS ---
                 if(document.getElementById('cp-nome')) document.getElementById('cp-nome').innerText = d.cliente || '-';
                 if(document.getElementById('cp-arq')) document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
                 if(document.getElementById('cp-data')) document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
 
-                // --- MOD 1 ---
+                // Injeção dinâmica de contatos na capa
+                const infoCapa = document.querySelector('.c-info');
+                if (infoCapa) {
+                    infoCapa.innerHTML += `
+                        <div style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px; font-size:10pt; color:#fff;">
+                            <p><strong>Tel:</strong> ${d.contato?.telefone || '-'}</p>
+                            <p><strong>Email:</strong> ${d.contato?.email || '-'}</p>
+                            <p><strong>Local:</strong> ${d.contato?.cidade || '-'} / ${d.contato?.estado || '-'}</p>
+                        </div>
+                    `;
+                }
+
+                // --- MÓDULO 1: IDENTIDADE DO SER ---
                 let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
                 Object.keys(r).forEach(k => {
                     let v = parseInt(r[k]) || 0;
@@ -1896,6 +1908,37 @@
                 const sorted = [{id:'FOGO',...DB.FOGO,v:p.FOGO},{id:'AR',...DB.AR,v:p.AR},{id:'AGUA',...DB.AGUA,v:p.AGUA},{id:'TERRA',...DB.TERRA,v:p.TERRA}].sort((a,b)=>b.v-a.v);
                 const dom = sorted[0]; const sec = sorted[1]; const sombra = sorted[3];
 
+                // 3.2.1 Inserir Arquétipos
+                document.getElementById('m1-neuro-individual').innerHTML = `
+                    <div style="background:#f4f7f6; padding:10px; border-radius:5px; margin-bottom:10px;">
+                        <span style="font-weight:800; color:#2c3e50;">ARQUÉTIPO DOMINANTE:</span> ${dom.arquetipo}
+                    </div>
+                    ${dom.neuro}
+                `;
+
+                // 3.3.2 Pontos Positivos e Negativos Separados & 3.3.3 Neurolinguística
+                document.getElementById('m1-atendimento-deep').innerHTML = `
+                    <div class="sense-section">
+                        <span class="sense-lbl" style="color:#27ae60;">PONTOS POSITIVOS</span>
+                        <div class="sense-txt">${dom.pontos.pos}</div>
+                    </div>
+                    <div class="sense-section" style="margin-top:15px;">
+                        <span class="sense-lbl" style="color:#c0392b;">PONTOS DE ATENÇÃO (NEGATIVOS)</span>
+                        <div class="sense-txt">${dom.pontos.neg}</div>
+                    </div>
+                    <div class="sense-section" style="margin-top:15px; background:#eef2f3; padding:10px; border-radius:4px;">
+                        <span class="sense-lbl" style="color:#2c3e50;">NEUROLINGUÍSTICA (COMO SE COMUNICAR)</span>
+                        <div class="sense-txt"><em>${dom.neurolinguistica}</em></div>
+                    </div>
+                `;
+
+                // 3.3.4 Correção de Texto na Conclusão
+                document.getElementById('m1-fechamento').innerHTML = `
+                    <span class="bc-tit">CONCLUSÃO DO MÓDULO 1:</span> 
+                    O DNA comportamental aponta para um projeto que prioriza ${dom.energia.toLowerCase()}. 
+                    A estratégia de atendimento deve focar em **ser detalhista** e garantir a segurança nas entregas técnicas.
+                `;
+               
                 if(document.getElementById('t1-time')) document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
                 let chartHTML = '';
                 sorted.forEach(i => {
