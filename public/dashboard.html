@@ -861,9 +861,12 @@
 
     <div class="painel">
         <div class="header-painel">
-            <div class="hp-title">Dashboard NeuroBriefing</div>
-            <button class="btn-refresh" onclick="location.reload()">🔄 Atualizar Dados</button>
+            <div style="display: flex; align-items: center; gap: 15px;">
+               <img src="public/logo.png" alt="Logo Neuro Be Briefing" style="height: 50px;">
+            <div class="hp-title">Painel de Gestão - NEURO Be BRIEFING</div>
         </div>
+        <button class="btn-refresh" onclick="location.reload()">🔄 Atualizar Dados</button>
+    </div>
         <table>
             <thead>
                 <tr>
@@ -1256,9 +1259,15 @@
                 cor:'#27ae60', 
                 class:'terra', 
                 titulo:'Analista (Melancólico)', 
+                arquetipo: 'O Sábio / O Criador',
                 energia:'Estrutura, Rigor e Profundidade.',
                 quem:'Pessoas metódicas que valorizam previsibilidade e qualidade.',
                 perfil:'Analista', 
+                pontos: {
+                    pos: 'Analítico, perfeccionista, leal, focado em alta qualidade e organização impecável.',
+                    neg: 'Pessimista, excessivamente autocrítico, rígido e propenso ao perfeccionismo paralisante.'
+                },
+                neurolinguistica: 'Foque em ser detalhista e preciso. Use termos como "garantia", "longo prazo", "estabilidade" e "detalhes técnicos". Apresente dados e fatos antes das emoções.',
                 estilos:['Clássico', 'Minimalismo', 'Neoclássico'],
                 neuro: 'O cérebro melancólico busca previsibilidade. Ambientes com <strong>simetria axial</strong> e armários fechados reduzem o ruído cognitivo. Evite layouts abertos demais que gerem sensação de vulnerabilidade.',
                 comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.',
@@ -1271,9 +1280,15 @@
                 cor:'#e74c3c', 
                 class:'fogo', 
                 titulo:'Executor (Colérico)', 
+                arquetipo: 'O Herói / O Governante',
                 energia:'Ação, Dominância e Intensidade.',
                 quem:'Pessoas focadas em resultados, agilidade e controle.',
                 perfil:'Executor', 
+                pontos: {
+                    pos: 'Determinado, enérgico, liderança nata, focado em metas e assertivo.',
+                    neg: 'Impaciente, autoritário, insensível, impulsivo e com baixa tolerância a erros.'
+                },
+                neurolinguistica: 'Seja direto, objetivo e foque no "o quê". Use voz ativa e destaque palavras como "soluções rápidas", "exclusividade", "eficiência" e "comando".',
                 estilos:['Contemporâneo', 'Industrial', 'High Tech'],
                 neuro: 'Busca dopaminérgica por recompensa e controle. O espaço deve ter <strong>fluxos desimpedidos</strong> e materiais que transmitam solidez. Áreas de comando (visão da entrada) são essenciais.',
                 comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.',
@@ -1286,9 +1301,15 @@
                 cor:'#3498db', 
                 class:'ar', 
                 titulo:'Comunicador (Sanguíneo)', 
+                arquetipo: 'O Explorador / O Bobo da Corte',
                 energia:'Conexão, Variedade e Criatividade.',
                 quem:'Pessoas sociáveis, visuais e criativas.',
                 perfil:'Comunicador', 
+                pontos: {
+                    pos: 'Comunicativo, entusiasta, criativo, sociável e otimista.',
+                    neg: 'Desorganizado, indisciplinado, impulsivo, superficial e com dificuldade de foco.'
+                },
+                neurolinguistica: 'Use linguagem visual e emocional. Conte histórias e foque na experiência. Palavras-chave: "novidade", "conexão", "estímulo", "variedade" e "tendência".',
                 estilos:['Boho Chic', 'Eclético', 'Maximalismo'],
                 neuro: 'Necessidade de estímulos variados para manter o interesse. <strong>Ambientes multiuso</strong> e layouts que favoreçam a conversa. Cores quentes em pontos focais ativam o sistema límbico.',
                 comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.',
@@ -1301,9 +1322,15 @@
                 cor:'#2980b9', 
                 class:'agua', 
                 titulo:'Planejador (Fleumático)', 
+                arquetipo: 'O Prestativo / O Inocente',
                 energia:'Harmonia, Acolhimento e Estabilidade.',
                 quem:'Pessoas diplomáticas que buscam paz e segurança.',
                 perfil:'Planejador', 
+                pontos: {
+                    pos: 'Calmo, diplomático, equilibrado, excelente ouvinte e pacificador.',
+                    neg: 'Indeciso, passivo, resistente a mudanças bruscas e evita conflitos necessários.'
+                },
+                neurolinguistica: 'Comunicação suave, pausada e acolhedora. Destaque o bem-estar e a segurança. Use termos como "paz", "conforto", "equilíbrio" e "harmonia".',
                 estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'],
                 neuro: 'Sistema límbico sensível ao estresse. Priorizar <strong>conforto acústico e texturas hápicas</strong>. Iluminação circadiana (2700K) para relaxamento parassimpático.',
                 comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.',
@@ -1531,60 +1558,69 @@
         const DB_SENSORY_EXPERT = {
             'vis': { 
                 title: '3.1 VISUAL', icon: '👁️', color: 's-vis', border: 'bg-vis', key: 'vis_complex', 
+                neurolink: 'Processamento no Córtex Occipital. Estímulos organizados reduzem a carga cognitiva e ativam o "Default Mode Network" (DMN), promovendo descanso mental e reduzindo a fadiga perceptual.',
                 getStrat: (val) => {
-                    if (val > 75) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Alta demanda visual. Cérebro busca complexidade para não entediar.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Iluminação em camadas, pontos focais, mix de estampas controladas.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-txt">Estímulo Dopaminérgico.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere Minimalismo. Excesso gera estresse.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Oculte bagunça, use cores neutras e superfícies limpas.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Descanso Cognitivo.</div></div>`;
+                    if (val > 75) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Alta demanda visual. Cérebro busca complexidade para não entediar.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Iluminação em camadas, pontos focais, mix de estampas controladas.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere Minimalismo. Excesso gera estresse.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Oculte bagunça, use cores neutras e superfícies limpas.</div></div>`;
                 }
             },
             'aud': { 
                 title: '3.2 AUDITIVO', icon: '👂', color: 's-aud', border: 'bg-aud', key: 'aud_eco', 
+                neurolink: 'Conexão Córtex Auditivo-Amígdala. Sons indesejados elevam o cortisol, enquanto frequências naturais (Biofonia) sinalizam segurança ao sistema límbico, promovendo relaxamento imediato.',
                 getStrat: (val) => {
-                    if (val < 30) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Hipersensibilidade. Ruído = Cortisol.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">OBRIGATÓRIO: Painéis acústicos, tapetes densos, vedação.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Proteção da Amígdala.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Tolerante a ruídos.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Integração total e pisos frios (cerâmica/pedra).</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Conexão Social.</div></div>`;
+                    if (val < 30) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Hipersensibilidade. Ruído = Cortisol.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">OBRIGATÓRIO: Painéis acústicos, tapetes densos, vedação.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Tolerante a ruídos.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Integração total e pisos frios (cerâmica/pedra).</div></div>`;
                 }
             },
             'olf': { 
                 title: '3.3 OLFATIVO', icon: '👃', color: 's-olf', border: 'bg-olf', key: 'olf_sens', 
+                neurolink: 'Via Direta ao Sistema Límbico. O olfato acessa diretamente o hipocampo e a amígdala, sendo o gatilho mais potente para memórias emocionais e regulação neuroendócrina do humor.',
                 getStrat: (val) => {
-                    if (val > 70) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Olfato apurado e emocional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Scent Design, ventilação cruzada, materiais inodoros.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Acesso direto ao Sistema Límbico.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Neutro.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Foco em ar fresco e higiene.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Saúde básica.</div></div>`;
+                    if (val > 70) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Olfato apurado e emocional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Scent Design, ventilação cruzada, materiais inodoros.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Neutro.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Foco em ar fresco e higiene.</div></div>`;
                 }
             },
             'tat': { 
                 title: '3.4 TÁTIL', icon: '✋', color: 's-tat', border: 'bg-tat', key: 'tat_tex_macia', 
+                neurolink: 'Ativação do Córtex Somatossensorial. Texturas naturais estimulam a liberação de ocitocina e reduzem a pressão arterial, regulando a percepção de conforto e segurança térmica.',
                 getStrat: (val) => {
-                    if (val > 60) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Necessidade Hápica (Toque).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Madeira natural, linho, veludo, tapetes altos.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Liberação de Ocitocina.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere lisura e limpeza.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Vidro, metal, porcelanato polido.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Segurança sanitária.</div></div>`;
-                }
-            },
-            'prop': { 
-                title: '3.5 PROPRIOCEPTIVO', icon: '🧭', color: 's-prop', border: 'bg-prop', key: 'prop_pe_dir', 
-                getStrat: (val) => {
-                    if (val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prospecto (Domínio).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Pé direito alto, vistas livres, circulação larga.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Poder e Liberdade.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Refúgio (Abraço).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Tetos baixos, cantos de leitura, 'tocas'.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Proteção primitiva.</div></div>`;
+                    if (val > 60) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Necessidade Hápica (Toque).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Madeira natural, linho, veludo, tapetes altos.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere lisura e limpeza.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Vidro, metal, porcelanato polido.</div></div>`;
                 }
             },
             'gus': { 
-                title: '3.6 GUSTATIVO', icon: '🍽️', color: 's-gus', border: 'bg-gus', key: 'gus_social', 
+                title: '3.5 GUSTATIVO', icon: '🍽️', color: 's-gus', border: 'bg-gus', key: 'gus_social', 
+                neurolink: 'Córtex Gustativo e Ínsula. A experiência do sabor está ligada à comensalidade social e ao sistema de recompensa, influenciando o estado metabólico e o senso de pertencimento.',
                 getStrat: (val) => {
-                    if (val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Comensalidade Social.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Ilha gourmet, luz quente (3000K) sobre a mesa.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Estímulo multissensorial.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Nutrição Funcional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Cozinha laboratório, foco na limpeza.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Eficiência.</div></div>`;
+                    if (val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Alta Comensalidade. Gosta de Mesa Posta e receber.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO:</span><div class="sense-txt">Ilha gourmet, iluminação de alto IRC (>90) para realçar cores dos alimentos.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Praticidade Alimentar.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO:</span><div class="sense-txt">Cozinha laboratório, foco em ergonomia e higiene.</div></div>`;
+                }
+            },
+            'prop': { 
+                title: '3.6 PROPRIOCEPTIVO', icon: '🧭', color: 's-prop', border: 'bg-prop', key: 'prop_pe_dir', 
+                neurolink: 'Integração no Lobo Parietal e Cerebelo. Define a consciência do corpo no espaço. Ambientes 3D (volumetria) desafiam a orientação, enquanto 2D (planos) oferece segurança visual.',
+                getStrat: (val) => {
+                    let spaceText = val > 50 ? "Prefere amplitude (menos densidade de móveis, mais pé-direito)." : "Prefere acolhimento (mais densidade de móveis, 'ninhos').";
+                    let dimText = val > 50 ? "Percepção 3D ativa (foco em volumetria e profundidade)." : "Percepção 2D dominante (foco em planos e superfícies).";
+                    return `<div class="sense-section"><span class="sense-lbl">ESPAÇO:</span><div class="sense-txt">${spaceText}</div></div><div class="sense-section"><span class="sense-lbl">DIMENSIONALIDADE:</span><div class="sense-txt">${dimText}</div></div>`;
                 }
             },
             'emo': { 
                 title: '3.7 EMOCIONAL', icon: '❤️', color: 's-emo', border: 'bg-emo', key: 'emo_nostalgia', 
+                neurolink: 'Eixo Amígdala-Córtex Pré-Frontal. Processa o "Inconsciente Arquitetônico". Âncoras afetivas no ambiente validam a identidade do self e reduzem a ansiedade existencial.',
                 getStrat: (val) => {
-                    if (val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Nostalgia e Raízes.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Expor heranças, fotos e objetos com história.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Identidade do Self.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Renovação e Futuro.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Design limpo, novo, sem apegos.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Plasticidade cerebral.</div></div>`;
+                    if (val > 50) return `<div class="sense-section"><span class="sense-lbl">FOCO:</span><div class="sense-txt">Nostalgia. O espaço deve ser um espelho biográfico com memórias explícitas.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">FOCO:</span><div class="sense-txt">Futurismo. O espaço deve representar renovação, sem apegos ao passado.</div></div>`;
                 }
             },
             'cog': { 
                 title: '3.8 COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog', key: 'cog_prod', 
+                neurolink: 'Orquestração no Córtex Pré-Frontal (PFC). Gerencia as funções executivas. Ambientes com baixo ruído visual preservam a energia cerebral para tarefas de alta complexidade.',
                 getStrat: (val) => {
-                    if (val < 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Foco Frágil.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Home Office fechado, paredes lisas à frente.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Gestão da Atenção.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Multitarefa.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO:</span><div class="sense-txt">Integração trabalho-lazer permitida.</div></div><div class="sense-section"><span class="sense-lbl">NEURO-LINK:</span><div class="sense-text">Flexibilidade.</div></div>`;
+                    if (val < 50) return `<div class="sense-section"><span class="sense-lbl">DEMANDA:</span><div class="sense-txt">Foco Frágil. Necessita de isolamento total e zero distrações visuais no campo de trabalho.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DEMANDA:</span><div class="sense-txt">Multitarefa Eficiente. Tolera integração e fluxo, mas requer zonas de descompressão.</div></div>`;
                 }
-            }
+            }   
         };
 
         // --- COMENTÁRIOS E AÇÕES PARA O MÓDULO 4 (V55) ---
