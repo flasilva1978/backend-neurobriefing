@@ -1266,6 +1266,7 @@
                 class:'terra', 
                 titulo:'Analista (Melancólico)', 
                 arquetipo: 'O Sábio / O Criador',
+                arquetipo_desc: 'Busca conhecimento profundo e perfeição. Valoriza ordem, qualidade e permanência. Conecta-se com espaços que refletem sabedoria acumulada e pensamento sistemático. Precisa de ambientes que transmitam solidez, autenticidade material e clareza funcional.',
                 energia:'Estrutura, Rigor e Profundidade.',
                 quem:'Pessoas metódicas que valorizam previsibilidade e qualidade.',
                 perfil:'Analista', 
@@ -1287,6 +1288,7 @@
                 class:'fogo', 
                 titulo:'Executor (Colérico)', 
                 arquetipo: 'O Herói / O Governante',
+                arquetipo_desc: 'Movido por conquistas e poder pessoal. Necessita de espaços que demonstrem status, inovação e controle. Valoriza design ousado, tecnologia de ponta e elementos que afirmem liderança e domínio sobre o ambiente. O espaço deve ser uma extensão de sua autoridade e eficiência.',
                 energia:'Ação, Dominância e Intensidade.',
                 quem:'Pessoas focadas em resultados, agilidade e controle.',
                 perfil:'Executor', 
@@ -1308,6 +1310,7 @@
                 class:'ar', 
                 titulo:'Comunicador (Sanguíneo)', 
                 arquetipo: 'O Explorador / O Bobo da Corte',
+                arquetipo_desc: 'Busca liberdade, novidade e conexão social. Precisa de espaços dinâmicos, coloridos e multifuncionais que estimulem criatividade e interação. Valoriza ambientes que surpreendam, contem histórias e permitam expressão pessoal autêntica.',
                 energia:'Conexão, Variedade e Criatividade.',
                 quem:'Pessoas sociáveis, visuais e criativas.',
                 perfil:'Comunicador', 
@@ -1329,6 +1332,7 @@
                 class:'agua', 
                 titulo:'Planejador (Fleumático)', 
                 arquetipo: 'O Prestativo / O Inocente',
+                arquetipo_desc: 'Busca paz, segurança emocional e harmonia relacional. Precisa de ambientes acolhedores, suaves e protetores que promovam bem-estar e conexão familiar. Valoriza materiais naturais, texturas confortáveis e espaços que funcionem como refúgios emocionais.',
                 energia:'Harmonia, Acolhimento e Estabilidade.',
                 quem:'Pessoas diplomáticas que buscam paz e segurança.',
                 perfil:'Planejador', 
@@ -1904,10 +1908,17 @@
 
                 // 3.2.1 Inserir Arquétipos
                 document.getElementById('m1-neuro-individual').innerHTML = `
-                    <div style="background:#f4f7f6; padding:10px; border-radius:5px; margin-bottom:10px;">
-                        <span style="font-weight:800; color:#2c3e50;">ARQUÉTIPO DOMINANTE:</span> ${dom.arquetipo}
+                    <div style="background:#f4f7f6; padding:12px; border-radius:6px; margin-bottom:12px; border-left:4px solid ${dom.cor};">
+                        <div style="font-weight:800; color:#2c3e50; font-size:9.5pt; margin-bottom:6px;">
+                            🎭 ARQUÉTIPO DOMINANTE: <span style="color:${dom.cor};">${dom.arquetipo}</span>
+                        </div>
+                        <div style="font-size:8.5pt; color:#555; line-height:1.5; font-style:italic; padding:8px; background:white; border-radius:4px;">
+                            ${dom.arquetipo_desc}
+                        </div>
                     </div>
-                    ${dom.neuro}
+                    <div style="font-size:8.5pt; color:#444; line-height:1.5;">
+                        ${dom.neuro}
+                    </div>
                 `;
 
                 // 3.3.2 Pontos Positivos e Negativos Separados & 3.3.3 Neurolinguística
@@ -1946,11 +1957,21 @@
                 if(document.getElementById('txt-tit')) document.getElementById('txt-tit').innerText = dom.titulo;
                 if(document.getElementById('m1-content')) document.getElementById('m1-content').innerHTML = `<div class="info-row"><span class="il">Energia</span><span class="iv">${dom.energia}</span></div><div class="info-row"><span class="il">Perfil</span><span class="iv">${dom.quem}</span></div><div class="info-row"><span class="il">Estilos</span><span class="iv">${dom.estilos.join(', ')}</span></div>`;
                 
-                if(document.getElementById('m1-neuro-individual')) document.getElementById('m1-neuro-individual').innerHTML = dom.neuro;
                 if(document.getElementById('m1-comunicacao-individual')) document.getElementById('m1-comunicacao-individual').innerHTML = dom.comunicacao;
 
                 // PÁGINA 2 - Campos novos
-                if(document.getElementById('m1-energia-base')) document.getElementById('m1-energia-base').innerHTML = dom.energia;
+                if(document.getElementById('m1-energia-base')) {
+                    document.getElementById('m1-energia-base').innerHTML = `
+                        <div style="margin-bottom:10px;">
+                            <span style="font-weight:700; color:#2c3e50; display:block; margin-bottom:5px;">ENERGIA PRIMÁRIA:</span>
+                            <span style="font-size:9pt; color:#555;">${dom.energia}</span>
+                        </div>
+                        <div style="background:#f8f9fa; padding:10px; border-radius:4px; margin-top:10px;">
+                            <span style="font-weight:700; color:#2c3e50; display:block; margin-bottom:5px; font-size:8.5pt;">MANIFESTAÇÃO ARQUETÍPICA NO ESPAÇO:</span>
+                            <span style="font-size:8pt; color:#555; line-height:1.5;">${dom.arquetipo_desc}</span>
+                        </div>
+                    `;
+                }
 
                 // PÁGINA 3 - Atendimento profundo e conclusão
                 if(document.getElementById('m1-atendimento-deep')) document.getElementById('m1-atendimento-deep').innerHTML = dom.atendimento;
