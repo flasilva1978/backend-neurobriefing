@@ -892,6 +892,9 @@
                 <div class="c-sub">Diagnóstico Integral & Estratégia</div>
                 <div class="c-info">
                     <span class="ci-lbl">Cliente</span><span class="ci-val" id="cp-nome">-</span>
+                    <span class="ci-lbl">Celular</span><span class="ci-val" id="cp-celular">-</span>
+                    <span class="ci-lbl">Email</span><span class="ci-val" id="cp-email">-</span>
+                    <span class="ci-lbl">Cidade / Estado</span><span class="ci-val" id="cp-local">-</span>
                     <span class="ci-lbl">Designer / Arquiteto Responsável</span><span class="ci-val" id="cp-arq">-</span>
                     <span class="ci-lbl">Data do Diagnóstico</span><span class="ci-val" id="cp-data">-</span>
                 </div>
@@ -1885,18 +1888,9 @@
                 if(document.getElementById('cp-nome')) document.getElementById('cp-nome').innerText = d.cliente || '-';
                 if(document.getElementById('cp-arq')) document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
                 if(document.getElementById('cp-data')) document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
-
-                // Injeção dinâmica de contatos na capa
-                const infoCapa = document.querySelector('.c-info');
-                if (infoCapa) {
-                    infoCapa.innerHTML += `
-                        <div style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px; font-size:10pt; color:#fff;">
-                            <p><strong>Tel:</strong> ${d.contato?.telefone || '-'}</p>
-                            <p><strong>Email:</strong> ${d.contato?.email || '-'}</p>
-                            <p><strong>Local:</strong> ${d.contato?.cidade || '-'} / ${d.contato?.estado || '-'}</p>
-                        </div>
-                    `;
-                }
+                if(document.getElementById('cp-celular')) document.getElementById('cp-celular').innerText = d.contato?.telefone || '-';
+                if(document.getElementById('cp-email')) document.getElementById('cp-email').innerText = d.contato?.email || '-';
+                if(document.getElementById('cp-local')) document.getElementById('cp-local').innerText = `${d.contato?.cidade || '-'} / ${d.contato?.estado || '-'}`;
 
                 // --- MÓDULO 1: IDENTIDADE DO SER ---
                 let p = { FOGO:0, AR:0, AGUA:0, TERRA:0 };
