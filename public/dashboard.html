@@ -962,14 +962,21 @@
                 </div>
                 
                 <div class="strategy-grid">
-                    <div class="st-card" style="border-left:5px solid #e74c3c;">
-                        <div class="st-head">⚠️ PONTO DE ATENÇÃO (SOMBRA)</div>
-                        <div class="st-text" id="m1-sombra-texto"></div>
-                    </div>
                     <div class="st-card" style="border-left:5px solid #27ae60;">
-                        <div class="st-head">✅ DIRETRIZES DE PROJETO</div>
-                        <div class="st-text" id="m1-projeto-texto"></div>
+                        <div class="st-head">✅ PONTOS POSITIVOS DO PERFIL</div>
+                        <div class="st-text" id="m1-pontos-positivos"></div>
                     </div>
+                    <div class="st-card" style="border-left:5px solid #e74c3c;">
+                        <div class="st-head">⚠️ PONTOS NEGATIVOS DO PERFIL</div>
+                        <div class="st-text" id="m1-pontos-negativos"></div>
+                    </div>
+                </div>
+                
+                <div class="win-box" style="margin-top:15px;">
+                    <div class="wb-head" style="background:#3498db;">
+                        <div class="wb-tit">💬 NEUROLINGUÍSTICA - COMO COMUNICAR MELHOR</div>
+                    </div>
+                    <div class="wb-body" id="m1-neurolinguistica"></div>
                 </div>
                 
                 <div class="box-conclusao" id="m1-fechamento"></div>
@@ -1271,10 +1278,10 @@
                 quem:'Pessoas metódicas que valorizam previsibilidade e qualidade.',
                 perfil:'Analista', 
                 pontos: {
-                    pos: 'Analítico, perfeccionista, leal, focado em alta qualidade e organização impecável.',
-                    neg: 'Pessimista, excessivamente autocrítico, rígido e propenso ao perfeccionismo paralisante.'
+                    pos: 'Analítico, perfeccionista, leal, focado em alta qualidade, organização impecável, detalhista, pensador profundo, criterioso, comprometido com excelência e planejador minucioso.',
+                    neg: 'Pessimista, excessivamente autocrítico, rígido, propenso ao perfeccionismo paralisante, tendência a procrastinar por medo de errar, dificuldade em aceitar imperfeições e pode ser inflexível.'
                 },
-                neurolinguistica: 'Foque em ser detalhista e preciso. Use termos como "garantia", "longo prazo", "estabilidade" e "detalhes técnicos". Apresente dados e fatos antes das emoções.',
+                neurolinguistica: 'Foque em ser detalhista e preciso. Use dados, evidências e fundamentação técnica. Evite exageros ou promessas vagas. Palavras-chave: "garantia", "longo prazo", "estabilidade", "detalhes técnicos", "qualidade superior", "durabilidade", "precisão", "comprovado" e "especificações". Apresente dados e fatos antes das emoções. Respeite o silêncio e o tempo de análise. Mostre cronogramas detalhados e amostras físicas.',
                 estilos:['Clássico', 'Minimalismo', 'Neoclássico'],
                 neuro: 'O cérebro melancólico busca previsibilidade. Ambientes com <strong>simetria axial</strong> e armários fechados reduzem o ruído cognitivo. Evite layouts abertos demais que gerem sensação de vulnerabilidade.',
                 comunicacao: 'Seja <strong>detalhista</strong>. Mostre cronogramas.',
@@ -1293,10 +1300,10 @@
                 quem:'Pessoas focadas em resultados, agilidade e controle.',
                 perfil:'Executor', 
                 pontos: {
-                    pos: 'Determinado, enérgico, liderança nata, focado em metas e assertivo.',
-                    neg: 'Impaciente, autoritário, insensível, impulsivo e com baixa tolerância a erros.'
+                    pos: 'Decisivo, focado em resultados, organizado, direto, líder natural, orientado a ação, assertivo, determinado, enérgico, focado em metas e objetivo.',
+                    neg: 'Impaciente, controlador, pode ser insensível, dificuldade em delegar, tendência a microgerenciar, resistência a feedbacks, autoritário, impulsivo e com baixa tolerância a erros.'
                 },
-                neurolinguistica: 'Seja direto, objetivo e foque no "o quê". Use voz ativa e destaque palavras como "soluções rápidas", "exclusividade", "eficiência" e "comando".',
+                neurolinguistica: 'Use comunicação direta, objetiva e baseada em resultados. Apresente dados concretos, prazos claros e benefícios tangíveis. Evite enrolação e foque na eficiência. Palavras-chave: "resultado", "controle", "eficiência", "prazo", "otimização", "ROI", "soluções rápidas", "exclusividade" e "comando". Seja pontual e respeite o tempo dele. Use gráficos, números e voz ativa. Foque no "o quê" e não no "por quê".',
                 estilos:['Contemporâneo', 'Industrial', 'High Tech'],
                 neuro: 'Busca dopaminérgica por recompensa e controle. O espaço deve ter <strong>fluxos desimpedidos</strong> e materiais que transmitam solidez. Áreas de comando (visão da entrada) são essenciais.',
                 comunicacao: 'Seja <strong>objetivo e direto</strong>. Não dê voltas. Foque em prazos, soluções técnicas e eficiência.',
@@ -1315,10 +1322,10 @@
                 quem:'Pessoas sociáveis, visuais e criativas.',
                 perfil:'Comunicador', 
                 pontos: {
-                    pos: 'Comunicativo, entusiasta, criativo, sociável e otimista.',
-                    neg: 'Desorganizado, indisciplinado, impulsivo, superficial e com dificuldade de foco.'
+                    pos: 'Comunicativo, entusiasta, criativo, sociável, otimista, espontâneo, flexível, inspirador, energético e habilidoso em relações interpessoais.',
+                    neg: 'Desorganizado, indisciplinado, impulsivo, superficial, dificuldade de foco, tendência a procrastinação, pode ser dispersivo, exagera promessas e tem dificuldade em cumprir prazos.'
                 },
-                neurolinguistica: 'Use linguagem visual e emocional. Conte histórias e foque na experiência. Palavras-chave: "novidade", "conexão", "estímulo", "variedade" e "tendência".',
+                neurolinguistica: 'Use linguagem visual, emocional e sensorial. Conte histórias envolventes e foque na experiência, não apenas nos fatos. Seja entusiasta e expressivo. Palavras-chave: "novidade", "conexão", "estímulo", "variedade", "tendência", "exclusivo", "experiência única", "instagramável" e "conte sua história". Use imagens, vídeos e apresentações visuais ricas. Permita que ele fale e se expresse.',
                 estilos:['Boho Chic', 'Eclético', 'Maximalismo'],
                 neuro: 'Necessidade de estímulos variados para manter o interesse. <strong>Ambientes multiuso</strong> e layouts que favoreçam a conversa. Cores quentes em pontos focais ativam o sistema límbico.',
                 comunicacao: 'Seja <strong>entusiasta e visual</strong>. Use muitas imagens e referências.',
@@ -1337,10 +1344,10 @@
                 quem:'Pessoas diplomáticas que buscam paz e segurança.',
                 perfil:'Planejador', 
                 pontos: {
-                    pos: 'Calmo, diplomático, equilibrado, excelente ouvinte e pacificador.',
-                    neg: 'Indeciso, passivo, resistente a mudanças bruscas e evita conflitos necessários.'
+                    pos: 'Calmo, diplomático, equilibrado, excelente ouvinte, pacificador, leal, consistente, confiável, empático e colaborativo.',
+                    neg: 'Indeciso, passivo, resistente a mudanças bruscas, evita conflitos necessários, pode ser lento para tomar decisões, acomodado e tem dificuldade em dizer "não".'
                 },
-                neurolinguistica: 'Comunicação suave, pausada e acolhedora. Destaque o bem-estar e a segurança. Use termos como "paz", "conforto", "equilíbrio" e "harmonia".',
+                neurolinguistica: 'Use comunicação suave, pausada e acolhedora. Destaque o bem-estar, a segurança e o conforto. Seja paciente e não pressione por decisões rápidas. Palavras-chave: "paz", "conforto", "equilíbrio", "harmonia", "segurança", "acolhimento", "tranquilidade", "bem-estar familiar" e "refúgio". Crie um ambiente de confiança antes de apresentar propostas. Mostre como a solução beneficiará a família.',
                 estilos:['Japandi', 'Orgânico', 'Wabi-Sabi'],
                 neuro: 'Sistema límbico sensível ao estresse. Priorizar <strong>conforto acústico e texturas hápicas</strong>. Iluminação circadiana (2700K) para relaxamento parassimpático.',
                 comunicacao: 'Seja <strong>paciente</strong>. Transmita segurança.',
@@ -1937,13 +1944,6 @@
                     </div>
                 `;
 
-                // 3.3.4 Correção de Texto na Conclusão
-                document.getElementById('m1-fechamento').innerHTML = `
-                    <span class="bc-tit">CONCLUSÃO DO MÓDULO 1:</span> 
-                    O DNA comportamental aponta para um projeto que prioriza ${dom.energia.toLowerCase()}. 
-                    A estratégia de atendimento deve focar em **ser detalhista** e garantir a segurança nas entregas técnicas.
-                `;
-
                
                 if(document.getElementById('t1-time')) document.getElementById('t1-time').innerText = formatTime(d.tempos?.[0] || 0);
                 let chartHTML = '';
@@ -1975,8 +1975,9 @@
 
                 // PÁGINA 3 - Atendimento profundo e conclusão
                 if(document.getElementById('m1-atendimento-deep')) document.getElementById('m1-atendimento-deep').innerHTML = dom.atendimento;
-                if(document.getElementById('m1-sombra-texto')) document.getElementById('m1-sombra-texto').innerHTML = dom.sombra;
-                if(document.getElementById('m1-projeto-texto')) document.getElementById('m1-projeto-texto').innerHTML = dom.projeto;
+                if(document.getElementById('m1-pontos-positivos')) document.getElementById('m1-pontos-positivos').innerHTML = dom.pontos.pos;
+                if(document.getElementById('m1-pontos-negativos')) document.getElementById('m1-pontos-negativos').innerHTML = dom.pontos.neg;
+                if(document.getElementById('m1-neurolinguistica')) document.getElementById('m1-neurolinguistica').innerHTML = dom.neurolinguistica;
                 if(document.getElementById('m1-fechamento')) {
                     document.getElementById('m1-fechamento').innerHTML = `<span class="bc-tit">CONCLUSÃO DO MÓDULO 1:</span> O DNA comportamental aponta para um projeto que prioriza ${dom.energia.toLowerCase()}. A estratégia de atendimento deve focar em ${dom.comunicacao.toLowerCase()}.`;
                 }
