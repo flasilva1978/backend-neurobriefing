@@ -2171,7 +2171,7 @@
                 const maxSense = sensorValues[0];
                 const minSense = sensorValues[sensorValues.length-1];
                 
-                let chartHTML = `<div class="sense-card" style="grid-column: span 2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                let sensorChartHTML = `<div class="sense-card" style="grid-column: span 2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
                     <div style="padding: 20px;">
                         <div style="text-align:center; color:white; font-size:11pt; font-weight:800; margin-bottom:15px; text-transform:uppercase;">📊 Ranking Geral de Percepção Sensorial</div>
                         <div style="background:rgba(255,255,255,0.95); border-radius:8px; padding:15px;">`;
@@ -2182,7 +2182,7 @@
                     const barColor = isMax ? '#27ae60' : isMin ? '#e74c3c' : s.color;
                     const highlight = isMax ? 'background:#d5f4e6; border-left:4px solid #27ae60;' : isMin ? 'background:#fadbd8; border-left:4px solid #e74c3c;' : '';
                     
-                    chartHTML += `<div style="margin-bottom:10px; padding:8px; border-radius:5px; ${highlight}">
+                    sensorChartHTML += `<div style="margin-bottom:10px; padding:8px; border-radius:5px; ${highlight}">
                         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
                             <span style="font-size:9pt; font-weight:700; color:#2c3e50;">
                                 <span style="display:inline-block; width:22px; text-align:center;">${idx+1}º</span>
@@ -2198,7 +2198,7 @@
                     </div>`;
                 });
                 
-                chartHTML += `</div>
+                sensorChartHTML += `</div>
                     <div style="text-align:center; margin-top:12px; padding:10px; background:rgba(255,255,255,0.2); border-radius:6px;">
                         <div style="color:white; font-size:7.5pt; line-height:1.4;">
                             <strong>INTERPRETAÇÃO:</strong> ${maxSense.name} (${maxSense.value}%) é o sentido DOMINANTE - priorize intervenções nesta dimensão sensorial. 
@@ -2208,7 +2208,7 @@
                     </div>
                 </div>`;
                 
-                htmlA += chartHTML;
+                htmlA += sensorChartHTML;
                 
                 if(document.getElementById('m3-grid-part-a')) document.getElementById('m3-grid-part-a').innerHTML = htmlA;
 
