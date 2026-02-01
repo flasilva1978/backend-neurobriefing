@@ -550,9 +550,9 @@
             display: grid;
             grid-template-columns: 1fr 1fr; /* Mantém duas colunas */
             /* Removido o grid-template-rows fixo para permitir mais de 4 itens */
-            gap: 12px; /* Reduzido levemente o espaço para caber tudo na mesma página */
+            gap: 8px; /* Reduzido de 12px para 8px para otimizar espaço vertical */
             flex: 1;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         /* GRÁFICO DE RANKING (OCUPA A LARGURA TODA ANTES DO GRID OU DENTRO DELE) */
@@ -569,12 +569,12 @@
             background: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 12px; /* Reduzido de 15px para 12px para otimizar espaço */
+            padding: 10px; /* Reduzido de 12px para 10px */
             box-shadow: 0 3px 6px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
             position: relative;
-            min-height: 150px; /* Garante uniformidade */
+            min-height: 130px; /* Reduzido de 150px para 130px */
         }
 
         /* Manter as Cores de Borda originais */
@@ -1061,7 +1061,7 @@
                     </div>
                 <div class="box-conclusao">
                     <span class="bc-tit">ESTRATÉGIA DE CONFORTO AMBIENTAL</span>
-                    Estes sentidos (Visual, Auditivo, Olfativo, Tátil) formam a base biológica do bem-estar. Se houver pontuação extrema (0-20 ou 80-100), a intervenção técnica (isolamento, iluminação) é obrigatória.
+                    Estes 5 sentidos físicos (Visual, Auditivo, Olfativo, Tátil, Gustativo) formam a base biológica do bem-estar e da experiência espacial. O gráfico de ranking identifica hierarquias de percepção para priorização projetual. Se houver pontuação extrema (0-20 ou 80-100), a intervenção técnica especializada (isolamento acústico, iluminação de alto IRC, ventilação, tratamento háptico) é obrigatória e não negociável.
                 </div>
                 <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
             </div>
@@ -1077,7 +1077,7 @@
                     </div>
                 <div class="box-conclusao">
                     <span class="bc-tit">ESTRATÉGIA DE EXPERIÊNCIA DO USUÁRIO</span>
-                    Estes sentidos definem a usabilidade e a conexão emocional. O Proprioceptivo define a escala; o Emocional dita as "âncoras" afetivas.
+                    Estes 3 sentidos complexos (Proprioceptivo, Emocional, Cognitivo) definem a usabilidade cognitiva e a conexão emocional profunda com o espaço. O Proprioceptivo estabelece a escala espacial e volumetria ideal; o Emocional dita as "âncoras" afetivas e atmosfera psicológica; o Cognitivo determina a clareza organizacional e redução de fadiga decisional. Juntos, transformam o ambiente de mero container físico em extensão neurocognitiva do self.
                 </div>
                 <div class="ft-note">Neuro Be Briefing Intelligence</div>
             </div>
@@ -1637,7 +1637,7 @@
         const DB_SENSORY_EXPERT = {
             'vis': { 
                 title: '3.1 VISUAL', icon: '👁️', color: 's-vis', border: 'bg-vis', key: 'vis_complex', 
-                neurolink: 'Processamento no Córtex Occipital. Estímulos organizados reduzem a carga cognitiva e ativam o "Default Mode Network" (DMN), promovendo descanso mental e reduzindo a fadiga perceptual.',
+                neurolink: '<strong>Via Retina → Nervo Óptico → Córtex Occipital (V1-V5).</strong> A informação visual é processada em múltiplas áreas especializadas: V1 detecta bordas e contrastes, V4 processa cores, V5 identifica movimento. Ambientes com complexidade visual moderada (padrões fractais naturais, dimensão fractal 1.3-1.5) ativam o Default Mode Network (DMN) sem sobrecarregar, promovendo restauração atencional. Excesso de estímulos visuais eleva atividade da amígdala e cortisol, enquanto organização espacial clara reduz carga cognitiva e fadiga perceptual (Teoria da Restauração da Atenção, Kaplan & Kaplan).',
                 getStrat: (val) => {
                     if (val > 75) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Alta demanda visual. Cérebro busca complexidade para não entediar.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Iluminação em camadas, pontos focais, mix de estampas controladas.</div></div>`;
                     return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere Minimalismo. Excesso gera estresse.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Oculte bagunça, use cores neutras e superfícies limpas.</div></div>`;
@@ -1645,7 +1645,7 @@
             },
             'aud': { 
                 title: '3.2 AUDITIVO', icon: '👂', color: 's-aud', border: 'bg-aud', key: 'aud_eco', 
-                neurolink: 'Conexão Córtex Auditivo-Amígdala. Sons indesejados elevam o cortisol, enquanto frequências naturais (Biofonia) sinalizam segurança ao sistema límbico, promovendo relaxamento imediato.',
+                neurolink: '<strong>Via Cóclea → Nervo Auditivo → Córtex Auditivo Primário (A1) → Amígdala.</strong> Sons são processados em <200ms e ativam diretamente o sistema límbico antes da consciência. Ruídos imprevisíveis (>55dB) elevam cortisol em 15-20 minutos, enquanto frequências naturais da biofonia (água corrente, folhas ao vento, 1/f noise) sinalizam segurança ao sistema nervoso autônomo, ativando resposta parassimpática. Reverberação (RT60) ideal varia: salas de estar 0.4-0.6s (conversação), dormitórios 0.3-0.4s (silêncio restaurador). Isolamento acústico é intervenção obrigatória para hipersensíveis (STC>50).',
                 getStrat: (val) => {
                     if (val < 30) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Hipersensibilidade. Ruído = Cortisol.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">OBRIGATÓRIO: Painéis acústicos, tapetes densos, vedação.</div></div>`;
                     return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Tolerante a ruídos.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Integração total e pisos frios (cerâmica/pedra).</div></div>`;
@@ -1653,7 +1653,7 @@
             },
             'olf': { 
                 title: '3.3 OLFATIVO', icon: '👃', color: 's-olf', border: 'bg-olf', key: 'olf_sens', 
-                neurolink: 'Via Direta ao Sistema Límbico. O olfato acessa diretamente o hipocampo e a amígdala, sendo o gatilho mais potente para memórias emocionais e regulação neuroendócrina do humor.',
+                neurolink: '<strong>Via Epitélio Olfativo → Bulbo Olfativo → Sistema Límbico (Amígdala + Hipocampo).</strong> Único sentido com acesso DIRETO ao sistema límbico, sem passar pelo tálamo. Moléculas odoríferas disparam memórias emocionais com 65% mais intensidade que estímulos visuais (Efeito Proust). Aromas naturais (lavanda, cedro, cítricos) modulam atividade do eixo HPA (hipotálamo-pituitária-adrenal), reduzindo cortisol em 20-30%. Ventilação cruzada (6-8 trocas/hora) e materiais inodoros são essenciais para sensíveis. Scent Design estratégico pode induzir estados neuropsicológicos específicos (relaxamento, foco, bem-estar).',
                 getStrat: (val) => {
                     if (val > 70) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Olfato apurado e emocional.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Scent Design, ventilação cruzada, materiais inodoros.</div></div>`;
                     return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Neutro.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Foco em ar fresco e higiene.</div></div>`;
@@ -1661,23 +1661,23 @@
             },
             'tat': { 
                 title: '3.4 TÁTIL', icon: '✋', color: 's-tat', border: 'bg-tat', key: 'tat_tex_macia', 
-                neurolink: 'Ativação do Córtex Somatossensorial. Texturas naturais estimulam a liberação de ocitocina e reduzem a pressão arterial, regulando a percepção de conforto e segurança térmica.',
+                neurolink: '<strong>Via Mecanorreceptores da Pele → Medula Espinhal → Tálamo → Córtex Somatossensorial (S1/S2).</strong> O tato processa informações de pressão, temperatura e textura em áreas cerebrais proporcionais à densidade de receptores (mãos e rosto têm maior representação cortical - Homúnculo de Penfield). Texturas naturais (madeira, linho, algodão) estimulam liberação de ocitocina e reduzem pressão arterial em 5-10mmHg. Temperatura superficial de materiais influencia percepção térmica: madeira (22-25°C) vs pedra/metal (15-18°C). Superfícies hápticas ricas criam ancoragem sensorial e senso de conforto doméstico.',
                 getStrat: (val) => {
                     if (val > 60) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Necessidade Hápica (Toque).</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Madeira natural, linho, veludo, tapetes altos.</div></div>`;
                     return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Prefere lisura e limpeza.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Vidro, metal, porcelanato polido.</div></div>`;
                 }
             },
             'gus': { 
-                title: '3.5 GUSTATIVO', icon: '🍽️', color: 's-gus', border: 'bg-gus', key: 'gus_social', 
-                neurolink: 'Córtex Gustativo e Ínsula. A experiência do sabor está ligada à comensalidade social e ao sistema de recompensa, influenciando o estado metabólico e o senso de pertencimento.',
+                title: '3.5 GUSTATIVO (PALADAR)', icon: '🍽️', color: 's-gus', border: 'bg-gus', key: 'gus_social', 
+                neurolink: 'Córtex Gustativo e Ínsula. A experiência do sabor está intrinsecamente ligada à comensalidade social e ao sistema de recompensa dopaminérgico. O <strong>IRC (Índice de Reprodução de Cor)</strong> da iluminação é fundamental: valores acima de 90 permitem visualizar com precisão as cores reais dos alimentos, facilitando identificação de frescor e maturação. Iluminação adequada (4000-5000K, IRC>90) sobre bancadas de preparo ativa o córtex visual e intensifica a experiência gustativa antecipada. Mesa posta com luz quente (2700K) estimula produção de ocitocina e prolonga o tempo de refeição, fortalecendo vínculos sociais.',
                 getStrat: (val) => {
-                    if (val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Alta Comensalidade. Gosta de Mesa Posta e receber.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO:</span><div class="sense-txt">Ilha gourmet, iluminação de alto IRC (>90) para realçar cores dos alimentos.</div></div>`;
-                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Praticidade Alimentar.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO:</span><div class="sense-txt">Cozinha laboratório, foco em ergonomia e higiene.</div></div>`;
+                    if (val > 50) return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Alta Comensalidade. Gosta de Mesa Posta, receber e experiência gastronômica completa.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">OBRIGATÓRIO: Ilha gourmet ou bancada ampla, iluminação com IRC>90 (realça cores dos alimentos), luz de tarefa 4000-5000K sobre bancada de preparo, luz quente 2700K sobre mesa de jantar, exaustor silencioso alta vazão (>700m³/h), materiais higiênicos (quartzo/granito). Mesa para 6-8 pessoas com dimmer para controle de atmosfera.</div></div>`;
+                    return `<div class="sense-section"><span class="sense-lbl">DIAGNÓSTICO:</span><div class="sense-txt">Praticidade Alimentar. Cozinha como função, não ritual.</div></div><div class="sense-section"><span class="sense-lbl">AÇÃO PROJETUAL:</span><div class="sense-txt">Cozinha compacta tipo laboratório, triângulo ergonômico otimizado (pia-fogão-geladeira <7m), iluminação funcional IRC>80, superfícies de fácil limpeza, foco em eficiência e higiene.</div></div>`;
                 }
             },
             'prop': { 
                 title: '3.6 PROPRIOCEPTIVO', icon: '🧭', color: 's-prop', border: 'bg-prop', key: 'prop_pe_dir', 
-                neurolink: 'Integração no Lobo Parietal e Cerebelo. Define a consciência do corpo no espaço. Ambientes 3D (volumetria) desafiam a orientação, enquanto 2D (planos) oferece segurança visual.',
+                neurolink: '<strong>Via Proprioceptores Musculares/Articulares → Cerebelo + Lobo Parietal Posterior.</strong> Integra informações de posição corporal, equilíbrio e orientação espacial tridimensional. O cerebelo processa coordenadas espaciais em tempo real, enquanto o lobo parietal constrói mapas cognitivos do ambiente. Pé-direito alto (>3m) ativa percepção volumétrica 3D e sensação de liberdade, estimulando criatividade (estudo Meyers-Levy, 2007). Espaços compactos (<2.4m) induzem percepção 2D planar e acolhimento tipo "ninho", ativando resposta de segurança. Densidade mobiliária modula senso de controle territorial.',
                 getStrat: (val) => {
                     let spaceText = val > 50 ? "Prefere amplitude (menos densidade de móveis, mais pé-direito)." : "Prefere acolhimento (mais densidade de móveis, 'ninhos').";
                     let dimText = val > 50 ? "Percepção 3D ativa (foco em volumetria e profundidade)." : "Percepção 2D dominante (foco em planos e superfícies).";
@@ -1686,7 +1686,7 @@
             },
             'emo': { 
                 title: '3.7 EMOCIONAL', icon: '❤️', color: 's-emo', border: 'bg-emo', key: 'emo_nostalgia', 
-                neurolink: 'Eixo Amígdala-Córtex Pré-Frontal. Processa o "Inconsciente Arquitetônico". Âncoras afetivas no ambiente validam a identidade do self e reduzem a ansiedade existencial.',
+                neurolink: '<strong>Circuito Amígdala → Córtex Pré-Frontal Ventromedial (vmPFC) → Hipocampo.</strong> Processa o "Inconsciente Arquitetônico" - camada afetiva não-declarada de preferências espaciais. Âncoras emocionais no ambiente (fotografias, objetos biográficos, cores/aromas da infância) ativam memória autobiográfica e validam a continuidade do self, reduzindo ansiedade existencial. Ambientes que refletem identidade pessoal aumentam ocitocina e serotonina, criando senso de pertencimento. Nostalgia arquitetônica (>50%) demanda design como espelho biográfico; futurismo (<50%) requer renovação e ruptura com passado.',
                 getStrat: (val) => {
                     if (val > 50) return `<div class="sense-section"><span class="sense-lbl">FOCO:</span><div class="sense-txt">Nostalgia. O espaço deve ser um espelho biográfico com memórias explícitas.</div></div>`;
                     return `<div class="sense-section"><span class="sense-lbl">FOCO:</span><div class="sense-txt">Futurismo. O espaço deve representar renovação, sem apegos ao passado.</div></div>`;
@@ -1694,7 +1694,7 @@
             },
             'cog': { 
                 title: '3.8 COGNITIVO', icon: '🧠', color: 's-cog', border: 'bg-cog', key: 'cog_prod', 
-                neurolink: 'Orquestração no Córtex Pré-Frontal (PFC). Gerencia as funções executivas. Ambientes com baixo ruído visual preservam a energia cerebral para tarefas de alta complexidade.',
+                neurolink: '<strong>Comando do Córtex Pré-Frontal Dorsolateral (dlPFC) + Rede Executiva Central.</strong> Gerencia funções executivas: atenção sustentada, memória de trabalho, controle inibitório e tomada de decisão. Ambientes com baixo ruído visual/cognitivo preservam glicose cerebral (recurso finito) para tarefas complexas - cada decisão trivial (onde está X?) consome energia executiva (Ego Depletion, Baumeister). Organização espacial clara, sistemas de armazenamento categorizados e redução de opções visuais simultâneas (<7 itens no campo visual) otimizam performance cognitiva. Home offices exigem isolamento sensorial absoluto para foco profundo (Deep Work, Newport).',
                 getStrat: (val) => {
                     if (val < 50) return `<div class="sense-section"><span class="sense-lbl">DEMANDA:</span><div class="sense-txt">Foco Frágil. Necessita de isolamento total e zero distrações visuais no campo de trabalho.</div></div>`;
                     return `<div class="sense-section"><span class="sense-lbl">DEMANDA:</span><div class="sense-txt">Multitarefa Eficiente. Tolera integração e fluxo, mas requer zonas de descompressão.</div></div>`;
@@ -2107,23 +2107,99 @@
                     const info = DB_SENSORY_EXPERT[k];
                     const val = sVals[k];
                     const stratHTML = info.getStrat(val);
-                    return `<div class="sense-card ${info.color}"><div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div><div class="sense-bar-container"><div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div><span class="sense-val ${info.color}">${val}%</span></div><div class="sense-strategy">${stratHTML}</div></div>`;
+                    return `<div class="sense-card ${info.color}">
+                        <div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div>
+                        <div class="sense-bar-container">
+                            <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
+                            <span class="sense-val ${info.color}">${val}%</span>
+                        </div>
+                        <div style="background:#f8f9fa; padding:6px 8px; border-radius:4px; margin:8px 0; border-left:3px solid ${info.color.replace('s-', '#')};">
+                            <div style="font-size:6.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:3px;">🧠 NEURO LINK</div>
+                            <div style="font-size:7pt; color:#555; line-height:1.3;">${info.neurolink}</div>
+                        </div>
+                        <div class="sense-strategy">${stratHTML}</div>
+                    </div>`;
                 };
                 
                 const genCardB = (k) => {
                     const info = DB_SENSORY_EXPERT[k];
                     const val = sVals[k];
                     const stratHTML = info.getStrat(val);
-                    return `<div class="sense-card ${info.color}"><div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div><div class="sense-bar-container"><div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div><span class="sense-val ${info.color}">${val}%</span></div><div class="sense-strategy">${stratHTML}</div></div>`;
+                    return `<div class="sense-card ${info.color}">
+                        <div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div>
+                        <div class="sense-bar-container">
+                            <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
+                            <span class="sense-val ${info.color}">${val}%</span>
+                        </div>
+                        <div style="background:#f8f9fa; padding:6px 8px; border-radius:4px; margin:8px 0; border-left:3px solid ${info.color.replace('s-', '#')};">
+                            <div style="font-size:6.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:3px;">🧠 NEURO LINK</div>
+                            <div style="font-size:7pt; color:#555; line-height:1.3;">${info.neurolink}</div>
+                        </div>
+                        <div class="sense-strategy">${stratHTML}</div>
+                    </div>`;
                 };
 
-                // GRID A (4)
-                const keysA = ['vis','aud','olf','tat'];
-                let htmlA = ''; keysA.forEach(k => htmlA += genCardA(k));
+                // GRID A (5 sentidos + gráfico)
+                const keysA = ['vis','aud','olf','tat','gus'];
+                let htmlA = ''; 
+                keysA.forEach(k => htmlA += genCardA(k));
+                
+                // ADICIONAR GRÁFICO GERAL DE RANKING SENSORIAL
+                const sensorValues = [
+                    {name: 'Visual', value: sVals.vis, color: '#f39c12', icon: '👁️'},
+                    {name: 'Auditivo', value: sVals.aud, color: '#9b59b6', icon: '👂'},
+                    {name: 'Olfativo', value: sVals.olf, color: '#27ae60', icon: '👃'},
+                    {name: 'Tátil', value: sVals.tat, color: '#e67e22', icon: '✋'},
+                    {name: 'Gustativo', value: sVals.gus, color: '#e84393', icon: '🍽️'}
+                ];
+                sensorValues.sort((a,b) => b.value - a.value);
+                
+                const maxSense = sensorValues[0];
+                const minSense = sensorValues[sensorValues.length-1];
+                
+                let chartHTML = `<div class="sense-card" style="grid-column: span 2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                    <div style="padding: 20px;">
+                        <div style="text-align:center; color:white; font-size:11pt; font-weight:800; margin-bottom:15px; text-transform:uppercase;">📊 Ranking Geral de Percepção Sensorial</div>
+                        <div style="background:rgba(255,255,255,0.95); border-radius:8px; padding:15px;">`;
+                
+                sensorValues.forEach((s, idx) => {
+                    const isMax = s.name === maxSense.name;
+                    const isMin = s.name === minSense.name;
+                    const barColor = isMax ? '#27ae60' : isMin ? '#e74c3c' : s.color;
+                    const highlight = isMax ? 'background:#d5f4e6; border-left:4px solid #27ae60;' : isMin ? 'background:#fadbd8; border-left:4px solid #e74c3c;' : '';
+                    
+                    chartHTML += `<div style="margin-bottom:10px; padding:8px; border-radius:5px; ${highlight}">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                            <span style="font-size:9pt; font-weight:700; color:#2c3e50;">
+                                <span style="display:inline-block; width:22px; text-align:center;">${idx+1}º</span>
+                                ${s.icon} ${s.name}
+                                ${isMax ? '<span style="color:#27ae60; margin-left:5px;">⬆ MAIOR</span>' : ''}
+                                ${isMin ? '<span style="color:#e74c3c; margin-left:5px;">⬇ MENOR</span>' : ''}
+                            </span>
+                            <span style="font-size:9pt; font-weight:800; color:${barColor};">${s.value}%</span>
+                        </div>
+                        <div style="background:#e0e0e0; height:8px; border-radius:4px; overflow:hidden;">
+                            <div style="background:${barColor}; height:100%; width:${s.value}%; transition:0.3s;"></div>
+                        </div>
+                    </div>`;
+                });
+                
+                chartHTML += `</div>
+                    <div style="text-align:center; margin-top:12px; padding:10px; background:rgba(255,255,255,0.2); border-radius:6px;">
+                        <div style="color:white; font-size:7.5pt; line-height:1.4;">
+                            <strong>INTERPRETAÇÃO:</strong> ${maxSense.name} (${maxSense.value}%) é o sentido DOMINANTE - priorize intervenções nesta dimensão sensorial. 
+                            ${minSense.name} (${minSense.value}%) apresenta menor percepção - pode ser negligenciado ou trabalhado estrategicamente se relevante ao projeto.
+                        </div>
+                    </div>
+                    </div>
+                </div>`;
+                
+                htmlA += chartHTML;
+                
                 if(document.getElementById('m3-grid-part-a')) document.getElementById('m3-grid-part-a').innerHTML = htmlA;
 
-                // GRID B (4)
-                const keysB = ['prop','gus','emo','cog'];
+                // GRID B (3 sentidos restantes)
+                const keysB = ['prop','emo','cog'];
                 let htmlB = ''; keysB.forEach(k => htmlB += genCardB(k));
                 if(document.getElementById('m3-grid-part-b')) document.getElementById('m3-grid-part-b').innerHTML = htmlB;
 
