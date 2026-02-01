@@ -1429,7 +1429,7 @@
             },
             'est_urb': { 
                 conceito: 'Funcionalismo cosmopolita que reflete ritmo acelerado urbano. Design sem excessos que valoriza eficiência e praticidade do dia a dia metropolitano.',
-                materiais: 'Porcelanato técnico cimento queimado, laminados de alta pressão, vidros temperados, metais cromados, têxteis sintéticos de fácil manutenção.',
+                materiais: 'Porcelanato cimento queimado, laminados de alta pressão, vidros temperados, metais cromados, têxteis de fácil manutenção.',
                 luz: 'Iluminação LED integrada, temperatura neutra (3500-4000K), controles automáticos, spots embutidos, fitas de LED perimetrais.',
                 mobiliario: 'Móveis modulares e compactos, sofás-cama multifuncionais, mesas retráteis, sistemas de armazenamento vertical, design otimizado para pequenos espaços.',
                 neuro: 'Organização espacial otimizada reduz carga cognitiva. Funcionalidade extrema diminui tomadas de decisão. Cores neutras previnem saturação visual em ambientes urbanos já estimulantes.'
@@ -1999,7 +1999,7 @@
                     // Parte A
                     if(document.getElementById('vis-top1-nome')) document.getElementById('vis-top1-nome').innerText = top.nome;
                     if(document.getElementById('vis-top1-nota')) document.getElementById('vis-top1-nota').innerText = top.val;
-                    let richHTML = `<div class="strategy-grid"><div class="st-card highlight"><div class="st-head">🗝️ CONCEITO</div><div class="st-text">${det.conceito}</div></div><div class="st-card"><div class="st-head">🧠 NEURO DICA</div><div class="st-text">${det.neuro}</div></div></div>`;
+                    let richHTML = `<div class="strategy-grid"><div class="st-card highlight"><div class="st-head">🗝️ CONCEITO</div><div class="st-text">${det.conceito}</div></div><div class="st-card"><div class="st-head">🧠 NEUROCIÊNCIA APLICADA</div><div class="st-text">${det.neuro}</div></div></div>`;
                     richHTML += `<div class="strategy-grid"><div class="st-card"><div class="st-head">🧱 MATERIAIS</div><div class="st-text">${det.materiais}</div></div><div class="st-card"><div class="st-head">💡 ILUMINAÇÃO</div><div class="st-text">${det.luz}</div></div><div class="st-card"><div class="st-head">🪑 MOBILIÁRIO</div><div class="st-text">${det.mobiliario}</div></div></div>`;
                     richHTML += `<div style="margin-top:15px; font-size:9pt; font-weight:700; color:#999;">AFINIDADES SECUNDÁRIAS:</div>`;
                     richHTML += visualScores.slice(1,5).map(i=>`<div class="item-list"><span class="il-lbl">${i.nome}</span><span class="il-val">${i.val}%</span></div>`).join('');
