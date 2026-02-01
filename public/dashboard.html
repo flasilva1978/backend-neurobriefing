@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard NeuroBriefing | Diagnóstico Integral - 14 Páginas</title>
+    <title>Dashboard NeuroBriefing | Diagnóstico Integral - 15 Páginas</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -892,7 +892,9 @@
     <div class="painel">
         <div class="header-painel">
             <div style="display: flex; align-items: center; gap: 15px;">
-               <img src="public/logo.png" alt="Logo Neuro Be Briefing" style="height: 50px;">
+               <div style="font-size: 24px; font-weight: 900; color: #2c3e50; letter-spacing: -0.5px;">
+                   <span style="color: #3498db;">NEURO</span><span style="color: #2c3e50;">Be</span> <span style="font-weight: 600; color: #7f8c8d;">BRIEFING</span>
+               </div>
             <div class="hp-title">Painel de Gestão - NEURO Be BRIEFING</div>
         </div>
         <button class="btn-refresh" onclick="location.reload()">🔄 Atualizar Dados</button>
@@ -915,6 +917,16 @@
         
         <div class="page">
             <div class="capa-box">
+                <div style="margin-bottom: 30px;">
+                    <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="60" cy="60" r="55" fill="#3498db" opacity="0.1"/>
+                        <path d="M40 45 L60 30 L80 45 L80 75 L60 90 L40 75 Z" fill="none" stroke="#3498db" stroke-width="3" stroke-linejoin="round"/>
+                        <circle cx="50" cy="55" r="4" fill="#2c3e50"/>
+                        <circle cx="70" cy="55" r="4" fill="#2c3e50"/>
+                        <path d="M50 70 Q60 75 70 70" fill="none" stroke="#2c3e50" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M45 40 Q60 25 75 40" fill="none" stroke="#3498db" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
                 <div class="c-logo">NEURO BE BRIEFING</div>
                 <div class="c-sub">Diagnóstico Integral & Estratégia</div>
                 <div class="c-info">
@@ -1078,31 +1090,32 @@
             </div>
         </div>
 
+        <!-- PÁGINA 6: ANÁLISE DE HIERARQUIA PERCEPTIVA (ANTIGA PÁGINA 7) -->
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Análise de Hierarquia Perceptiva</div></div>
+                    <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
+                </div>
+                <div id="m3-ranking-page" style="flex: 1;">
+                    <!-- O gráfico será inserido aqui pelo JavaScript -->
+                </div>
+                <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 7: SENTIDOS FÍSICOS & AMBIENTAIS (ANTIGA PÁGINA 6) -->
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
                     <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Parte A: Sentidos Físicos & Ambientais</div></div>
-                    <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" id="t3-time">--:--</span></div>
+                    <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
                 </div>
                 <div class="sensory-page-grid" id="m3-grid-part-a">
                     </div>
                 <div class="box-conclusao">
                     <span class="bc-tit">ESTRATÉGIA DE CONFORTO AMBIENTAL</span>
                     Estes 5 sentidos físicos (Visual, Auditivo, Olfativo, Tátil, Gustativo) formam a base biológica do bem-estar e da experiência espacial. O gráfico de ranking identifica hierarquias de percepção para priorização projetual. Se houver pontuação extrema (0-20 ou 80-100), a intervenção técnica especializada (isolamento acústico, iluminação de alto IRC, ventilação, tratamento háptico) é obrigatória e não negociável.
-                </div>
-                <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
-            </div>
-        </div>
-
-        <!-- NOVA PÁGINA 7: RANKING SENSORIAL PROFISSIONAL -->
-        <div class="page">
-            <div class="mod-content">
-                <div class="m-head">
-                    <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Análise de Hierarquia Perceptiva</div></div>
-                    <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" style="color:#aaa;">ANÁLISE</span></div>
-                </div>
-                <div id="m3-ranking-page" style="flex: 1;">
-                    <!-- O gráfico será inserido aqui pelo JavaScript -->
                 </div>
                 <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
             </div>
@@ -1191,17 +1204,29 @@
                     </div>
                 </div>
                 
-                <!-- MATRIZ DE INVESTIMENTO INTELIGENTE (MOVIDA DA PÁGINA 11) -->
-                <div class="win-box" style="margin-bottom:15px;">
+                <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 11: MATRIZ DE INVESTIMENTO INTELIGENTE (EXPANDIDA) -->
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Matriz de Investimento Inteligente</div></div>
+                    <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
+                </div>
+                
+                <!-- MATRIZ DE INVESTIMENTO INTELIGENTE (PÁGINA DEDICADA) -->
+                <div class="win-box" style="margin-bottom:15px; flex: 1;">
                     <div class="wb-head" style="background:#f39c12;"><div class="wb-tit">💰 MATRIZ DE INVESTIMENTO INTELIGENTE</div></div>
-                    <div class="wb-body" id="m5-invest-matrix" style="font-size:7.5pt; line-height:1.5;">...</div>
+                    <div class="wb-body" id="m5-invest-matrix" style="font-size:8pt; line-height:1.6; overflow-y: auto; max-height: 650px;">...</div>
                 </div>
                 
                 <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
             </div>
         </div>
 
-        <!-- PÁGINA 11: MÓDULO 5 - PARTE B (HOBBIES E PLANO DE AÇÃO) -->
+        <!-- PÁGINA 12: MÓDULO 5 - PARTE B (HOBBIES E PLANO DE AÇÃO) -->
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
@@ -1209,19 +1234,11 @@
                     <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
                 </div>
                 
-                <!-- HOBBIES & RITUAIS (MOVIDO DA PÁGINA 10) -->
-                <div class="win-box" style="margin-bottom:15px;">
+                <!-- HOBBIES & RITUAIS (EXPANDIDO) -->
+                <div class="win-box" style="margin-bottom:15px; flex-shrink: 0;">
                     <div class="wb-head" style="background:#e67e22;"><div class="wb-tit">HOBBIES & RITUAIS</div></div>
                     <div class="wb-body">
-                        <div class="check-tags" id="m5-hobbies"></div>
-                    </div>
-                </div>
-                
-                <!-- PLANO DE AÇÃO EM DUAS COLUNAS (EXPANDIDO) -->
-                <div class="win-box" style="margin-bottom:15px;">
-                    <div class="wb-head" style="background:#3498db;"><div class="wb-tit">🔄 PLANO DE AÇÃO (HOBBIES)</div></div>
-                    <div class="wb-body">
-                        <div id="m5-ritual-tips" style="font-size:7pt; line-height:1.4;"></div>
+                        <div class="check-tags" id="m5-hobbies" style="flex-wrap: wrap;"></div>
                     </div>
                 </div>
                 
@@ -1229,7 +1246,27 @@
             </div>
         </div>
 
-        <!-- PÁGINA 12: MÓDULO 5 - PARTE C (PERSONALIDADE) -->
+        <!-- PÁGINA 13: MÓDULO 5 - PARTE B2 (PLANO DE AÇÃO PARA HOBBIES) -->
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE ATUAL</div><div class="mh-sub">Plano de Ação - Hobbies & Rituais</div></div>
+                    <div class="mh-meta"><div class="mh-num">05</div><span class="mh-time" style="color:#aaa;">CONTINUAÇÃO</span></div>
+                </div>
+                
+                <!-- PLANO DE AÇÃO EM PÁGINA DEDICADA (EXPANDIDO) -->
+                <div class="win-box" style="margin-bottom:15px; flex: 1;">
+                    <div class="wb-head" style="background:#3498db;"><div class="wb-tit">🔄 PLANO DE AÇÃO (HOBBIES)</div></div>
+                    <div class="wb-body" style="overflow-y: auto; max-height: 650px;">
+                        <div id="m5-ritual-tips" style="font-size:8pt; line-height:1.6;"></div>
+                    </div>
+                </div>
+                
+                <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 14: MÓDULO 5 - PARTE C (PERSONALIDADE) -->
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
@@ -1264,7 +1301,7 @@
             </div>
         </div>
 
-        <!-- PÁGINA 13: MÓDULO 5 - PARTE D (OBSERVAÇÕES E CONCLUSÃO) -->
+        <!-- PÁGINA 15: MÓDULO 5 - PARTE D (OBSERVAÇÕES E CONCLUSÃO) -->
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
@@ -2021,10 +2058,20 @@
                 const r = d.respostas || {};
 
                 // --- 3.1.1 CAPA: INSERIR CONTATOS ---
+                // Função para formatar telefone no padrão brasileiro
+                const formatPhone = (phone) => {
+                    if (!phone) return '-';
+                    const digits = phone.replace(/\D/g, '');
+                    if (digits.length === 11) {
+                        return `${digits.slice(0,2)} ${digits.slice(2,3)} ${digits.slice(3,7)}-${digits.slice(7)}`;
+                    }
+                    return phone;
+                };
+                
                 if(document.getElementById('cp-nome')) document.getElementById('cp-nome').innerText = d.cliente || '-';
                 if(document.getElementById('cp-arq')) document.getElementById('cp-arq').innerText = d.contato?.arquiteto || '-';
                 if(document.getElementById('cp-data')) document.getElementById('cp-data').innerText = d.data ? new Date(d.data).toLocaleDateString() : '-';
-                if(document.getElementById('cp-celular')) document.getElementById('cp-celular').innerText = d.contato?.telefone || '-';
+                if(document.getElementById('cp-celular')) document.getElementById('cp-celular').innerText = formatPhone(d.contato?.telefone);
                 if(document.getElementById('cp-email')) document.getElementById('cp-email').innerText = d.contato?.email || '-';
                 if(document.getElementById('cp-local')) document.getElementById('cp-local').innerText = `${d.contato?.cidade || '-'} / ${d.contato?.estado || '-'}`;
 
