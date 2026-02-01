@@ -1243,7 +1243,7 @@
         // ============================================================================
         // DADOS MOCK PARA TESTE LOCAL (Ative USE_MOCK = true para testar)
         // ============================================================================
-        const USE_MOCK = false; // Altere para false se quiser usar a API real
+        const USE_MOCK = true; // Altere para false se quiser usar a API real
         
         const MOCK_DATA = [{
             "_id": "mock001",
@@ -2103,17 +2103,30 @@
                     cog: r['cog_prod'] !== undefined ? parseInt(r['cog_prod']) : 50
                 };
 
+                // MAPEAMENTO DE CORES PARA BORDAS
+                const colorMap = {
+                    's-vis': '#f39c12',
+                    's-aud': '#9b59b6',
+                    's-olf': '#27ae60',
+                    's-tat': '#e67e22',
+                    's-gus': '#e84393',
+                    's-prop': '#c0392b',
+                    's-emo': '#8e44ad',
+                    's-cog': '#2980b9'
+                };
+
                 const genCardA = (k) => {
                     const info = DB_SENSORY_EXPERT[k];
                     const val = sVals[k];
                     const stratHTML = info.getStrat(val);
+                    const borderColor = colorMap[info.color] || '#999';
                     return `<div class="sense-card ${info.color}">
                         <div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div>
                         <div class="sense-bar-container">
                             <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
                             <span class="sense-val ${info.color}">${val}%</span>
                         </div>
-                        <div style="background:#f8f9fa; padding:6px 8px; border-radius:4px; margin:8px 0; border-left:3px solid ${info.color.replace('s-', '#')};">
+                        <div style="background:#f8f9fa; padding:6px 8px; border-radius:4px; margin:8px 0; border-left:3px solid ${borderColor};">
                             <div style="font-size:6.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:3px;">🧠 NEURO LINK</div>
                             <div style="font-size:7pt; color:#555; line-height:1.3;">${info.neurolink}</div>
                         </div>
@@ -2125,13 +2138,14 @@
                     const info = DB_SENSORY_EXPERT[k];
                     const val = sVals[k];
                     const stratHTML = info.getStrat(val);
+                    const borderColor = colorMap[info.color] || '#999';
                     return `<div class="sense-card ${info.color}">
                         <div class="sense-head"><span class="sense-title ${info.color}"><span class="sense-icon">${info.icon}</span> ${info.title}</span></div>
                         <div class="sense-bar-container">
                             <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
                             <span class="sense-val ${info.color}">${val}%</span>
                         </div>
-                        <div style="background:#f8f9fa; padding:6px 8px; border-radius:4px; margin:8px 0; border-left:3px solid ${info.color.replace('s-', '#')};">
+                        <div style="background:#f8f9fa; padding:6px 8px; border-radius:4px; margin:8px 0; border-left:3px solid ${borderColor};">
                             <div style="font-size:6.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:3px;">🧠 NEURO LINK</div>
                             <div style="font-size:7pt; color:#555; line-height:1.3;">${info.neurolink}</div>
                         </div>
