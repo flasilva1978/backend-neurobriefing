@@ -548,11 +548,19 @@
         ========================================================================== */
         .sensory-page-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Mantém duas colunas */
-            /* Removido o grid-template-rows fixo para permitir mais de 4 itens */
-            gap: 8px; /* Reduzido de 12px para 8px para otimizar espaço vertical */
+            grid-template-columns: repeat(3, 1fr); /* 3 colunas para primeira linha */
+            grid-auto-rows: auto; /* Altura automática */
+            gap: 10px; /* Espaçamento entre cards */
             flex: 1;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        
+        /* Fazer os últimos 2 cards ocuparem o centro da segunda linha */
+        .sensory-page-grid .sense-card:nth-child(4) {
+            grid-column: 1 / 2;
+        }
+        .sensory-page-grid .sense-card:nth-child(5) {
+            grid-column: 2 / 3;
         }
 
         /* GRÁFICO DE RANKING (OCUPA A LARGURA TODA ANTES DO GRID OU DENTRO DELE) */
@@ -569,12 +577,12 @@
             background: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 10px;
+            padding: 8px;
             box-shadow: 0 3px 6px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
             position: relative;
-            min-height: 140px;
+            min-height: 120px; /* Reduzido de 140px para caber melhor */
         }
 
         /* Manter as Cores de Borda originais */
@@ -587,41 +595,41 @@
         .sense-card.s-emo { border-top: 5px solid #8e44ad; }
         .sense-card.s-cog { border-top: 5px solid #2980b9; }
 
-        /* Ajuste dos textos para caberem 6 elementos na página */
+        /* Ajuste dos textos para caberem 5 elementos na página */
         .sense-title {
-            font-size: 9pt; /* Reduzido de 10pt */
+            font-size: 8.5pt; /* Reduzido de 9pt */
             font-weight: 800;
             color: #2c3e50;
             text-transform: uppercase;
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 8px;
+            gap: 4px;
+            margin-bottom: 6px;
         }
 
         .sense-bar-container {
             display: flex;
             align-items: center;
-            margin-bottom: 8px; /* Reduzido de 15px */
+            margin-bottom: 6px; /* Reduzido de 8px */
         }
 
         .sense-val {
-            font-size: 10pt; /* Reduzido de 11pt */
+            font-size: 9.5pt; /* Reduzido de 10pt */
             font-weight: 800;
             width: 35px;
             text-align: right;
-            margin-left: 8px;
+            margin-left: 6px;
         }
 
         .sense-txt {
-            font-size: 7.5pt; /* Reduzido de 8.5pt para garantir que o texto não transborde */
+            font-size: 7pt; /* Reduzido de 7.5pt para garantir que o texto não transborde */
             color: #444;
-            line-height: 1.3;
+            line-height: 1.25;
             text-align: justify;
         }
 
         .sense-lbl {
-            font-size: 6.5pt; /* Reduzido de 7.5pt */
+            font-size: 6pt; /* Reduzido de 6.5pt */
             font-weight: 700;
             color: #95a5a6;
             text-transform: uppercase;
@@ -648,6 +656,25 @@
             color: #444;
             line-height: 1.4;
             text-align: justify;
+        }
+        
+        .sense-strategy {
+            font-size: 6.5pt;
+            line-height: 1.3;
+        }
+        
+        .sense-strategy .sense-section {
+            margin-bottom: 5px;
+        }
+        
+        .sense-strategy .sense-lbl {
+            font-size: 6pt;
+            margin-bottom: 1px;
+        }
+        
+        .sense-strategy .sense-txt {
+            font-size: 6.5pt;
+            line-height: 1.25;
         }
 
         /* ==========================================================================
@@ -2141,9 +2168,9 @@
                             <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
                             <span class="sense-val ${info.color}">${val}%</span>
                         </div>
-                        <div style="background:#f8f9fa; padding:8px; border-radius:4px; margin:8px 0; border-left:3px solid ${borderColor};">
-                            <div style="font-size:6.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:3px;">🧠 NEURO LINK</div>
-                            <div style="font-size:7pt; color:#555; line-height:1.4;">${info.neurolink}</div>
+                        <div style="background:#f8f9fa; padding:6px; border-radius:4px; margin:5px 0; border-left:3px solid ${borderColor};">
+                            <div style="font-size:6pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:2px;">🧠 NEURO LINK</div>
+                            <div style="font-size:6.5pt; color:#555; line-height:1.3;">${info.neurolink}</div>
                         </div>
                         <div class="sense-strategy">${stratHTML}</div>
                     </div>`;
