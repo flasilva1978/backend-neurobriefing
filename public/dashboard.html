@@ -1886,28 +1886,15 @@
             // Tentar buscar da API
             try {
                 console.log('🌐 Buscando dados da API...');
-                const req = await fetch('https://api-neurobriefing.onrender.com/api/dados/records');
+                const req = await fetch('https://api-neurobriefing.onrender.com/api/relatorios');
                 console.log('📡 Status da requisição:', req.status);
                 
                 if (!req.ok) {
                     throw new Error(`HTTP error! status: ${req.status}`);
                 }
                 
-                const responseData = await req.json();
-                console.log('📦 Resposta da API:', responseData);
-                
-                // Tratar diferentes formatos de resposta
-                if (Array.isArray(responseData)) {
-                    dadosAPI = responseData;
-                } else if (responseData.results && Array.isArray(responseData.results)) {
-                    dadosAPI = responseData.results;
-                } else if (responseData.data && Array.isArray(responseData.data)) {
-                    dadosAPI = responseData.data;
-                } else {
-                    dadosAPI = [];
-                }
-                
-                console.log('✅ Dados processados:', dadosAPI.length, 'registros');
+                dadosAPI = await req.json();
+                console.log('✅ Dados recebidos:', dadosAPI.length, 'registros');
                 
                 // Se não houver dados, usar mock
                 if (!dadosAPI || dadosAPI.length === 0) {
