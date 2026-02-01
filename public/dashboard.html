@@ -569,12 +569,12 @@
             background: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 8px; /* Reduzido de 10px para 8px */
+            padding: 10px;
             box-shadow: 0 3px 6px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
             position: relative;
-            min-height: 110px; /* Reduzido de 130px para 110px */
+            min-height: 140px;
         }
 
         /* Manter as Cores de Borda originais */
@@ -1067,6 +1067,21 @@
             </div>
         </div>
 
+        <!-- NOVA PÁGINA 7: RANKING SENSORIAL PROFISSIONAL -->
+        <div class="page">
+            <div class="mod-content">
+                <div class="m-head">
+                    <div><div class="mh-tit">IDENTIDADE SENSORIAL</div><div class="mh-sub">Análise de Hierarquia Perceptiva</div></div>
+                    <div class="mh-meta"><div class="mh-num">03</div><span class="mh-time" style="color:#aaa;">ANÁLISE</span></div>
+                </div>
+                <div id="m3-ranking-page" style="flex: 1;">
+                    <!-- O gráfico será inserido aqui pelo JavaScript -->
+                </div>
+                <div class="ft-note">Neuro Be Briefing Intelligence - Continua na próxima página...</div>
+            </div>
+        </div>
+
+        <!-- ANTIGA PÁGINA 7 - AGORA É PÁGINA 8 -->
         <div class="page">
             <div class="mod-content">
                 <div class="m-head">
@@ -2126,9 +2141,9 @@
                             <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
                             <span class="sense-val ${info.color}">${val}%</span>
                         </div>
-                        <div style="background:#f8f9fa; padding:4px 6px; border-radius:3px; margin:5px 0; border-left:2px solid ${borderColor};">
-                            <div style="font-size:5.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:2px;">🧠 NEURO LINK</div>
-                            <div style="font-size:6pt; color:#555; line-height:1.2;">${info.neurolink}</div>
+                        <div style="background:#f8f9fa; padding:8px; border-radius:4px; margin:8px 0; border-left:3px solid ${borderColor};">
+                            <div style="font-size:6.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:3px;">🧠 NEURO LINK</div>
+                            <div style="font-size:7pt; color:#555; line-height:1.4;">${info.neurolink}</div>
                         </div>
                         <div class="sense-strategy">${stratHTML}</div>
                     </div>`;
@@ -2145,20 +2160,22 @@
                             <div class="sense-bar-bg"><div class="sense-bar-fill ${info.border}" style="width:${val}%"></div></div>
                             <span class="sense-val ${info.color}">${val}%</span>
                         </div>
-                        <div style="background:#f8f9fa; padding:4px 6px; border-radius:3px; margin:5px 0; border-left:2px solid ${borderColor};">
-                            <div style="font-size:5.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:2px;">🧠 NEURO LINK</div>
-                            <div style="font-size:6pt; color:#555; line-height:1.2;">${info.neurolink}</div>
+                        <div style="background:#f8f9fa; padding:8px; border-radius:4px; margin:8px 0; border-left:3px solid ${borderColor};">
+                            <div style="font-size:6.5pt; font-weight:700; color:#7f8c8d; text-transform:uppercase; margin-bottom:3px;">🧠 NEURO LINK</div>
+                            <div style="font-size:7pt; color:#555; line-height:1.4;">${info.neurolink}</div>
                         </div>
                         <div class="sense-strategy">${stratHTML}</div>
                     </div>`;
                 };
 
-                // GRID A (5 sentidos + gráfico)
+                // GRID A (5 sentidos APENAS - gráfico vai para página separada)
                 const keysA = ['vis','aud','olf','tat','gus'];
                 let htmlA = ''; 
                 keysA.forEach(k => htmlA += genCardA(k));
                 
-                // ADICIONAR GRÁFICO GERAL DE RANKING SENSORIAL
+                if(document.getElementById('m3-grid-part-a')) document.getElementById('m3-grid-part-a').innerHTML = htmlA;
+
+                // PREPARAR GRÁFICO PARA PÁGINA SEPARADA
                 const sensorValues = [
                     {name: 'Visual', value: sVals.vis, color: '#f39c12', icon: '👁️'},
                     {name: 'Auditivo', value: sVals.aud, color: '#9b59b6', icon: '👂'},
@@ -2171,45 +2188,94 @@
                 const maxSense = sensorValues[0];
                 const minSense = sensorValues[sensorValues.length-1];
                 
-                let sensorChartHTML = `<div class="sense-card" style="grid-column: span 2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px;">
-                    <div style="text-align:center; color:white; font-size:9pt; font-weight:800; margin-bottom:8px; text-transform:uppercase;">📊 Ranking Geral de Percepção</div>
-                    <div style="background:rgba(255,255,255,0.95); border-radius:6px; padding:10px;">`;
+                // GRÁFICO PROFISSIONAL PARA PÁGINA 7 (NOVA)
+                let rankingPageHTML = `
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="text-align:center; color:white; font-size:14pt; font-weight:900; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">
+                            📊 RANKING GERAL DE PERCEPÇÃO SENSORIAL
+                        </div>
+                        <div style="text-align:center; color:rgba(255,255,255,0.9); font-size:8pt; margin-bottom:20px;">
+                            Hierarquia dos 5 sentidos físicos por ordem de intensidade perceptiva
+                        </div>
+                        <div style="background:rgba(255,255,255,0.97); border-radius:10px; padding:20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15);">`;
                 
                 sensorValues.forEach((s, idx) => {
                     const isMax = s.name === maxSense.name;
                     const isMin = s.name === minSense.name;
                     const barColor = isMax ? '#27ae60' : isMin ? '#e74c3c' : s.color;
-                    const highlight = isMax ? 'background:#d5f4e6; border-left:3px solid #27ae60;' : isMin ? 'background:#fadbd8; border-left:3px solid #e74c3c;' : '';
+                    const bgColor = isMax ? '#d5f4e6' : isMin ? '#fadbd8' : '#f8f9fa';
+                    const borderColor = isMax ? '#27ae60' : isMin ? '#e74c3c' : '#e0e0e0';
                     
-                    sensorChartHTML += `<div style="margin-bottom:6px; padding:5px; border-radius:4px; ${highlight}">
-                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:3px;">
-                            <span style="font-size:7.5pt; font-weight:700; color:#2c3e50;">
-                                <span style="display:inline-block; width:18px; text-align:center;">${idx+1}º</span>
-                                ${s.icon} ${s.name}
-                                ${isMax ? '<span style="color:#27ae60; margin-left:4px; font-size:6.5pt;">⬆ MAIOR</span>' : ''}
-                                ${isMin ? '<span style="color:#e74c3c; margin-left:4px; font-size:6.5pt;">⬇ MENOR</span>' : ''}
-                            </span>
-                            <span style="font-size:8pt; font-weight:800; color:${barColor};">${s.value}%</span>
-                        </div>
-                        <div style="background:#e0e0e0; height:6px; border-radius:3px; overflow:hidden;">
-                            <div style="background:${barColor}; height:100%; width:${s.value}%; transition:0.3s;"></div>
-                        </div>
-                    </div>`;
+                    rankingPageHTML += `
+                        <div style="margin-bottom:15px; padding:12px; background:${bgColor}; border-radius:8px; border-left:5px solid ${borderColor}; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <div style="background:${barColor}; color:white; width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:11pt; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                                        ${idx+1}º
+                                    </div>
+                                    <div>
+                                        <div style="font-size:11pt; font-weight:800; color:#2c3e50;">
+                                            ${s.icon} ${s.name}
+                                        </div>
+                                        ${isMax ? '<div style="color:#27ae60; font-size:7.5pt; font-weight:700; margin-top:2px;">⬆ SENTIDO DOMINANTE</div>' : ''}
+                                        ${isMin ? '<div style="color:#e74c3c; font-size:7.5pt; font-weight:700; margin-top:2px;">⬇ MENOR PERCEPÇÃO</div>' : ''}
+                                    </div>
+                                </div>
+                                <div style="font-size:16pt; font-weight:900; color:${barColor};">
+                                    ${s.value}%
+                                </div>
+                            </div>
+                            <div style="background:#e0e0e0; height:12px; border-radius:6px; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                                <div style="background:${barColor}; height:100%; width:${s.value}%; transition:all 0.5s ease;"></div>
+                            </div>
+                        </div>`;
                 });
                 
-                sensorChartHTML += `</div>
-                    <div style="text-align:center; margin-top:8px; padding:6px; background:rgba(255,255,255,0.2); border-radius:4px;">
-                        <div style="color:white; font-size:6.5pt; line-height:1.3;">
-                            <strong>INTERPRETAÇÃO:</strong> ${maxSense.name} (${maxSense.value}%) é DOMINANTE. ${minSense.name} (${minSense.value}%) apresenta menor percepção.
+                rankingPageHTML += `
                         </div>
                     </div>
-                </div>`;
+                    
+                    <div style="background:#fff; padding:20px; border-radius:10px; border:2px solid #e0e0e0; margin-bottom:15px;">
+                        <div style="font-size:10pt; font-weight:800; color:#2c3e50; margin-bottom:12px; border-bottom:2px solid #667eea; padding-bottom:8px;">
+                            📋 INTERPRETAÇÃO ESTRATÉGICA
+                        </div>
+                        <div style="font-size:8.5pt; color:#555; line-height:1.8; margin-bottom:15px;">
+                            <strong style="color:#27ae60;">${maxSense.name} (${maxSense.value}%)</strong> é o <strong>sentido DOMINANTE</strong> deste cliente. 
+                            Todas as intervenções arquitetônicas devem <strong>priorizar esta dimensão sensorial</strong> como foco principal do projeto. 
+                            Investimentos em conforto, tecnologia e materiais relacionados a este sentido terão <strong>máximo impacto perceptivo</strong>.
+                        </div>
+                        <div style="font-size:8.5pt; color:#555; line-height:1.8;">
+                            <strong style="color:#e74c3c;">${minSense.name} (${minSense.value}%)</strong> apresenta a <strong>menor percepção relativa</strong>. 
+                            Isso não significa negligenciar este aspecto, mas indica que intervenções nesta área terão <strong>menor retorno perceptivo</strong> 
+                            e podem ser <strong>priorizadas secundariamente</strong> no orçamento, caso haja limitações de recursos.
+                        </div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding:15px; border-radius:8px; color:white;">
+                        <div style="font-size:9pt; font-weight:800; margin-bottom:8px;">⚡ APLICAÇÃO PRÁTICA NO PROJETO</div>
+                        <div style="font-size:8pt; line-height:1.7; opacity:0.95;">
+                            Use este ranking para <strong>hierarquizar decisões de investimento</strong>. 
+                            Em situações de orçamento limitado, concentre recursos nos sentidos do topo da lista. 
+                            Em projetos premium, otimize TODOS os sentidos, mas mantenha especial atenção ao dominante. 
+                            Lembre-se: <strong>negligenciar o sentido dominante é um erro crítico</strong> que comprometerá 
+                            a satisfação do cliente, independentemente de outros acertos.
+                        </div>
+                    </div>
+                `;
                 
-                htmlA += sensorChartHTML;
+                console.log('📊 Tentando inserir gráfico de ranking na página 7...');
+                console.log('Elemento m3-ranking-page existe?', document.getElementById('m3-ranking-page') !== null);
+                console.log('Tamanho do HTML:', rankingPageHTML.length);
                 
-                if(document.getElementById('m3-grid-part-a')) document.getElementById('m3-grid-part-a').innerHTML = htmlA;
+                const rankingElement = document.getElementById('m3-ranking-page');
+                if(rankingElement) {
+                    rankingElement.innerHTML = rankingPageHTML;
+                    console.log('✅ Gráfico de ranking inserido com sucesso!');
+                } else {
+                    console.error('❌ Elemento m3-ranking-page não encontrado!');
+                }
 
-                // GRID B (3 sentidos restantes)
+                // GRID B (3 sentidos complexos - Página 8)
                 const keysB = ['prop','emo','cog'];
                 let htmlB = ''; keysB.forEach(k => htmlB += genCardB(k));
                 if(document.getElementById('m3-grid-part-b')) document.getElementById('m3-grid-part-b').innerHTML = htmlB;
